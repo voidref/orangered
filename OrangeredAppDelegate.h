@@ -71,8 +71,10 @@
 
 - (void)		dealloc;
 - (void)		updateStatus;
-- (void)		checkForUpdate;
+- (void)		checkForAppUpdate;
 - (NSString*)	userDataUrl;
+- (void)		parseStatus;
+- (void)		parseLogin: (NSHTTPURLResponse*) response;
 
 - (void)		growlAlert:	(NSString *)message				
 			         title: (NSString *)title				

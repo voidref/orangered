@@ -37,6 +37,11 @@ static NSString* AppVersion               = @"1.0 alpha 5";
 static const int StatusUpdatePollInterval = 60; // seconds.
 static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 
+// I can't believe this is working.
+@interface NSMenuItem (hiddenpropcat)
+@property  BOOL hidden;
+@end
+
 // --------------------------------------------------------------------------------------------------------------------
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification 
 {
@@ -113,71 +118,60 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 - (IBAction) login:(id)sender
 {
 #pragma unused(sender)
-	
-	// We should do this asynchronously	
-	NSString* user = self.prefs.name;
-	
-	if ((user.length < 1) || (self.prefs.password.length < 1))
+	if ((self.prefs.name.length < 1) || (self.prefs.password.length < 1))
 	{
 		// show window
 		[self showLoginWindow:nil];
 		return;
 	}
 	
+	NSLog(@"Logging in user: %@", self.prefs.name);
+	
 	NSURL* url = [NSURL URLWithString:@"http://www.reddit.com/api/login"];
-	NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL: url] autorelease]; 
+	
+	NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url
+														   cachePolicy:NSURLRequestUseProtocolCachePolicy
+													   timeoutInterval:self.prefs.timeout];
 	[request setHTTPMethod: @"POST"];
-	[request setHTTPBody: [[NSString stringWithFormat:@"user=%@&passwd=%@", user, self.prefs.password] dataUsingEncoding:NSUTF8StringEncoding]];
-
-	NSHTTPURLResponse* response;
-	NSError* error = nil;
+	[request setHTTPBody: [[NSString stringWithFormat:@"user=%@&passwd=%@", self.prefs.name, self.prefs.password] dataUsingEncoding:NSUTF8StringEncoding]];
 	
-	NSLog(@"Logging in user: %@", user);
-	NSData* data =
-	[NSURLConnection sendSynchronousRequest:request 
-						  returningResponse:&response 
-									  error:&error];
-	
-	if (nil != error) 
+	[loginConnection release];
+	loginConnection = [[NSURLConnection alloc] initWithRequest:request 
+			  										   delegate:self];
+	if (nil != loginConnection) 
 	{
-		self.loginerror.stringValue = [error localizedDescription];
+		loginData = [[NSMutableData data] retain];
+	} 
+	else 
+	{
+		// Is there a way to find the exact error?
+		self.loginerror.stringValue = @"Could not estabilsh connection to reddit.";
+	}
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (void) parseLogin:(NSHTTPURLResponse*) response
+{
+	NSLog(@"Response Headers: %@", [response allHeaderFields]);
+	
+	NSArray* cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:[response allHeaderFields]
+															  forURL:[response URL]];
+	
+	if (cookies.count == 0)
+	{
+		// set a flag for error check?
 	}
 	else 
 	{
-		NSLog(@"Response Headers: %@", [response allHeaderFields]);
-		
-		NSArray* cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:[response allHeaderFields]
-																  forURL:url];
-		
-		if (cookies.count == 0)
-		{
-			NSString* output = [[[NSString alloc] initWithData:data 
-													  encoding:NSASCIIStringEncoding] autorelease];
-			NSLog(@"Data result: %@", output);
+		NSLog(@"Setting Cookie Array: %@", cookies);
+		NSHTTPCookieStorage* cstorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+		[cstorage setCookies:cookies 
+					  forURL:[NSURL URLWithString:@"http://www.reddit.com/"] 
+			 mainDocumentURL:nil];
 
-			if ([output rangeOfString:@"WRONG_PASSWORD"].location != NSNotFound) 
-			{
-				self.loginerror.stringValue = @"Could not log in: Wrong password.";
-			}
-			else
-			{
-				// Hmm, this never gets triggered, WRONG_PASSWORD always comes up, even for users who do 
-				// not exist.
-				self.loginerror.stringValue = output;
-			}
-		}
-		else 
-		{
-			NSLog(@"Setting Cookie Array: %@", cookies);
-			NSHTTPCookieStorage* cstorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-			[cstorage setCookies:cookies 
-						  forURL:[NSURL URLWithString:@"http://www.reddit.com/"] 
-				 mainDocumentURL:nil];
-
-			self.loginerror.stringValue = @"";
-			[window close];
-			[self updateStatus];
-		}
+		self.loginerror.stringValue = @"";
+		[window close];
+		[self updateStatus];
 	}
 }
 
@@ -262,7 +256,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	static int appupdatepoller = 0;
 	if ((appupdatepoller % AppUpdatePollInterval) == 0)
 	{
-		[self checkForUpdate];
+		[self checkForAppUpdate];
 	}
 	++appupdatepoller;
 }
@@ -297,7 +291,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 
 	// Lets assume they don't want to see the orangered envelope after they do this or wait for the next check.
 	self.currentIcon = self.noMailIcon;
-	[self.status setImage:[NSImage imageNamed:self.currentIcon]];
+	self.status.image = [NSImage imageNamed:self.currentIcon];
 	system("open http://www.reddit.com/message/unread/ &");
 }
 
@@ -306,8 +300,8 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 {
 	(void)sender;
 
-	[self.update setHidden:YES];
-	[self.about setHidden:NO];
+	self.update.hidden = YES;
+	self.about.hidden = NO;
 	system("open http://www.voidref.com/Site/Orangered.zip &");	
 	self.noMailIcon = BlackEnvelope;
 	
@@ -316,7 +310,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-- (void) checkForUpdate
+- (void) checkForAppUpdate
 {
 	NSURL* url = [NSURL URLWithString:@"http://www.voidref.com/Site/orangered_version.txt"];
 	NSError* error = nil;
@@ -333,11 +327,11 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	}
 	else if ([checkResult compare:AppVersion] != NSOrderedSame) 
 	{
-		[self.update setHidden:NO];
-		[self.update setTitle:[NSString stringWithFormat:@"Get Update (%@)", checkResult]];
+		self.update.hidden = NO;
+		self.update.title = [NSString stringWithFormat:@"Get Update (%@)", checkResult];
 		self.noMailIcon = BlueEnvelope;
-		[self.status setImage:[NSImage imageNamed:self.noMailIcon]];
-		[self.about setHidden:YES];
+		self.status.image = [NSImage imageNamed:self.noMailIcon];
+		self.about.hidden = YES;
 	}
 }
 
@@ -378,12 +372,15 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
         didReceiveResponse: (NSURLResponse *)response
 {
 	NSLog(@"Got response for %@", [[response URL] path]);
+	
 	if ( connection == statusConnection)
 	{
 		statusData.length = 0;
 	}
 	else if (connection == loginConnection)
 	{
+		// Is casting this way the right thing to do?
+		[self parseLogin:(NSHTTPURLResponse*)response];
 		loginData.length = 0;
 	}	
 }
@@ -394,7 +391,12 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
          totalBytesWritten: (NSInteger)totalBytesWritten 
  totalBytesExpectedToWrite: (NSInteger)totalBytesExpectedToWrite
 {
-#pragma unused(connection, bytesWritten, totalBytesWritten, totalBytesExpectedToWrite)
+#pragma unused(connection, bytesWritten)
+	
+	if (totalBytesWritten != totalBytesExpectedToWrite) 
+	{
+		self.loginerror.stringValue = @"Could not complete login request, connection severed (I think).";
+	}
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -406,7 +408,18 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	}
 	else if (connection == loginConnection)
 	{
+		NSString* output = [[[NSString alloc] initWithData:loginData 
+												  encoding:NSASCIIStringEncoding] autorelease];
+		NSLog(@"Data result: %@", output);
 		
+		if ([output rangeOfString:@"WRONG_PASSWORD"].location != NSNotFound) 
+		{
+			self.loginerror.stringValue = @"Could not log in: Wrong password.";
+		}
+		else
+		{
+			// hmmm.
+		}
 	}	
 }
 
