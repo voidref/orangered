@@ -216,7 +216,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>2D7D374011D7558300D9A067</string>
+						<string>2D7D375211D7566000D9A067</string>
 						<key>history</key>
 						<array>
 							<string>2D7D369811D1FCE300D9A067</string>
@@ -357,7 +357,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>2DC5537211CA025100D9B5C1</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>OrangeredAppDelegate.m</string>
+								<string>prefs.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -365,11 +365,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>2DC5537311CA025100D9B5C1</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>OrangeredAppDelegate.m</string>
+										<string>prefs.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>2D7D373F11D7558300D9A067</string>
+										<string>2D7D375111D7566000D9A067</string>
 										<key>history</key>
 										<array>
 											<string>2DC553C911CA0A0F00D9B5C1</string>
@@ -393,10 +393,10 @@
 											<string>2D7D362C11D13B9400D9A067</string>
 											<string>2D7D36A611D272F100D9A067</string>
 											<string>2D7D372811D7520400D9A067</string>
-											<string>2D7D372911D7520400D9A067</string>
-											<string>2D7D372A11D7520400D9A067</string>
 											<string>2D7D373D11D7558300D9A067</string>
-											<string>2D7D373E11D7558300D9A067</string>
+											<string>2D7D374511D7561900D9A067</string>
+											<string>2D7D374611D7561900D9A067</string>
+											<string>2D7D374711D7561900D9A067</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -713,7 +713,7 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>2D7D372F11D7520400D9A067</string>
+		<string>2D7D375311D7566000D9A067</string>
 		<string>2D7D319811CC9A9600D9A067</string>
 		<string>2D7D319911CC9A9600D9A067</string>
 		<string>/Users/voidref/src/mac/Orangered/Orangered.xcodeproj</string>

@@ -25,6 +25,8 @@ static NSString* SavePassKey = @"save password";
 	if (nil != self) 
 	{
 		settings = [NSUserDefaults standardUserDefaults];
+		self.name = [settings stringForKey:UserNameKey];
+		self.savePassword = [settings boolForKey:SavePassKey];
 	}
 	
 	return self;
