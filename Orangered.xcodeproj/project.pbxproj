@@ -16,6 +16,7 @@
 		2D7D340011CF0B9400D9A067 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7D33FF11CF0B9400D9A067 /* libz.dylib */; };
 		2D7D360F11D1315D00D9A067 /* NSDataGzipCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D7D360E11D1315D00D9A067 /* NSDataGzipCategory.m */; };
 		2D7D369511D1FC9C00D9A067 /* HighlightEnvelope.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D7D369411D1FC9C00D9A067 /* HighlightEnvelope.png */; };
+		2D7D36C311D6D5D100D9A067 /* prefs.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D7D36C211D6D5D100D9A067 /* prefs.m */; };
 		2DC5530B11C9EF4E00D9B5C1 /* GreyEnvelope.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC5530A11C9EF4E00D9B5C1 /* GreyEnvelope.png */; };
 		2DC5532D11C9F52000D9B5C1 /* BlackEnvelope.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC5532C11C9F52000D9B5C1 /* BlackEnvelope.png */; };
 		2DC5533D11C9F78C00D9B5C1 /* OrangeredEnvelope.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC5533C11C9F78C00D9B5C1 /* OrangeredEnvelope.png */; };
@@ -45,6 +46,8 @@
 		2D7D360D11D1315D00D9A067 /* NSDataGzipCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataGzipCategory.h; sourceTree = "<group>"; };
 		2D7D360E11D1315D00D9A067 /* NSDataGzipCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataGzipCategory.m; sourceTree = "<group>"; };
 		2D7D369411D1FC9C00D9A067 /* HighlightEnvelope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HighlightEnvelope.png; sourceTree = "<group>"; };
+		2D7D36C111D6D5D100D9A067 /* prefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefs.h; sourceTree = "<group>"; };
+		2D7D36C211D6D5D100D9A067 /* prefs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = prefs.m; sourceTree = "<group>"; };
 		2DC5530A11C9EF4E00D9B5C1 /* GreyEnvelope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GreyEnvelope.png; sourceTree = "<group>"; };
 		2DC5532C11C9F52000D9B5C1 /* BlackEnvelope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BlackEnvelope.png; sourceTree = "<group>"; };
 		2DC5533C11C9F78C00D9B5C1 /* OrangeredEnvelope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OrangeredEnvelope.png; sourceTree = "<group>"; };
@@ -74,6 +77,8 @@
 				2D7D360E11D1315D00D9A067 /* NSDataGzipCategory.m */,
 				256AC3D80F4B6AC300CF3369 /* OrangeredAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */,
+				2D7D36C111D6D5D100D9A067 /* prefs.h */,
+				2D7D36C211D6D5D100D9A067 /* prefs.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -226,6 +231,7 @@
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				256AC3DA0F4B6AC300CF3369 /* OrangeredAppDelegate.m in Sources */,
 				2D7D360F11D1315D00D9A067 /* NSDataGzipCategory.m in Sources */,
+				2D7D36C311D6D5D100D9A067 /* prefs.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

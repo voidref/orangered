@@ -6,15 +6,15 @@ Todo for 1.0
  * Option to open at start.
  * Option for check frequency.
  * Option for manual app update check vs automatic
- * create DMG based distribution
- * Fix about window not being topmost when invoked.
+ * Create a DMG based distribution
+ * Fix about window not being topmost when invoked / New About Window
  * Add manual check for update
  * Use version string from info.plist
 
  Todo for post 1.0
 =================
  * Write a plugin api so people someone can write growl integration if they want.
- * Option to obscure password
+ * Option to unobscure password
  * Options for sounds
  * Count of new messages
  * Display for karmas

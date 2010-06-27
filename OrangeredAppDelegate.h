@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "prefs.h"
 
 #define GROWL 0
 
@@ -19,7 +20,6 @@
 #endif
 {
 	NSStatusItem*	status;
-	NSUserDefaults* settings;
 	NSMenu*			menu;
 	NSMenuItem*		preference;
 	NSMenuItem*		update;
@@ -31,16 +31,16 @@
 	NSTextField*	loginerror;
 	NSButton*		savepassword;
 
-	NSString*		currentpassword;
-	NSString*		userDataUrl;
 	NSString*		currentIcon;
 	NSString*		noMailIcon;
 	NSTimer*		poller;
+	
+	Prefs*			prefs;
 }
 
+@property (assign) Prefs* prefs;
 
 @property (assign) IBOutlet NSStatusItem*	status;
-@property (assign)			NSUserDefaults*	settings;
 @property (assign) IBOutlet NSMenu*			menu;
 @property (assign) IBOutlet NSMenuItem*		update;
 @property (assign) IBOutlet NSMenuItem*		about;
@@ -51,8 +51,6 @@
 @property (assign) IBOutlet NSTextField*	loginerror;
 @property (assign) IBOutlet NSButton*		savepassword;
 
-@property (retain)          NSString*		currentpassword;
-@property (retain)          NSString*		userDataUrl;
 @property (retain)          NSString*		currentIcon;
 @property (retain)          NSString*		noMailIcon;
 
@@ -64,10 +62,10 @@
 - (IBAction) openMailbox:(id)sender;
 - (IBAction) updateMenuItemClicked:(id)sender;
 
+- (void)		dealloc;
 - (void)		updateStatus;
-- (void)		setPassword:		(NSString*)value;
-- (void)		setUserName:		(NSString*)value;
 - (void)		checkForUpdate;
+- (NSString*)	userDataUrl;
 - (void)		growlAlert:         (NSString *)message title:(NSString *)title type:(NSString *)type;
 
 @end

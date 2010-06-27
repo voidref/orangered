@@ -14,24 +14,19 @@
 
 @synthesize window;
 @synthesize status;
-@synthesize settings;
 @synthesize menu;
 @synthesize userentry;
 @synthesize passwordentry;
 @synthesize savepassword;
-@synthesize currentpassword;
-@synthesize userDataUrl;
 @synthesize poller;
 @synthesize update;
 @synthesize loginerror;
 @synthesize about;
 @synthesize currentIcon;
 @synthesize noMailIcon;
+@synthesize prefs;
 
 // How does one do const values corectly in ObjC?
-#define username			@"username"
-#define password			@"password"
-#define rememberpassword	@"save password"
 
 #define GreyEnvelope        @"GreyEnvelope"
 #define BlackEnvelope       @"BlackEnvelope"
@@ -50,30 +45,26 @@ static const int		    AppUpdatePollInterval = (60 * 4); // 4 hours
 	// We don't use this. Must appease the warning gods.
 #pragma unused(aNotification)
 
+	self.prefs = [[Prefs alloc] init];
 #if GROWL
 	[GrowlApplicationBridge setGrowlDelegate: self];
 	[self registrationDictionaryForGrowl];
 #endif
 	
-	[self.window setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces];
-	self.settings = [NSUserDefaults standardUserDefaults];
+	self.window.collectionBehavior = NSWindowCollectionBehaviorCanJoinAllSpaces;
 	
 	self.status = [[[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength] retain];
-	[self.status setMenu:self.menu];
-	[self.status setHighlightMode:YES];
-	[self.status setAlternateImage:[NSImage imageNamed:HighlightEnvelope]];
-	[self.status setImage:[NSImage imageNamed:GreyEnvelope]];
+	self.status.menu = self.menu;
+	self.status.highlightMode = YES;
+	self.status.alternateImage = [NSImage imageNamed:HighlightEnvelope];
+	self.status.image = [NSImage imageNamed:GreyEnvelope];
 	
-	[self.menu setDelegate:self];
-	[self.menu setAutoenablesItems:NO];
+	self.menu.delegate = self;
+	self.menu.autoenablesItems = NO;
 
 	
-	self.currentpassword = [settings stringForKey:password];
 	self.currentIcon = GreyEnvelope;
 	self.noMailIcon = BlackEnvelope;
-	
-	// This also sets up the user check url.
-	[self setUserName:[settings stringForKey:username]];
 			
 	[self updateStatus];
 	
@@ -88,9 +79,15 @@ static const int		    AppUpdatePollInterval = (60 * 4); // 4 hours
 }
 
 // --------------------------------------------------------------------------------------------------------------------
+- (void) dealloc
+{
+	[prefs release];
+	[super dealloc];
+}
+
+// --------------------------------------------------------------------------------------------------------------------
 - (IBAction) loginChanged:(id)sender
 {
-#pragma unused(sender)
 	NSString* uname = [userentry stringValue];
 	NSString* pword = [passwordentry stringValue];
 	
@@ -104,11 +101,10 @@ static const int		    AppUpdatePollInterval = (60 * 4); // 4 hours
 		self.loginerror.stringValue = @"";
 	}
 	 
-	[self setUserName:uname];
-	[settings setBool:[savepassword state] 
-				 forKey:rememberpassword];
-	
-	[self setPassword:pword];
+	self.prefs.name = uname;
+	self.prefs.savePassword = [savepassword state];
+
+	self.prefs.password = pword;
 	
 	[self login:sender];
 }
@@ -119,9 +115,9 @@ static const int		    AppUpdatePollInterval = (60 * 4); // 4 hours
 #pragma unused(sender)
 	
 	// We should do this asynchronously	
-	NSString* user = [settings stringForKey:username];
+	NSString* user = self.prefs.name;
 	
-	if (([user length] < 1) || ([self.currentpassword length] < 1))
+	if ((user.length < 1) || (self.prefs.password.length < 1))
 	{
 		// show window
 		[self showLoginWindow:nil];
@@ -131,7 +127,7 @@ static const int		    AppUpdatePollInterval = (60 * 4); // 4 hours
 	NSURL* url = [NSURL URLWithString:@"http://www.reddit.com/api/login"];
 	NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL: url] autorelease]; 
 	[request setHTTPMethod: @"POST"];
-	[request setHTTPBody: [[NSString stringWithFormat:@"user=%@&passwd=%@", user, self.currentpassword] dataUsingEncoding:NSUTF8StringEncoding]];
+	[request setHTTPBody: [[NSString stringWithFormat:@"user=%@&passwd=%@", user, self.prefs.password] dataUsingEncoding:NSUTF8StringEncoding]];
 
 	NSHTTPURLResponse* response;
 	NSError* error = nil;
@@ -188,7 +184,7 @@ static const int		    AppUpdatePollInterval = (60 * 4); // 4 hours
 // --------------------------------------------------------------------------------------------------------------------
 - (void) updateStatus
 {
-	NSURL* url = [NSURL URLWithString:self.userDataUrl];
+	NSURL* url = [NSURL URLWithString:[self userDataUrl]];
 	NSError* error = nil;
 	
 	NSString* checkResult = [NSString stringWithContentsOfURL:url 
@@ -261,54 +257,22 @@ static const int		    AppUpdatePollInterval = (60 * 4); // 4 hours
 {
 #pragma unused(sender)
 	
-	NSString* uname = [settings stringForKey:username];
-	NSString* pass  = [settings stringForKey:password];
-	[savepassword setState:[settings boolForKey:rememberpassword]];
+	[savepassword setState:self.prefs.savePassword];
 	 
-	if (nil != uname) [userentry setStringValue:uname];
+	if (nil != self.prefs.name) [userentry setStringValue:self.prefs.name];
 
-	if (nil != pass) 
-	{
-		if (NSOnState == [savepassword state])
-		{
-			[passwordentry setStringValue:pass];			
-		}
-		else 
-		{
-			// We need to eradicate any old passwords that might have been saved
-			[passwordentry setStringValue:@""];
-			
-		}
-	}
+	if (nil != self.prefs.password) [passwordentry setStringValue:self.prefs.password];			
 	 
 	// open window and force to the front
 	[window makeKeyAndOrderFront:nil];
 	[window orderFrontRegardless];
 }
 
-// --------------------------------------------------------------------------------------------------------------------
-- (void) setPassword:(NSString*)value
-{	
-	if (NSOnState == [savepassword state]) 
-	{
-		[settings setObject:value 
-					 forKey:password];
-		[[self passwordentry] setStringValue:value];
-	}
-	else 
-	{
-		[[self passwordentry] setStringValue:@""];
-	}
-	
-	self.currentpassword = value;
-}
 
 // --------------------------------------------------------------------------------------------------------------------
-- (void) setUserName:(NSString*)value
+- (NSString*) userDataUrl
 {
-	self.userDataUrl = [NSString stringWithFormat:@"http://www.reddit.com/user/%@/about.json", value];
-	[settings setObject:value     
-				 forKey:username];
+	return [NSString stringWithFormat:@"http://www.reddit.com/user/%@/about.json", self.prefs.name];
 }
 	
 // --------------------------------------------------------------------------------------------------------------------
