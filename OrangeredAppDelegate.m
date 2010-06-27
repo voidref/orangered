@@ -26,18 +26,16 @@
 @synthesize noMailIcon;
 @synthesize prefs;
 
-// How does one do const values corectly in ObjC?
-
-#define GreyEnvelope        @"GreyEnvelope"
-#define BlackEnvelope       @"BlackEnvelope"
-#define BlueEnvelope        @"BlueEnvelope"
-#define OrangeredEnvelope   @"OrangeredEnvelope"
-#define HighlightEnvelope   @"HighlightEnvelope"
+static NSString* GreyEnvelope		= @"GreyEnvelope";
+static NSString* BlackEnvelope		= @"BlackEnvelope";
+static NSString* BlueEnvelope		= @"BlueEnvelope";
+static NSString* OrangeredEnvelope  = @"OrangeredEnvelope";
+static NSString* HighlightEnvelope  = @"HighlightEnvelope";
 
 // eventually we will use the version string in the info.plist.
-#define AppVersion          @"1.0 alpha 5"
-static const int		    StatusUpdatePollInterval = 60; // seconds.
-static const int		    AppUpdatePollInterval = (60 * 4); // 4 hours
+static NSString* AppVersion               = @"1.0 alpha 5";
+static const int StatusUpdatePollInterval = 60; // seconds.
+static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 
 // --------------------------------------------------------------------------------------------------------------------
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification 
