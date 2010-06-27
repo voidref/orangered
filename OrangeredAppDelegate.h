@@ -19,23 +19,30 @@
 @interface OrangeredAppDelegate : NSObject <NSApplicationDelegate, NSMenuDelegate> 
 #endif
 {
-	NSStatusItem*	status;
-	NSMenu*			menu;
-	NSMenuItem*		preference;
-	NSMenuItem*		update;
-	NSMenuItem*		about;
+	NSStatusItem*		status;
+	NSMenu*				menu;
+	NSMenuItem*			preference;
+	NSMenuItem*			update;
+	NSMenuItem*			about;
 	
-    NSWindow*		window;
-	NSTextField*	userentry;
-	NSTextField*	passwordentry;
-	NSTextField*	loginerror;
-	NSButton*		savepassword;
+    NSWindow*			window;
+	NSTextField*		userentry;
+	NSTextField*		passwordentry;
+	NSTextField*		loginerror;
+	NSButton*			savepassword;
 
-	NSString*		currentIcon;
-	NSString*		noMailIcon;
-	NSTimer*		poller;
+	NSString*			currentIcon;
+	NSString*			noMailIcon;
+	NSTimer*			poller;
 	
-	Prefs*			prefs;
+	NSMutableData*		statusData;
+	NSMutableData*		loginData;
+	
+	NSURLConnection*	statusConnection;
+	NSURLConnection*	loginConnection;
+	
+	
+	Prefs*				prefs;
 }
 
 @property (assign) Prefs* prefs;
@@ -56,16 +63,36 @@
 
 @property (retain)			NSTimer*		poller;
 
-- (IBAction) login:(id)sender;
-- (IBAction) loginChanged:(id)sender;
-- (IBAction) showLoginWindow:(id)sender;
-- (IBAction) openMailbox:(id)sender;
-- (IBAction) updateMenuItemClicked:(id)sender;
+- (IBAction)	login:					(id)sender;
+- (IBAction)	loginChanged:			(id)sender;
+- (IBAction)	showLoginWindow:		(id)sender;
+- (IBAction)	openMailbox:			(id)sender;
+- (IBAction)	updateMenuItemClicked:	(id)sender;
 
 - (void)		dealloc;
 - (void)		updateStatus;
 - (void)		checkForUpdate;
 - (NSString*)	userDataUrl;
-- (void)		growlAlert:         (NSString *)message title:(NSString *)title type:(NSString *)type;
+
+- (void)		growlAlert:	(NSString *)message				
+			         title: (NSString *)title				
+				      type: (NSString *)type;
+
+// NSURLConnection delegate methods:
+- (void)		connection:	(NSURLConnection *)connection	
+		  didFailWithError: (NSError *)error;
+
+- (void)		connection:	(NSURLConnection *)connection	
+	        didReceiveData: (NSData *)data;
+
+- (void)		connection: (NSURLConnection *)connection
+        didReceiveResponse: (NSURLResponse *)response;
+
+- (void)		connection: (NSURLConnection *)connection
+		   didSendBodyData: (NSInteger)bytesWritten 
+         totalBytesWritten: (NSInteger)totalBytesWritten 
+ totalBytesExpectedToWrite: (NSInteger)totalBytesExpectedToWrite;
+
+- (void) connectionDidFinishLoading: (NSURLConnection *)connection;
 
 @end

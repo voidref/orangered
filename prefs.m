@@ -16,7 +16,9 @@ static NSString* UserNameKey = @"username";
 static NSString* SavePassKey = @"save password";
 
 
-@synthesize savePassword, name;
+@synthesize savePassword, 
+            name, 
+            timeout;
 
 // --------------------------------------------------------------------------------------------------------------------
 - (id) init
@@ -27,6 +29,7 @@ static NSString* SavePassKey = @"save password";
 		settings = [NSUserDefaults standardUserDefaults];
 		self.name = [settings stringForKey:UserNameKey];
 		self.savePassword = [settings boolForKey:SavePassKey];
+		self.timeout = 10.0;
 	}
 	
 	return self;

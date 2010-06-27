@@ -10,6 +10,7 @@ Todo for 1.0
  * Fix about window not being topmost when invoked / New About Window
  * Add manual check for update
  * Use version string from info.plist
+ * Store password in keychain istead of plist
 
  Todo for post 1.0
 =================

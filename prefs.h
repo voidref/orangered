@@ -16,12 +16,14 @@
 	NSString*		name;
 	NSString*		password;
 	BOOL			savePassword;
+	float			timeout;
 	
 }
 
 @property (retain) NSString*	password;
 @property (retain) NSString*	name;
 @property BOOL					savePassword;
+@property float					timeout;
 
 - (id) init;
 - (void) dealloc;

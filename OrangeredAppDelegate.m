@@ -80,6 +80,8 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 - (void) dealloc
 {
 	[prefs release];
+	[statusConnection release];
+	[loginConnection release];
 	[super dealloc];
 }
 
@@ -183,17 +185,32 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 - (void) updateStatus
 {
 	NSURL* url = [NSURL URLWithString:[self userDataUrl]];
-	NSError* error = nil;
 	
-	NSString* checkResult = [NSString stringWithContentsOfURL:url 
-													 encoding:NSUTF8StringEncoding 
-														error:&error];
-	if (nil != error) 
+	NSURLRequest* request = [NSURLRequest requestWithURL:url
+											 cachePolicy:NSURLRequestUseProtocolCachePolicy
+										 timeoutInterval:self.prefs.timeout];
+
+	[statusConnection release];
+	statusConnection = [[NSURLConnection alloc] initWithRequest:request 
+			  										   delegate:self];
+	if (nil != statusConnection) 
 	{
-		self.loginerror.stringValue = [error localizedDescription];
-		self.currentIcon = GreyEnvelope;
+		statusData = [[NSMutableData data] retain];
+	} 
+	else 
+	{
+		// Is there a way to find the exact error?
+		self.loginerror.stringValue = @"Could not estabilsh connection to reddit";
 	}
-	else if ([checkResult rangeOfString:@"\"has_mail\": true"].location != NSNotFound ) 
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (void) parseStatus
+{
+	NSString* statusResult = [[[NSString alloc] initWithData:statusData 
+													encoding:NSASCIIStringEncoding] autorelease];
+
+	if ([statusResult rangeOfString:@"\"has_mail\": true"].location != NSNotFound ) 
 	{
 		self.loginerror.stringValue = @"";
 		self.currentIcon = OrangeredEnvelope;
@@ -202,7 +219,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 				   title:@"New reddit message" 
 					type:@"message"];
 	}
-	else if ([checkResult rangeOfString:@"\"has_mail\": null"].location != NSNotFound ) 
+	else if ([statusResult rangeOfString:@"\"has_mail\": null"].location != NSNotFound ) 
 	{
 		// We are no longer logged in for some reason.
 		static int failcounter = 0;
@@ -219,7 +236,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 
 		// Not sure this will actually do anything as we login sync and block the main thread here.
 		self.currentIcon = GreyEnvelope;
-		[self.status setImage:[NSImage imageNamed:self.currentIcon]];
+		self.status.image = [NSImage imageNamed:self.currentIcon];
 		
 		// Try to log in. 
 		[self login:nil];
@@ -231,15 +248,15 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 		// Ok, this logic is convoluted, need to fix that.
 		return;
 	}
-	else if ([checkResult rangeOfString:@"\"has_mail\": false"].location != NSNotFound )
+	else if ([statusResult rangeOfString:@"\"has_mail\": false"].location != NSNotFound )
 	{
 		self.currentIcon = self.noMailIcon;
 	}
 
-	NSLog(@"CheckResult: %@", checkResult);
+	NSLog(@"CheckResult: %@", statusResult);
 	NSLog(@"Updating Status: %@", self.currentIcon);
 
-	[self.status setImage:[NSImage imageNamed:self.currentIcon]];
+	self.status.image = [NSImage imageNamed:self.currentIcon];
 	
 	// Check for update every AppUpdatePollInterval minutes hours or so..
 	static int appupdatepoller = 0;
@@ -323,6 +340,77 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 		[self.about setHidden:YES];
 	}
 }
+
+// --------------------------------------------------------------------------------------------------------------------
+- (void)		connection:	(NSURLConnection *)connection	
+     	  didFailWithError: (NSError *)error
+{
+	NSLog(@"connection Error: %@", error);
+	
+	if ( connection == statusConnection)
+	{
+		self.loginerror.stringValue = [NSString stringWithFormat:@"Unable to retrieve status: ", [error localizedDescription]];
+		self.status.image = [NSImage imageNamed:GreyEnvelope];
+	}
+	else if (connection == loginConnection)
+	{
+		self.loginerror.stringValue = [NSString stringWithFormat:@"Unable to login: ", [error localizedDescription]];
+		self.status.image = [NSImage imageNamed:GreyEnvelope];
+	}
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (void)		connection:	(NSURLConnection *)connection	
+	        didReceiveData: (NSData *)data
+{
+	if ( connection == statusConnection)
+	{
+		[statusData appendData:data];
+	}
+	else if (connection == loginConnection)
+	{
+		[loginData appendData:data];
+	}	
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (void)		connection: (NSURLConnection *)connection
+        didReceiveResponse: (NSURLResponse *)response
+{
+	NSLog(@"Got response for %@", [[response URL] path]);
+	if ( connection == statusConnection)
+	{
+		statusData.length = 0;
+	}
+	else if (connection == loginConnection)
+	{
+		loginData.length = 0;
+	}	
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (void)		connection: (NSURLConnection *)connection
+	       didSendBodyData: (NSInteger)bytesWritten 
+         totalBytesWritten: (NSInteger)totalBytesWritten 
+ totalBytesExpectedToWrite: (NSInteger)totalBytesExpectedToWrite
+{
+#pragma unused(connection, bytesWritten, totalBytesWritten, totalBytesExpectedToWrite)
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (void) connectionDidFinishLoading: (NSURLConnection *)connection
+{
+	if ( connection == statusConnection)
+	{
+		[self parseStatus];
+	}
+	else if (connection == loginConnection)
+	{
+		
+	}	
+}
+
+
 
 // --------------------------------------------------------------------------------------------------------------------
 // --------------------------------------------------------------------------------------------------------------------
