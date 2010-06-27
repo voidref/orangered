@@ -20,6 +20,7 @@ Todo for 1.0
  * Display for karmas
  * http://sparkle.andymatuschak.org/ integration
  * put app up on Bodega
+ * Multiple account checking
  
 === Changes 1.2 -> 1.3
  * No longer shells out to curl for reddit related networking

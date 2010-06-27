@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>ActivePerspectiveName</key>
-	<string>Debug</string>
+	<string>Project</string>
 	<key>AllowedModules</key>
 	<array>
 		<dict>
@@ -216,7 +216,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>2D7D36B711D2737C00D9A067</string>
+						<string>2D7D36BE11D6D4FD00D9A067</string>
 						<key>history</key>
 						<array>
 							<string>2D7D369811D1FCE300D9A067</string>
@@ -316,13 +316,12 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>6</integer>
-									<integer>2</integer>
+									<integer>25</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 0}, {218, 914}}</string>
+							<string>{{0, 0}, {218, 1064}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -332,12 +331,14 @@
 					<key>GeometryConfiguration</key>
 					<dict>
 						<key>Frame</key>
-						<string>{{0, 0}, {235, 932}}</string>
+						<string>{{0, 0}, {235, 1082}}</string>
 						<key>GroupTreeTableConfiguration</key>
 						<array>
 							<string>MainColumn</string>
 							<real>218</real>
 						</array>
+						<key>RubberWindowFrame</key>
+						<string>83 55 1837 1123 0 0 1920 1178 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -348,12 +349,14 @@
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>2DC5537211CA025100D9B5C1</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>OrangeredAppDelegate.m</string>
+								<string>todo.txt</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -361,11 +364,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>2DC5537311CA025100D9B5C1</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>OrangeredAppDelegate.m</string>
+										<string>todo.txt</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>2D7D36B611D2737C00D9A067</string>
+										<string>2D7D36BD11D6D4FD00D9A067</string>
 										<key>history</key>
 										<array>
 											<string>2DC553C911CA0A0F00D9B5C1</string>
@@ -387,10 +390,10 @@
 											<string>2D7D362411D13B7C00D9A067</string>
 											<string>2D7D362511D13B7C00D9A067</string>
 											<string>2D7D362C11D13B9400D9A067</string>
-											<string>2D7D368311D1F89800D9A067</string>
 											<string>2D7D369011D1FC7B00D9A067</string>
 											<string>2D7D36A611D272F100D9A067</string>
-											<string>2D7D36A711D272F100D9A067</string>
+											<string>2D7D36BB11D6D4FD00D9A067</string>
+											<string>2D7D36BC11D6D4FD00D9A067</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -404,16 +407,18 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {1357, 875}}</string>
+								<string>{{0, 0}, {1597, 956}}</string>
+								<key>RubberWindowFrame</key>
+								<string>83 55 1837 1123 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>875pt</string>
+							<string>956pt</string>
 						</dict>
 						<dict>
 							<key>Proportion</key>
-							<string>52pt</string>
+							<string>121pt</string>
 							<key>Tabs</key>
 							<array>
 								<dict>
@@ -481,7 +486,9 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{10, 27}, {1357, 25}}</string>
+										<string>{{10, 27}, {1597, 94}}</string>
+										<key>RubberWindowFrame</key>
+										<string>83 55 1837 1123 0 0 1920 1178 </string>
 									</dict>
 									<key>Module</key>
 									<string>PBXBuildResultsModule</string>
@@ -490,7 +497,7 @@
 						</dict>
 					</array>
 					<key>Proportion</key>
-					<string>1357pt</string>
+					<string>1597pt</string>
 				</dict>
 			</array>
 			<key>Name</key>
@@ -565,8 +572,6 @@
 					<dict>
 						<key>Frame</key>
 						<string>{{0, 0}, {1597, 284}}</string>
-						<key>RubberWindowFrame</key>
-						<string>220 118 1597 973 0 0 1920 1178 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXDebugCLIModule</string>
@@ -641,11 +646,7 @@
 							</array>
 							<key>Frame</key>
 							<string>{{793, 0}, {804, 91}}</string>
-							<key>RubberWindowFrame</key>
-							<string>220 118 1597 973 0 0 1920 1178 </string>
 						</dict>
-						<key>RubberWindowFrame</key>
-						<string>220 118 1597 973 0 0 1920 1178 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXDebugSessionModule</string>
@@ -712,11 +713,10 @@
 		<string>2D7D36B811D2737C00D9A067</string>
 		<string>2D7D319811CC9A9600D9A067</string>
 		<string>2D7D319911CC9A9600D9A067</string>
-		<string>2D7D36A011D26F2100D9A067</string>
 		<string>/Users/voidref/src/mac/Orangered/Orangered.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>220 118 1597 973 0 0 1920 1178 </string>
+	<string>83 55 1837 1123 0 0 1920 1178 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
