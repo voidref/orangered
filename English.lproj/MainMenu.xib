@@ -48,11 +48,11 @@
 						<string key="NSTitle">Open Mailbox...</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
-						<object class="NSCustomResource" key="NSOnImage" id="824949699">
+						<object class="NSCustomResource" key="NSOnImage" id="873851816">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">NSMenuCheckmark</string>
 						</object>
-						<object class="NSCustomResource" key="NSMixedImage" id="464608682">
+						<object class="NSCustomResource" key="NSMixedImage" id="614305333">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">NSMenuMixedState</string>
 						</object>
@@ -65,53 +65,27 @@
 						<string key="NSKeyEquiv"/>
 						<int key="NSKeyEquivModMask">1048576</int>
 						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="824949699"/>
-						<reference key="NSMixedImage" ref="464608682"/>
-					</object>
-					<object class="NSMenuItem" id="238522557">
-						<reference key="NSMenu" ref="110575045"/>
-						<string key="NSTitle">About Orangered</string>
-						<string key="NSKeyEquiv"/>
-						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="824949699"/>
-						<reference key="NSMixedImage" ref="464608682"/>
-					</object>
-					<object class="NSMenuItem" id="240222797">
-						<reference key="NSMenu" ref="110575045"/>
-						<bool key="NSIsHidden">YES</bool>
-						<string key="NSTitle">Get Update ...</string>
-						<string key="NSKeyEquiv"/>
-						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="824949699"/>
-						<reference key="NSMixedImage" ref="464608682"/>
-					</object>
-					<object class="NSMenuItem" id="977931614">
-						<reference key="NSMenu" ref="110575045"/>
-						<bool key="NSIsDisabled">YES</bool>
-						<bool key="NSIsSeparator">YES</bool>
-						<string key="NSTitle"/>
-						<string key="NSKeyEquiv"/>
-						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="824949699"/>
-						<reference key="NSMixedImage" ref="464608682"/>
+						<reference key="NSOnImage" ref="873851816"/>
+						<reference key="NSMixedImage" ref="614305333"/>
 					</object>
 					<object class="NSMenuItem" id="897102762">
 						<reference key="NSMenu" ref="110575045"/>
 						<string key="NSTitle">Login Window...</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="824949699"/>
-						<reference key="NSMixedImage" ref="464608682"/>
+						<reference key="NSOnImage" ref="873851816"/>
+						<reference key="NSMixedImage" ref="614305333"/>
 					</object>
 					<object class="NSMenuItem" id="609285721">
 						<reference key="NSMenu" ref="110575045"/>
 						<bool key="NSIsDisabled">YES</bool>
+						<bool key="NSIsHidden">YES</bool>
 						<string key="NSTitle">Preferences…</string>
 						<string key="NSKeyEquiv">,</string>
 						<int key="NSKeyEquivModMask">1048576</int>
 						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="824949699"/>
-						<reference key="NSMixedImage" ref="464608682"/>
+						<reference key="NSOnImage" ref="873851816"/>
+						<reference key="NSMixedImage" ref="614305333"/>
 					</object>
 					<object class="NSMenuItem" id="481834944">
 						<reference key="NSMenu" ref="110575045"/>
@@ -121,8 +95,25 @@
 						<string key="NSKeyEquiv"/>
 						<int key="NSKeyEquivModMask">1048576</int>
 						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="824949699"/>
-						<reference key="NSMixedImage" ref="464608682"/>
+						<reference key="NSOnImage" ref="873851816"/>
+						<reference key="NSMixedImage" ref="614305333"/>
+					</object>
+					<object class="NSMenuItem" id="238522557">
+						<reference key="NSMenu" ref="110575045"/>
+						<string key="NSTitle">About Orangered</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="873851816"/>
+						<reference key="NSMixedImage" ref="614305333"/>
+					</object>
+					<object class="NSMenuItem" id="123691878">
+						<reference key="NSMenu" ref="110575045"/>
+						<bool key="NSIsHidden">YES</bool>
+						<string key="NSTitle">Get Update ...</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="873851816"/>
+						<reference key="NSMixedImage" ref="614305333"/>
 					</object>
 					<object class="NSMenuItem" id="632727374">
 						<reference key="NSMenu" ref="110575045"/>
@@ -130,8 +121,8 @@
 						<string key="NSKeyEquiv">q</string>
 						<int key="NSKeyEquivModMask">1048576</int>
 						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="824949699"/>
-						<reference key="NSMixedImage" ref="464608682"/>
+						<reference key="NSOnImage" ref="873851816"/>
+						<reference key="NSMixedImage" ref="614305333"/>
 					</object>
 				</object>
 				<string key="NSName">_NSAppleMenu</string>
@@ -378,13 +369,13 @@
 								<reference key="NSTextColor" ref="852774224"/>
 							</object>
 						</object>
-						<object class="NSTextField" id="331641424">
+						<object class="NSTextField" id="305289440">
 							<reference key="NSNextResponder" ref="439893737"/>
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{145, 83}, {286, 34}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<bool key="NSEnabled">YES</bool>
-							<object class="NSTextFieldCell" key="NSCell" id="586943501">
+							<object class="NSTextFieldCell" key="NSCell" id="380622233">
 								<int key="NSCellFlags">69336577</int>
 								<int key="NSCellFlags2">306446336</int>
 								<string key="NSContents"/>
@@ -393,7 +384,7 @@
 									<double key="NSSize">13</double>
 									<int key="NSfFlags">16</int>
 								</object>
-								<reference key="NSControlView" ref="331641424"/>
+								<reference key="NSControlView" ref="305289440"/>
 								<reference key="NSBackgroundColor" ref="435858122"/>
 								<object class="NSColor" key="NSTextColor">
 									<int key="NSColorSpace">1</int>
@@ -401,18 +392,18 @@
 								</object>
 							</object>
 						</object>
-						<object class="NSSecureTextField" id="341124110">
+						<object class="NSSecureTextField" id="214111966">
 							<reference key="NSNextResponder" ref="439893737"/>
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{148, 154}, {280, 22}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<bool key="NSEnabled">YES</bool>
-							<object class="NSSecureTextFieldCell" key="NSCell" id="505181447">
+							<object class="NSSecureTextFieldCell" key="NSCell" id="1059206595">
 								<int key="NSCellFlags">343014976</int>
 								<int key="NSCellFlags2">272630848</int>
 								<string key="NSContents"/>
 								<reference key="NSSupport" ref="348822065"/>
-								<reference key="NSControlView" ref="341124110"/>
+								<reference key="NSControlView" ref="214111966"/>
 								<bool key="NSDrawsBackground">YES</bool>
 								<reference key="NSBackgroundColor" ref="143066538"/>
 								<reference key="NSTextColor" ref="744178007"/>
@@ -535,7 +526,7 @@
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">update</string>
 						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="240222797"/>
+						<reference key="destination" ref="123691878"/>
 					</object>
 					<int key="connectionID">605</int>
 				</object>
@@ -543,7 +534,7 @@
 					<object class="IBActionConnection" key="connection">
 						<string key="label">updateMenuItemClicked:</string>
 						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="240222797"/>
+						<reference key="destination" ref="123691878"/>
 					</object>
 					<int key="connectionID">606</int>
 				</object>
@@ -551,7 +542,7 @@
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">loginerror</string>
 						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="331641424"/>
+						<reference key="destination" ref="305289440"/>
 					</object>
 					<int key="connectionID">609</int>
 				</object>
@@ -567,7 +558,7 @@
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">passwordentry</string>
 						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="341124110"/>
+						<reference key="destination" ref="214111966"/>
 					</object>
 					<int key="connectionID">614</int>
 				</object>
@@ -619,8 +610,8 @@
 							<reference ref="21915568"/>
 							<reference ref="742809460"/>
 							<reference ref="632333109"/>
-							<reference ref="331641424"/>
-							<reference ref="341124110"/>
+							<reference ref="305289440"/>
+							<reference ref="214111966"/>
 							<reference ref="440162678"/>
 							<reference ref="752785687"/>
 						</object>
@@ -744,10 +735,9 @@
 							<reference ref="481834944"/>
 							<reference ref="304266470"/>
 							<reference ref="897102762"/>
-							<reference ref="977931614"/>
 							<reference ref="181129471"/>
-							<reference ref="240222797"/>
 							<reference ref="238522557"/>
+							<reference ref="123691878"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -783,11 +773,6 @@
 						<string key="objectName">LoginMenuItem</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">597</int>
-						<reference key="object" ref="977931614"/>
-						<reference key="parent" ref="110575045"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">598</int>
 						<reference key="object" ref="181129471"/>
 						<reference key="parent" ref="110575045"/>
@@ -808,36 +793,36 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">604</int>
-						<reference key="object" ref="240222797"/>
+						<reference key="object" ref="123691878"/>
 						<reference key="parent" ref="110575045"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">607</int>
-						<reference key="object" ref="331641424"/>
+						<reference key="object" ref="305289440"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="586943501"/>
+							<reference ref="380622233"/>
 						</object>
 						<reference key="parent" ref="439893737"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">608</int>
-						<reference key="object" ref="586943501"/>
-						<reference key="parent" ref="331641424"/>
+						<reference key="object" ref="380622233"/>
+						<reference key="parent" ref="305289440"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">612</int>
-						<reference key="object" ref="341124110"/>
+						<reference key="object" ref="214111966"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="505181447"/>
+							<reference ref="1059206595"/>
 						</object>
 						<reference key="parent" ref="439893737"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">613</int>
-						<reference key="object" ref="505181447"/>
-						<reference key="parent" ref="341124110"/>
+						<reference key="object" ref="1059206595"/>
+						<reference key="parent" ref="214111966"/>
 					</object>
 				</object>
 			</object>
@@ -893,7 +878,6 @@
 					<string>58.IBPluginDependency</string>
 					<string>58.ImportedFromIB2</string>
 					<string>580.IBPluginDependency</string>
-					<string>597.IBPluginDependency</string>
 					<string>598.IBPluginDependency</string>
 					<string>602.IBPluginDependency</string>
 					<string>602.IBViewIntegration.shadowBlurRadius</string>
@@ -948,7 +932,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{733, 917}, {194, 153}}</string>
+					<string>{{733, 927}, {194, 143}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{23, 794}, {245, 183}}</string>
@@ -956,7 +940,6 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1058,6 +1041,7 @@
 							<string>menu</string>
 							<string>passwordentry</string>
 							<string>savepassword</string>
+							<string>status</string>
 							<string>update</string>
 							<string>userentry</string>
 							<string>window</string>
@@ -1069,6 +1053,7 @@
 							<string>NSMenu</string>
 							<string>NSTextField</string>
 							<string>NSButton</string>
+							<string>NSStatusItem</string>
 							<string>NSMenuItem</string>
 							<string>NSTextField</string>
 							<string>NSWindow</string>
@@ -1083,6 +1068,7 @@
 							<string>menu</string>
 							<string>passwordentry</string>
 							<string>savepassword</string>
+							<string>status</string>
 							<string>update</string>
 							<string>userentry</string>
 							<string>window</string>
@@ -1108,6 +1094,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">savepassword</string>
 								<string key="candidateClassName">NSButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">status</string>
+								<string key="candidateClassName">NSStatusItem</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">update</string>
@@ -1521,7 +1511,7 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">NSSecureTextField</string>
 					<string key="superclassName">NSTextField</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="596083846">
+					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="267967516">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">AppKit.framework/Headers/NSSecureTextField.h</string>
 					</object>
@@ -1529,7 +1519,15 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">NSSecureTextFieldCell</string>
 					<string key="superclassName">NSTextFieldCell</string>
-					<reference key="sourceIdentifier" ref="596083846"/>
+					<reference key="sourceIdentifier" ref="267967516"/>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSStatusItem</string>
+					<string key="superclassName">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSStatusItem.h</string>
+					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSTextField</string>
