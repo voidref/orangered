@@ -43,3 +43,5 @@ Todo for 1.0
  * Login spinner.
  * Source is now on github (http://github.com/voidref/orangered)
  
+=== a5 - a6
+ * How about we actually save the prefs out when they change, like name, etc...

@@ -34,7 +34,7 @@ static NSString* OrangeredEnvelope  = @"OrangeredEnvelope";
 static NSString* HighlightEnvelope  = @"HighlightEnvelope";
 
 // eventually we will use the version string in the info.plist.
-static NSString* AppVersion               = @"1.0 alpha 5";
+static NSString* AppVersion               = @"1.0 beta 1";
 static const int StatusUpdatePollInterval = 60; // seconds.
 static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 

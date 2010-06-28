@@ -25,9 +25,9 @@
 	<key>CFBundleSignature</key>
 	<string>vOfR</string>
 	<key>CFBundleGetInfoString</key>
-	<string>1.0 alpha 5, http://www.voidref.com/Site/Orangered!.html</string>
+	<string>1.0 beta 1, http://www.voidref.com/Site/Orangered!.html</string>
 	<key>CFBundleVersion</key>
-	<string>alpha 5</string>
+	<string>beta 1</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
 	<key>NSMainNibFile</key>

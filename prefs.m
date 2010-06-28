@@ -68,4 +68,42 @@ static NSString* SavePassKey = @"save password";
 	}
 }
 
+// --------------------------------------------------------------------------------------------------------------------
+- (NSString*) name
+{
+	if (nil == name) 
+	{
+		// see if it's in the user defaults
+		name = [settings stringForKey:UserNameKey]; 
+	}
+	
+	return name;
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (void) setName:(NSString*)value
+{	
+	[name release];
+	name = value;
+	[name retain];
+	
+	[settings setObject:value 
+				 forKey:UserNameKey];
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (BOOL) savePassword
+{	
+	return savePassword;
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (void) setSavePassword:(BOOL)value
+{	
+	savePassword = value;
+	
+	[settings setBool:value 
+				 forKey:SavePassKey];
+}
+
 @end
