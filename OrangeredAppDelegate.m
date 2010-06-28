@@ -25,6 +25,7 @@
 @synthesize currentIcon;
 @synthesize noMailIcon;
 @synthesize prefs;
+@synthesize loginProgress;
 
 static NSString* GreyEnvelope		= @"GreyEnvelope";
 static NSString* BlackEnvelope		= @"BlackEnvelope";
@@ -93,6 +94,8 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 // --------------------------------------------------------------------------------------------------------------------
 - (IBAction) loginChanged:(id)sender
 {
+#pragma unused(sender)
+	
 	NSString* uname = [userentry stringValue];
 	NSString* pword = [passwordentry stringValue];
 	
@@ -111,19 +114,21 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 
 	self.prefs.password = pword;
 	
-	[self login:sender];
+	[self login];
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-- (IBAction) login:(id)sender
+- (IBAction) login
 {
-#pragma unused(sender)
 	if ((self.prefs.name.length < 1) || (self.prefs.password.length < 1))
 	{
 		// show window
 		[self showLoginWindow:nil];
 		return;
 	}
+	
+	[self.loginProgress startAnimation:nil];
+	[self.loginProgress setHidden:NO];
 	
 	NSLog(@"Logging in user: %@", self.prefs.name);
 	
@@ -152,6 +157,9 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 // --------------------------------------------------------------------------------------------------------------------
 - (void) parseLogin:(NSHTTPURLResponse*) response
 {
+	[self.loginProgress stopAnimation:nil];
+	[self.loginProgress setHidden:YES];
+	
 	NSLog(@"Response Headers: %@", [response allHeaderFields]);
 	
 	NSArray* cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:[response allHeaderFields]
@@ -233,7 +241,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 		self.status.image = [NSImage imageNamed:self.currentIcon];
 		
 		// Try to log in. 
-		[self login:nil];
+		[self login];
 		
 		// Reset counter after trying a second log in.
 		--failcounter;
@@ -341,14 +349,17 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 {
 	NSLog(@"connection Error: %@", error);
 	
+	[self.loginProgress stopAnimation:nil];
+	[self.loginProgress setHidden:YES];
+
 	if ( connection == statusConnection)
 	{
-		self.loginerror.stringValue = [NSString stringWithFormat:@"Unable to retrieve status: ", [error localizedDescription]];
+		self.loginerror.stringValue = [NSString stringWithFormat:@"Unable to retrieve status: %@", [error localizedDescription]];
 		self.status.image = [NSImage imageNamed:GreyEnvelope];
 	}
 	else if (connection == loginConnection)
 	{
-		self.loginerror.stringValue = [NSString stringWithFormat:@"Unable to login: ", [error localizedDescription]];
+		self.loginerror.stringValue = [NSString stringWithFormat:@"Unable to login: %@", [error localizedDescription]];
 		self.status.image = [NSImage imageNamed:GreyEnvelope];
 	}
 }
@@ -395,6 +406,9 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	
 	if (totalBytesWritten != totalBytesExpectedToWrite) 
 	{
+		[self.loginProgress stopAnimation:nil];
+		[self.loginProgress setHidden:YES];
+
 		self.loginerror.stringValue = @"Could not complete login request, connection severed (I think).";
 	}
 }

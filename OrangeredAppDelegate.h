@@ -19,56 +19,57 @@
 @interface OrangeredAppDelegate : NSObject <NSApplicationDelegate, NSMenuDelegate> 
 #endif
 {
-	NSStatusItem*		status;
-	NSMenu*				menu;
-	NSMenuItem*			preference;
-	NSMenuItem*			update;
-	NSMenuItem*			about;
+	NSStatusItem*			status;
+	NSMenu*					menu;
+	NSMenuItem*				preference;
+	NSMenuItem*				update;
+	NSMenuItem*				about;
 	
-    NSWindow*			window;
-	NSTextField*		userentry;
-	NSTextField*		passwordentry;
-	NSTextField*		loginerror;
-	NSButton*			savepassword;
+    NSWindow*				window;
+	NSTextField*			userentry;
+	NSTextField*			passwordentry;
+	NSTextField*			loginerror;
+	NSButton*				savepassword;
 
-	NSString*			currentIcon;
-	NSString*			noMailIcon;
-	NSTimer*			poller;
+	NSString*				currentIcon;
+	NSString*				noMailIcon;
+	NSTimer*				poller;
 	
-	NSMutableData*		statusData;
-	NSMutableData*		loginData;
+	NSMutableData*			statusData;
+	NSMutableData*			loginData;
 	
-	NSURLConnection*	statusConnection;
-	NSURLConnection*	loginConnection;
+	NSURLConnection*		statusConnection;
+	NSURLConnection*		loginConnection;
+	NSProgressIndicator*	loginProgress;
 	
 	
-	Prefs*				prefs;
+	Prefs*					prefs;
 }
 
 @property (assign) Prefs* prefs;
 
-@property (assign) IBOutlet NSStatusItem*	status;
-@property (assign) IBOutlet NSMenu*			menu;
-@property (assign) IBOutlet NSMenuItem*		update;
-@property (assign) IBOutlet NSMenuItem*		about;
+@property (assign)			NSStatusItem*			status;
+@property (assign) IBOutlet NSMenu*					menu;
+@property (assign) IBOutlet NSMenuItem*				update;
+@property (assign) IBOutlet NSMenuItem*				about;
 
-@property (assign) IBOutlet NSWindow*		window;
-@property (assign) IBOutlet NSTextField*	userentry;
-@property (assign) IBOutlet NSTextField*	passwordentry;
-@property (assign) IBOutlet NSTextField*	loginerror;
-@property (assign) IBOutlet NSButton*		savepassword;
+@property (assign) IBOutlet NSWindow*				window;
+@property (assign) IBOutlet NSTextField*			userentry;
+@property (assign) IBOutlet NSTextField*			passwordentry;
+@property (assign) IBOutlet NSTextField*			loginerror;
+@property (assign) IBOutlet NSButton*				savepassword;
+@property (assign) IBOutlet NSProgressIndicator*	loginProgress;
 
-@property (retain)          NSString*		currentIcon;
-@property (retain)          NSString*		noMailIcon;
+@property (retain)          NSString*				currentIcon;
+@property (retain)          NSString*				noMailIcon;
+@property (retain)			NSTimer*				poller;
 
-@property (retain)			NSTimer*		poller;
-
-- (IBAction)	login:					(id)sender;
 - (IBAction)	loginChanged:			(id)sender;
 - (IBAction)	showLoginWindow:		(id)sender;
 - (IBAction)	openMailbox:			(id)sender;
 - (IBAction)	updateMenuItemClicked:	(id)sender;
 
+- (void)		login;
 - (void)		dealloc;
 - (void)		updateStatus;
 - (void)		checkForAppUpdate;
