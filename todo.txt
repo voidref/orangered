@@ -45,4 +45,5 @@ Todo for 1.0
  * Use version string from info.plist
  * Store password in keychain istead of plist
  * Change the mail icon to the 'has mod mail' icon (alienhead) when you have mod mail and make the inbox take you to the mod mail inbox
+ * Remove dropshadow from Login Window as it was causing the high perf video card to activate (core animation) and the 'g' descender was getting cut off anyway and looking lame.
 
