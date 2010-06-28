@@ -17,6 +17,8 @@
 		2D7D360F11D1315D00D9A067 /* NSDataGzipCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D7D360E11D1315D00D9A067 /* NSDataGzipCategory.m */; };
 		2D7D369511D1FC9C00D9A067 /* HighlightEnvelope.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D7D369411D1FC9C00D9A067 /* HighlightEnvelope.png */; };
 		2D7D36C311D6D5D100D9A067 /* prefs.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D7D36C211D6D5D100D9A067 /* prefs.m */; };
+		2D7D38A511D8750100D9A067 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7D38A411D8750100D9A067 /* Security.framework */; };
+		2D7D38B711D8789200D9A067 /* modmail.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D7D38B611D8789200D9A067 /* modmail.png */; };
 		2DC5530B11C9EF4E00D9B5C1 /* GreyEnvelope.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC5530A11C9EF4E00D9B5C1 /* GreyEnvelope.png */; };
 		2DC5532D11C9F52000D9B5C1 /* BlackEnvelope.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC5532C11C9F52000D9B5C1 /* BlackEnvelope.png */; };
 		2DC5533D11C9F78C00D9B5C1 /* OrangeredEnvelope.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC5533C11C9F78C00D9B5C1 /* OrangeredEnvelope.png */; };
@@ -48,6 +50,8 @@
 		2D7D369411D1FC9C00D9A067 /* HighlightEnvelope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HighlightEnvelope.png; sourceTree = "<group>"; };
 		2D7D36C111D6D5D100D9A067 /* prefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefs.h; sourceTree = "<group>"; };
 		2D7D36C211D6D5D100D9A067 /* prefs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = prefs.m; sourceTree = "<group>"; };
+		2D7D38A411D8750100D9A067 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		2D7D38B611D8789200D9A067 /* modmail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = modmail.png; sourceTree = "<group>"; };
 		2DC5530A11C9EF4E00D9B5C1 /* GreyEnvelope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GreyEnvelope.png; sourceTree = "<group>"; };
 		2DC5532C11C9F52000D9B5C1 /* BlackEnvelope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BlackEnvelope.png; sourceTree = "<group>"; };
 		2DC5533C11C9F78C00D9B5C1 /* OrangeredEnvelope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OrangeredEnvelope.png; sourceTree = "<group>"; };
@@ -64,6 +68,7 @@
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				2D7D340011CF0B9400D9A067 /* libz.dylib in Frameworks */,
+				2D7D38A511D8750100D9A067 /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,6 +125,7 @@
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				2D7D32B511CD47DA00D9A067 /* todo.txt */,
 				2D7D33FF11CF0B9400D9A067 /* libz.dylib */,
+				2D7D38A411D8750100D9A067 /* Security.framework */,
 			);
 			name = Orangered;
 			sourceTree = "<group>";
@@ -136,6 +142,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2D7D38B611D8789200D9A067 /* modmail.png */,
 				2D7D369411D1FC9C00D9A067 /* HighlightEnvelope.png */,
 				2D7D323711CCBF9200D9A067 /* BlueEnvelope.png */,
 				2D6EB99011CC0B1D008888B7 /* Orangered.icns */,
@@ -218,6 +225,7 @@
 				2D7D323811CCBF9200D9A067 /* BlueEnvelope.png in Resources */,
 				2D7D32B611CD47DA00D9A067 /* todo.txt in Resources */,
 				2D7D369511D1FC9C00D9A067 /* HighlightEnvelope.png in Resources */,
+				2D7D38B711D8789200D9A067 /* modmail.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

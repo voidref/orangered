@@ -8,13 +8,12 @@
 
 #import "prefs.h"
 
-
 @implementation Prefs
 
-static NSString* PasswordKey = @"password";
-static NSString* UserNameKey = @"username";
-static NSString* SavePassKey = @"save password";
-
+static NSString*	PasswordKey = @"password";
+static NSString*	UserNameKey = @"username";
+static NSString*	SavePassKey = @"save password";
+static const char*	ServiceName = "Orangered!";
 
 @synthesize savePassword, 
             name, 
@@ -42,13 +41,59 @@ static NSString* SavePassKey = @"save password";
 	[super dealloc];
 }
 
+
+// --------------------------------------------------------------------------------------------------------------------
+- (OSStatus) storePasswordInKeychain
+{
+	OSStatus status =
+	SecKeychainAddGenericPassword (
+									NULL,							// default keychain
+									10,								// length of service name
+									ServiceName,					// service name
+									(UInt32)name.length,					// length of account name
+									[name UTF8String],				// account name
+									(UInt32)password.length,				// length of password
+									[password UTF8String],			// pointer to password data
+									NULL							// the item reference
+								);
+    return status;
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (OSStatus) getPasswordFromKeychain 
+{
+	SecKeychainItemRef ref = nil;
+	UInt32 len = 0;
+	void* data = nil;
+	OSStatus status =	
+	SecKeychainFindGenericPassword (
+									NULL,					// default keychain
+									10,					// length of service name
+									ServiceName,			// service name
+									(UInt32)name.length,          // length of account name
+									[name UTF8String],	// account name
+									&len,		// length of password
+									&data,			// pointer to password data
+									&ref				// the item reference
+								);
+	
+	if (len > 0)
+	{
+		password = [[NSString alloc] initWithBytes:data
+											length:len
+										encoding:NSUTF8StringEncoding];
+	}
+
+	return status;
+}
+
 // --------------------------------------------------------------------------------------------------------------------
 - (NSString*) password
 {
 	if (nil == password) 
 	{
 		// see if it's in the user defaults
-		password = [settings stringForKey:PasswordKey]; 
+		[self getPasswordFromKeychain]; 
 	}
 	
 	return password;
@@ -63,8 +108,7 @@ static NSString* SavePassKey = @"save password";
 
 	if (NSOnState == self.savePassword) 
 	{
-		[settings setObject:value 
-					 forKey:PasswordKey];
+		[self storePasswordInKeychain];
 	}
 }
 

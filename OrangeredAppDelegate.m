@@ -10,6 +10,12 @@
 #import "Foundation/NSURLConnection.h"
 #import "NSDataGzipCategory.h"
 
+
+// I can't believe this is working.
+@interface NSMenuItem (hiddenpropcat)
+@property  BOOL hidden;
+@end
+
 @implementation OrangeredAppDelegate
 
 @synthesize window;
@@ -32,15 +38,11 @@ static NSString* BlackEnvelope		= @"BlackEnvelope";
 static NSString* BlueEnvelope		= @"BlueEnvelope";
 static NSString* OrangeredEnvelope  = @"OrangeredEnvelope";
 static NSString* HighlightEnvelope  = @"HighlightEnvelope";
+static NSString* ModMailIcon        = @"modmail";
 
 // eventually we will use the version string in the info.plist.
 static const int StatusUpdatePollInterval = 60; // seconds.
 static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
-
-// I can't believe this is working.
-@interface NSMenuItem (hiddenpropcat)
-@property  BOOL hidden;
-@end
 
 // --------------------------------------------------------------------------------------------------------------------
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification 
@@ -253,6 +255,12 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	{
 		self.currentIcon = self.noMailIcon;
 	}
+	
+	// Mod mail overrides all
+	if ([statusResult rangeOfString:@"\"has_mod_mail\": true"].location != NSNotFound) 
+	{
+		self.currentIcon = ModMailIcon;
+	}
 
 	NSLog(@"CheckResult: %@", statusResult);
 	NSLog(@"Updating Status: %@", self.currentIcon);
@@ -337,7 +345,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 		self.update.hidden = NO;
 		self.update.title = [NSString stringWithFormat:@"Get Update (%@)", checkResult];
 		self.noMailIcon = BlueEnvelope;
-		self.status.image = [NSImage imageNamed:self.noMailIcon];
+//		self.status.image = [NSImage imageNamed:self.noMailIcon];
 		self.about.hidden = YES;
 	}
 }
