@@ -1,6 +1,5 @@
 Todo for 1.0
 ============
- * Do something with the has_mod_mail value when it's true.
  * Option to open at start.
  * Option for check frequency.
  * Option for manual app update check vs automatic
@@ -45,3 +44,5 @@ Todo for 1.0
  * How about we actually save the prefs out when they change, like name, etc...
  * Use version string from info.plist
  * Store password in keychain istead of plist
+ * Change the mail icon to the 'has mod mail' icon (alienhead) when you have mod mail and make the inbox take you to the mod mail inbox
+
