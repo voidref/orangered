@@ -1,7 +1,5 @@
 Todo for 1.0
 ============
- * Centralize all option values to a single collection class
- * Async networking.
  * Do something with the has_mod_mail value when it's true.
  * Option to open at start.
  * Option for check frequency.
@@ -40,3 +38,8 @@ Todo for 1.0
 === Changes a4 - a5
  * Added Highlight image so Status Item enwhitens when selected.
  * Login window now shows up in all spaces.
+ * Centralize all option values to a single collection class
+ * Async networking.
+ * Login spinner.
+ * Source is now on github (http://github.com/voidref/orangered)
+ 
