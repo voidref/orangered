@@ -25,6 +25,8 @@
 	NSMenuItem*				update;
 	NSMenuItem*				about;
 	
+	BOOL					hasModMail;
+	
     NSWindow*				window;
 	NSTextField*			userentry;
 	NSTextField*			passwordentry;

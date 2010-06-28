@@ -49,13 +49,13 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 {
 	// We don't use this. Must appease the warning gods.
 #pragma unused(aNotification)
-
-	self.prefs = [[Prefs alloc] init];
 #if GROWL
 	[GrowlApplicationBridge setGrowlDelegate: self];
 	[self registrationDictionaryForGrowl];
 #endif
 	
+	self.prefs = [[Prefs alloc] init];
+	hasModMail = NO;
 	self.window.collectionBehavior = NSWindowCollectionBehaviorCanJoinAllSpaces;
 	
 	self.status = [[[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength] retain];
@@ -260,6 +260,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	if ([statusResult rangeOfString:@"\"has_mod_mail\": true"].location != NSNotFound) 
 	{
 		self.currentIcon = ModMailIcon;
+		hasModMail = YES;
 	}
 
 	NSLog(@"CheckResult: %@", statusResult);
@@ -302,12 +303,20 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 // --------------------------------------------------------------------------------------------------------------------
 - (IBAction) openMailbox:(id)sender
 {
-	(void)sender;
+#pragma unused(sender)
 
-	// Lets assume they don't want to see the orangered envelope after they do this or wait for the next check.
+	// Lets assume they don't want to see the modified envelope after they do this or wait for the next check.
 	self.currentIcon = self.noMailIcon;
 	self.status.image = [NSImage imageNamed:self.currentIcon];
-	system("open http://www.reddit.com/message/unread/ &");
+
+	if (NO == hasModMail) 
+	{
+		system("open http://www.reddit.com/message/unread/ &");
+	}
+	else 
+	{
+		system("open http://www.reddit.com/message/moderator/ &");
+	}
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -345,7 +354,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 		self.update.hidden = NO;
 		self.update.title = [NSString stringWithFormat:@"Get Update (%@)", checkResult];
 		self.noMailIcon = BlueEnvelope;
-//		self.status.image = [NSImage imageNamed:self.noMailIcon];
+		self.status.image = [NSImage imageNamed:self.noMailIcon];
 		self.about.hidden = YES;
 	}
 }
