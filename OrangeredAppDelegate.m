@@ -34,7 +34,6 @@ static NSString* OrangeredEnvelope  = @"OrangeredEnvelope";
 static NSString* HighlightEnvelope  = @"HighlightEnvelope";
 
 // eventually we will use the version string in the info.plist.
-static NSString* AppVersion               = @"1.0 beta 1";
 static const int StatusUpdatePollInterval = 60; // seconds.
 static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 
@@ -333,7 +332,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 		//loginerror.stringValue = [error localizedDescription];
 		NSLog(@"Update app check failed, reason: %@", [error localizedDescription]);
 	}
-	else if ([checkResult compare:AppVersion] != NSOrderedSame) 
+	else if ([checkResult compare:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]] != NSOrderedSame) 
 	{
 		self.update.hidden = NO;
 		self.update.title = [NSString stringWithFormat:@"Get Update (%@)", checkResult];
