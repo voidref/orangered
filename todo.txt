@@ -48,3 +48,4 @@ Todo for 1.0
  * Option for check frequency.
  * Option for manual app update check vs automatic
  * Add manual check for update
+
