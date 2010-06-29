@@ -1,11 +1,7 @@
 Todo for 1.0
 ============
- * Option to open at start.
- * Option for check frequency.
- * Option for manual app update check vs automatic
  * Create a DMG based distribution
  * Fix about window not being topmost when invoked / New About Window
- * Add manual check for update
 
  Todo for post 1.0
 =================
@@ -46,4 +42,9 @@ Todo for 1.0
  * Store password in keychain istead of plist
  * Change the mail icon to the 'has mod mail' icon (alienhead) when you have mod mail and make the inbox take you to the mod mail inbox
  * Remove dropshadow from Login Window as it was causing the high perf video card to activate (core animation) and the 'g' descender was getting cut off anyway and looking lame.
-
+ * Convert app update check to async.
+ * Add Orangered! to start a login automatically.
+ * Option to open at OS Login (Login Items).
+ * Option for check frequency.
+ * Option for manual app update check vs automatic
+ * Add manual check for update

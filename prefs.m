@@ -10,14 +10,15 @@
 
 @implementation Prefs
 
-static NSString*	PasswordKey = @"password";
-static NSString*	UserNameKey = @"username";
-static NSString*	SavePassKey = @"save password";
-static const char*	ServiceName = "Orangered!";
+static NSString*	PasswordKey		= @"password";
+static NSString*	UserNameKey		= @"username";
+static NSString*	SavePassKey		= @"save password";
+static NSString*	OpenAtLoginKey	= @"open at login";
+static NSString*	AutoUpdateKey	= @"auto update check";
+static NSString*	CheckFreqKey	= @"reddit check frequency";
+static NSString*	TimeoutKey		= @"network timeout";
+static const char*	ServiceName		= "Orangered!";
 
-@synthesize savePassword, 
-            name, 
-            timeout;
 
 // --------------------------------------------------------------------------------------------------------------------
 - (id) init
@@ -28,7 +29,18 @@ static const char*	ServiceName = "Orangered!";
 		settings = [NSUserDefaults standardUserDefaults];
 		self.name = [settings stringForKey:UserNameKey];
 		self.savePassword = [settings boolForKey:SavePassKey];
-		self.timeout = 10.0;
+		
+		self.timeout = 30;
+		
+		self.openAtLogin = [settings boolForKey:OpenAtLoginKey];
+
+		self.redditCheckInterval = [settings integerForKey:CheckFreqKey];
+		if (self.redditCheckInterval == 0) self.redditCheckInterval = 60;
+
+		self.autoUpdateCheck = YES;		
+		if (nil != [settings objectForKey:AutoUpdateKey]) self.autoUpdateCheck = [settings boolForKey:AutoUpdateKey];
+		
+		self.openAtLogin = [settings boolForKey:OpenAtLoginKey];
 	}
 	
 	return self;
@@ -148,6 +160,66 @@ static const char*	ServiceName = "Orangered!";
 	
 	[settings setBool:value 
 				 forKey:SavePassKey];
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (BOOL) openAtLogin
+{	
+	return openAtLogin;
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (void) setOpenAtLogin:(BOOL)value
+{	
+	openAtLogin = value;
+	
+	[settings setBool:value 
+			   forKey:OpenAtLoginKey];
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (BOOL) autoUpdateCheck
+{	
+	return autoUpdateCheck;
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (void) setAutoUpdateCheck:(BOOL)value
+{	
+	autoUpdateCheck = value;
+	
+	[settings setBool:value 
+			   forKey:AutoUpdateKey];
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (NSInteger) timeout
+{	
+	return timeout;
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (void) setTimeout:(NSInteger)value
+{	
+	timeout = value;
+	
+	[settings setInteger:value 
+			   forKey:TimeoutKey];
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (NSInteger) redditCheckInterval
+{	
+	return redditCheckInterval / 60;
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (void) setRedditCheckInterval:(NSInteger)value
+{	
+	redditCheckInterval = value * 60;
+	
+	[settings setInteger:value 
+			   forKey:CheckFreqKey];
 }
 
 @end

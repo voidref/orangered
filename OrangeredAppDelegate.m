@@ -18,20 +18,18 @@
 
 @implementation OrangeredAppDelegate
 
-@synthesize window;
+@synthesize loginWindow, userentry, passwordentry, savepassword, loginerror, loginProgress;
+
+@synthesize prefWindow, openAtLoginCB, autoUpdateCheckCB, redditCheckIntervalTF;
+
 @synthesize status;
 @synthesize menu;
-@synthesize userentry;
-@synthesize passwordentry;
-@synthesize savepassword;
 @synthesize poller;
 @synthesize update;
-@synthesize loginerror;
 @synthesize about;
 @synthesize currentIcon;
 @synthesize noMailIcon;
 @synthesize prefs;
-@synthesize loginProgress;
 
 static NSString* GreyEnvelope		= @"GreyEnvelope";
 static NSString* BlackEnvelope		= @"BlackEnvelope";
@@ -41,7 +39,6 @@ static NSString* HighlightEnvelope  = @"HighlightEnvelope";
 static NSString* ModMailIcon        = @"modmail";
 
 // eventually we will use the version string in the info.plist.
-static const int StatusUpdatePollInterval = 60; // seconds.
 static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -55,8 +52,14 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 #endif
 	
 	self.prefs = [[Prefs alloc] init];
-	hasModMail = NO;
-	self.window.collectionBehavior = NSWindowCollectionBehaviorCanJoinAllSpaces;
+	[self setLoadAtStartup];
+	
+	hasModMail		= NO;
+	statusData		= nil;
+	loginData		= nil;
+	appUpdateData	= nil;
+	
+	self.loginWindow.collectionBehavior = NSWindowCollectionBehaviorCanJoinAllSpaces;
 	
 	self.status = [[[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength] retain];
 	self.status.menu = self.menu;
@@ -66,14 +69,20 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	
 	self.menu.delegate = self;
 	self.menu.autoenablesItems = NO;
-
 	
 	self.currentIcon = GreyEnvelope;
 	self.noMailIcon = BlackEnvelope;
 			
 	[self updateStatus];
 	
-	self.poller = [NSTimer scheduledTimerWithTimeInterval:StatusUpdatePollInterval
+	[self setupPoller];
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+- (void) setupPoller
+{
+	[self.poller release];
+	self.poller = [NSTimer scheduledTimerWithTimeInterval:self.prefs.redditCheckInterval * 60
 												   target:self
 												 selector:@selector(updateStatus)
 												 userInfo:nil
@@ -87,8 +96,15 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 - (void) dealloc
 {
 	[prefs release];
+
 	[statusConnection release];
 	[loginConnection release];
+	[appUpdateConnection release];
+	
+	[statusData release];
+	[loginData release];
+	[appUpdateData release];
+
 	[super dealloc];
 }
 
@@ -111,7 +127,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	}
 	 
 	self.prefs.name = uname;
-	self.prefs.savePassword = [savepassword state];
+	self.prefs.savePassword = ([savepassword state] == NSOnState);
 
 	self.prefs.password = pword;
 	
@@ -179,7 +195,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 			 mainDocumentURL:nil];
 
 		self.loginerror.stringValue = @"";
-		[window close];
+		[self.loginWindow close];
 		[self updateStatus];
 	}
 }
@@ -198,7 +214,10 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 			  										   delegate:self];
 	if (nil != statusConnection) 
 	{
-		statusData = [[NSMutableData data] retain];
+		if (nil == statusData) 
+		{
+			statusData = [[NSMutableData data] retain];
+		}
 	} 
 	else 
 	{
@@ -235,7 +254,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 			return;
 		}
 
-		NSLog(@"Update failed, attempting re-login");	
+		NSLog(@"Status Update failed due to not being logged in, attempting re-login");	
 
 		// Not sure this will actually do anything as we login sync and block the main thread here.
 		self.currentIcon = GreyEnvelope;
@@ -272,7 +291,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	static int appupdatepoller = 0;
 	if ((appupdatepoller % AppUpdatePollInterval) == 0)
 	{
-		[self checkForAppUpdate];
+		[self checkForAppUpdate:nil];
 	}
 	++appupdatepoller;
 }
@@ -289,10 +308,32 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	if (nil != self.prefs.password) [passwordentry setStringValue:self.prefs.password];			
 	 
 	// open window and force to the front
-	[window makeKeyAndOrderFront:nil];
-	[window orderFrontRegardless];
+	[self.loginWindow makeKeyAndOrderFront:nil];
+	[self.loginWindow orderFrontRegardless];
 }
 
+// --------------------------------------------------------------------------------------------------------------------
+- (IBAction) showPrefsWindow: (id)sender
+{
+#pragma unused(sender)
+	[self.autoUpdateCheckCB setState: self.prefs.autoUpdateCheck];
+	[self.openAtLoginCB setState: self.prefs.openAtLogin];
+	[self.redditCheckIntervalTF setStringValue: [NSString stringWithFormat:@"%d", self.prefs.redditCheckInterval]];
+	
+	// open window and force to the front
+	[prefWindow makeKeyAndOrderFront:nil];
+	[prefWindow orderFrontRegardless];
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (IBAction) donePrefsWindow: (id)sender
+{
+#pragma unused(sender)
+	self.prefs.redditCheckInterval = [[self.redditCheckIntervalTF stringValue] integerValue];
+	[prefWindow close];
+	
+	[self setupPoller];
+}
 
 // --------------------------------------------------------------------------------------------------------------------
 - (NSString*) userDataUrl
@@ -320,7 +361,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-- (IBAction) updateMenuItemClicked:(id)sender
+- (IBAction) updateMenuItemClicked: (id)sender
 {
 	(void)sender;
 
@@ -334,22 +375,40 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-- (void) checkForAppUpdate
+- (IBAction) checkForAppUpdate: (id)sender
 {
+#pragma unused(sender)
+	
 	NSURL* url = [NSURL URLWithString:@"http://www.voidref.com/Site/orangered_version.txt"];
-	NSError* error = nil;
 	
-	NSString* checkResult = [NSString stringWithContentsOfURL:url 
-													 encoding:NSUTF8StringEncoding 
-														error:&error];
+	NSURLRequest* request = [NSURLRequest requestWithURL:url
+											 cachePolicy:NSURLRequestUseProtocolCachePolicy
+										 timeoutInterval:self.prefs.timeout];
 	
-	if (nil != error) 
+	[appUpdateConnection release];
+	appUpdateConnection = [[NSURLConnection alloc] initWithRequest:request 
+			  										   delegate:self];
+	if (nil != appUpdateConnection) 
 	{
-		// Do users really care that the update the app check might have failed?
-		//loginerror.stringValue = [error localizedDescription];
-		NSLog(@"Update app check failed, reason: %@", [error localizedDescription]);
+		if (nil == appUpdateData) 
+		{
+			appUpdateData = [[NSMutableData data] retain];
+		}
+	} 
+	else 
+	{
+		// Is there a way to find the exact error?
+		self.loginerror.stringValue = @"Could not estabilsh connection to Orangered! update server.";
 	}
-	else if ([checkResult compare:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]] != NSOrderedSame) 
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (void) parseAppUpdateResult
+{
+	NSString* checkResult = [[[NSString alloc] initWithData:appUpdateData 
+													encoding:NSASCIIStringEncoding] autorelease];
+
+	if ([checkResult compare:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]] != NSOrderedSame) 
 	{
 		self.update.hidden = NO;
 		self.update.title = [NSString stringWithFormat:@"Get Update (%@)", checkResult];
@@ -359,6 +418,80 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	}
 }
 
+// --------------------------------------------------------------------------------------------------------------------
+- (IBAction) automaticCheckForUpdateClicked: (id)sender
+{
+	self.prefs.autoUpdateCheck = ([sender state] == NSOnState);
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (IBAction) loadAtStartupClicked: (id)sender
+{
+	self.prefs.openAtLogin = ([sender state] == NSOnState);
+	[self setLoadAtStartup];
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (void) setLoadAtStartup
+{
+	BOOL exists = NO;
+	NSURL* thePath = [[NSBundle mainBundle] bundleURL];
+	
+	LSSharedFileListRef loginItems = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
+	
+	if (loginItems) 
+	{
+		UInt32 seedValue = 0;
+		CFArrayRef loginItemsArrayRef = LSSharedFileListCopySnapshot(loginItems, &seedValue);
+		NSArray* loginItemsArray = (NSArray *)loginItemsArrayRef;
+		
+		LSSharedFileListItemRef removeItem;
+		
+		for (id item in loginItemsArray) 
+		{
+			LSSharedFileListItemRef itemRef = (LSSharedFileListItemRef)item;
+			CFURLRef URL = NULL;
+			
+			if (LSSharedFileListItemResolve(itemRef, 0, &URL, NULL) == noErr) 
+			{				
+				if ([[[(NSURL *)URL path] lastPathComponent] isEqualToString: [[thePath path] lastPathComponent]]) 
+				{
+					exists = YES;
+					CFRelease(URL);
+					removeItem = (LSSharedFileListItemRef)item;
+					break;
+				}
+			}
+		}
+		
+		CFRelease(loginItemsArrayRef);
+		
+		
+		BOOL add = self.prefs.openAtLogin;
+		if (add && !exists) 
+		{
+			NSLog(@"Adding to startup items.");
+			LSSharedFileListItemRef item = LSSharedFileListInsertItemURL(loginItems, 
+																		 kLSSharedFileListItemBeforeFirst, 
+																		 NULL, 
+																		 NULL, 
+																		 (CFURLRef)thePath, 
+																		 NULL, 
+																		 NULL);
+			
+			if (item) CFRelease(item);
+		} 
+		else if (!add && exists) 
+		{
+			NSLog(@"Removing from startup items.");		
+			LSSharedFileListItemRemove(loginItems, removeItem);
+		}
+		
+		CFRelease(loginItems);
+	}
+}
+
+#pragma mark NSURLConnection delegate interface
 // --------------------------------------------------------------------------------------------------------------------
 - (void)		connection:	(NSURLConnection *)connection	
      	  didFailWithError: (NSError *)error
@@ -378,6 +511,10 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 		self.loginerror.stringValue = [NSString stringWithFormat:@"Unable to login: %@", [error localizedDescription]];
 		self.status.image = [NSImage imageNamed:GreyEnvelope];
 	}
+	else if (connection == appUpdateConnection)
+	{
+		// I bet nobody cares
+	}	
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -392,6 +529,10 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	{
 		[loginData appendData:data];
 	}	
+	else if (connection == appUpdateConnection)
+	{
+		[appUpdateData appendData:data];
+	}	
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -400,6 +541,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 {
 	NSLog(@"Got response for %@", [[response URL] path]);
 	
+	// Here we zero out the data to prepare it to accept new data
 	if ( connection == statusConnection)
 	{
 		statusData.length = 0;
@@ -409,6 +551,10 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 		// Is casting this way the right thing to do?
 		[self parseLogin:(NSHTTPURLResponse*)response];
 		loginData.length = 0;
+	}	
+	else if (connection == appUpdateConnection)
+	{
+		appUpdateData.length = 0;
 	}	
 }
 
@@ -450,6 +596,10 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 		{
 			// hmmm.
 		}
+	}	
+	else if (connection == appUpdateConnection)
+	{
+		[self parseAppUpdateResult];
 	}	
 }
 

@@ -9,25 +9,28 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface Prefs : NSObject {
-
+@interface Prefs : NSObject 
+{
 	NSUserDefaults* settings;
 	
 	NSString*		name;
 	NSString*		password;
 	BOOL			savePassword;
-	float			timeout;
-	
+	BOOL			openAtLogin;
+	BOOL			autoUpdateCheck;
+	NSInteger		timeout;
+	NSInteger		redditCheckInterval;
 }
 
 @property (retain) NSString*	password;
 @property (retain) NSString*	name;
 @property BOOL					savePassword;
-@property float					timeout;
+@property BOOL					openAtLogin;
+@property BOOL					autoUpdateCheck;
+@property NSInteger				timeout;
+@property NSInteger				redditCheckInterval;
 
 - (id) init;
 - (void) dealloc;
-- (NSString*) password;
-- (void) setPassword:(NSString *)pass;
 
 @end
