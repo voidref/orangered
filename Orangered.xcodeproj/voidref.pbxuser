@@ -17,9 +17,9 @@
 	};
 	256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1536, 9366}}";
-			sepNavSelRange = "{15968, 0}";
-			sepNavVisRange = "{14552, 1933}";
+			sepNavIntBoundsRect = "{{0, 0}, {1536, 9478}}";
+			sepNavSelRange = "{8421, 0}";
+			sepNavVisRange = "{7630, 1884}";
 			sepNavWindowFrame = "{{176, 130}, {1597, 1028}}";
 		};
 	};
@@ -342,6 +342,10 @@
 			2DDE5F6411DBB9FE00EDA4F7 /* PBXTextBookmark */ = 2DDE5F6411DBB9FE00EDA4F7 /* PBXTextBookmark */;
 			2DDE5F6711DBD5E700EDA4F7 /* PBXTextBookmark */ = 2DDE5F6711DBD5E700EDA4F7 /* PBXTextBookmark */;
 			2DDE5F6811DBD60300EDA4F7 /* PBXTextBookmark */ = 2DDE5F6811DBD60300EDA4F7 /* PBXTextBookmark */;
+			2DDE5F7511DBD89B00EDA4F7 /* PBXTextBookmark */ = 2DDE5F7511DBD89B00EDA4F7 /* PBXTextBookmark */;
+			2DDE5F7611DBD89B00EDA4F7 /* PBXTextBookmark */ = 2DDE5F7611DBD89B00EDA4F7 /* PBXTextBookmark */;
+			2DDE5F7711DBD89B00EDA4F7 /* XCBuildMessageTextBookmark */ = 2DDE5F7711DBD89B00EDA4F7 /* XCBuildMessageTextBookmark */;
+			2DDE5F7811DBD89B00EDA4F7 /* PBXTextBookmark */ = 2DDE5F7811DBD89B00EDA4F7 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 2DC552F411C9E9AD00D9B5C1 /* Source Control */;
 		userBuildSettings = {
@@ -636,7 +640,7 @@
 		isa = PBXTextBookmark;
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		rLen = 1;
-		rLoc = 522;
+		rLoc = 520;
 		rType = 1;
 	};
 	2D7D37F211D81A7E00D9A067 /* PBXTextBookmark */ = {
@@ -796,7 +800,7 @@
 		argumentStrings = (
 		);
 		autoAttachOnCrash = 1;
-		breakpointsEnabled = 1;
+		breakpointsEnabled = 0;
 		configStateDict = {
 		};
 		customDataFormattersEnabled = 1;
@@ -915,7 +919,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 348";
 		rLen = 0;
-		rLoc = 12812;
+		rLoc = 12761;
 		rType = 0;
 		vrLen = 2499;
 		vrLoc = 8605;
@@ -935,7 +939,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 312";
 		rLen = 0;
-		rLoc = 10962;
+		rLoc = 10911;
 		rType = 0;
 		vrLen = 2520;
 		vrLoc = 8605;
@@ -945,7 +949,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 306";
 		rLen = 0;
-		rLoc = 10587;
+		rLoc = 10536;
 		rType = 0;
 		vrLen = 1987;
 		vrLoc = 7912;
@@ -955,7 +959,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 319";
 		rLen = 0;
-		rLoc = 10961;
+		rLoc = 10910;
 		rType = 0;
 		vrLen = 2198;
 		vrLoc = 7912;
@@ -1015,7 +1019,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 319";
 		rLen = 0;
-		rLoc = 10961;
+		rLoc = 10910;
 		rType = 0;
 		vrLen = 1958;
 		vrLoc = 7912;
@@ -1105,7 +1109,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 337";
 		rLen = 17;
-		rLoc = 11525;
+		rLoc = 11474;
 		rType = 0;
 		vrLen = 1452;
 		vrLoc = 9696;
@@ -1351,7 +1355,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 518";
 		rLen = 0;
-		rLoc = 18672;
+		rLoc = 18621;
 		rType = 0;
 		vrLen = 1595;
 		vrLoc = 15264;
@@ -1361,7 +1365,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 517";
 		rLen = 0;
-		rLoc = 18672;
+		rLoc = 18621;
 		rType = 0;
 		vrLen = 1592;
 		vrLoc = 15264;
@@ -1371,7 +1375,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 517";
 		rLen = 0;
-		rLoc = 18672;
+		rLoc = 18621;
 		rType = 0;
 		vrLen = 1555;
 		vrLoc = 15264;
@@ -1391,7 +1395,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 505";
 		rLen = 0;
-		rLoc = 18672;
+		rLoc = 18621;
 		rType = 0;
 		vrLen = 1541;
 		vrLoc = 14481;
@@ -1445,7 +1449,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 350";
 		rLen = 0;
-		rLoc = 11391;
+		rLoc = 11340;
 		rType = 0;
 		vrLen = 1868;
 		vrLoc = 9651;
@@ -1546,7 +1550,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 387;
+		rLoc = 385;
 		rType = 1;
 	};
 	2DDE5E5A11D9CB3500EDA4F7 /* PBXTextBookmark */ = {
@@ -1554,7 +1558,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 355";
 		rLen = 0;
-		rLoc = 11581;
+		rLoc = 11530;
 		rType = 0;
 		vrLen = 1670;
 		vrLoc = 9360;
@@ -1773,7 +1777,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 315";
 		rLen = 0;
-		rLoc = 9733;
+		rLoc = 9682;
 		rType = 0;
 		vrLen = 1932;
 		vrLoc = 8235;
@@ -1794,7 +1798,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		fallbackIsa = XCBuildMessageTextBookmark;
 		rLen = 1;
-		rLoc = 341;
+		rLoc = 339;
 		rType = 1;
 	};
 	2DDE5EBD11D9DA3800EDA4F7 /* PBXTextBookmark */ = {
@@ -1842,7 +1846,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 332";
 		rLen = 0;
-		rLoc = 10102;
+		rLoc = 10051;
 		rType = 0;
 		vrLen = 2329;
 		vrLoc = 8214;
@@ -1872,7 +1876,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 332";
 		rLen = 0;
-		rLoc = 10102;
+		rLoc = 10051;
 		rType = 0;
 		vrLen = 2329;
 		vrLoc = 8214;
@@ -1902,7 +1906,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 335";
 		rLen = 0;
-		rLoc = 10174;
+		rLoc = 10123;
 		rType = 0;
 		vrLen = 1937;
 		vrLoc = 8778;
@@ -1912,7 +1916,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 332";
 		rLen = 0;
-		rLoc = 10102;
+		rLoc = 10051;
 		rType = 0;
 		vrLen = 2183;
 		vrLoc = 8214;
@@ -1932,7 +1936,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 335";
 		rLen = 0;
-		rLoc = 10174;
+		rLoc = 10123;
 		rType = 0;
 		vrLen = 1937;
 		vrLoc = 8778;
@@ -1962,7 +1966,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 332";
 		rLen = 0;
-		rLoc = 10102;
+		rLoc = 10051;
 		rType = 0;
 		vrLen = 2183;
 		vrLoc = 8214;
@@ -1992,7 +1996,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 332";
 		rLen = 0;
-		rLoc = 10102;
+		rLoc = 10051;
 		rType = 0;
 		vrLen = 2183;
 		vrLoc = 8214;
@@ -2022,7 +2026,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 332";
 		rLen = 0;
-		rLoc = 10102;
+		rLoc = 10051;
 		rType = 0;
 		vrLen = 2183;
 		vrLoc = 8214;
@@ -2062,7 +2066,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 332";
 		rLen = 0;
-		rLoc = 10102;
+		rLoc = 10051;
 		rType = 0;
 		vrLen = 2183;
 		vrLoc = 8214;
@@ -2112,7 +2116,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 335";
 		rLen = 0;
-		rLoc = 10174;
+		rLoc = 10123;
 		rType = 0;
 		vrLen = 1946;
 		vrLoc = 8776;
@@ -2132,7 +2136,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 332";
 		rLen = 0;
-		rLoc = 10102;
+		rLoc = 10051;
 		rType = 0;
 		vrLen = 2183;
 		vrLoc = 8219;
@@ -2172,7 +2176,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 332";
 		rLen = 0;
-		rLoc = 10102;
+		rLoc = 10051;
 		rType = 0;
 		vrLen = 2183;
 		vrLoc = 8219;
@@ -2212,7 +2216,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 481";
 		rLen = 0;
-		rLoc = 14815;
+		rLoc = 14764;
 		rType = 0;
 		vrLen = 1426;
 		vrLoc = 13353;
@@ -2222,7 +2226,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 481";
 		rLen = 0;
-		rLoc = 14815;
+		rLoc = 14764;
 		rType = 0;
 		vrLen = 1426;
 		vrLoc = 13353;
@@ -2232,7 +2236,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 481";
 		rLen = 0;
-		rLoc = 14815;
+		rLoc = 14764;
 		rType = 0;
 		vrLen = 1401;
 		vrLoc = 13381;
@@ -2242,7 +2246,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 332";
 		rLen = 0;
-		rLoc = 10102;
+		rLoc = 10051;
 		rType = 0;
 		vrLen = 2183;
 		vrLoc = 8219;
@@ -2262,7 +2266,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 481";
 		rLen = 0;
-		rLoc = 14815;
+		rLoc = 14764;
 		rType = 0;
 		vrLen = 1429;
 		vrLoc = 13353;
@@ -2272,7 +2276,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 332";
 		rLen = 0;
-		rLoc = 10102;
+		rLoc = 10051;
 		rType = 0;
 		vrLen = 2183;
 		vrLoc = 8219;
@@ -2292,7 +2296,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 481";
 		rLen = 0;
-		rLoc = 14815;
+		rLoc = 14764;
 		rType = 0;
 		vrLen = 1462;
 		vrLoc = 14103;
@@ -2302,7 +2306,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 332";
 		rLen = 0;
-		rLoc = 10102;
+		rLoc = 10051;
 		rType = 0;
 		vrLen = 2183;
 		vrLoc = 8219;
@@ -2322,7 +2326,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 481";
 		rLen = 0;
-		rLoc = 14815;
+		rLoc = 14764;
 		rType = 0;
 		vrLen = 1538;
 		vrLoc = 14165;
@@ -2332,7 +2336,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 332";
 		rLen = 0;
-		rLoc = 10102;
+		rLoc = 10051;
 		rType = 0;
 		vrLen = 2183;
 		vrLoc = 8219;
@@ -2352,7 +2356,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 481";
 		rLen = 0;
-		rLoc = 14815;
+		rLoc = 14764;
 		rType = 0;
 		vrLen = 1541;
 		vrLoc = 14226;
@@ -2362,7 +2366,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 332";
 		rLen = 0;
-		rLoc = 10102;
+		rLoc = 10051;
 		rType = 0;
 		vrLen = 2183;
 		vrLoc = 8219;
@@ -2382,7 +2386,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 482";
 		rLen = 0;
-		rLoc = 14815;
+		rLoc = 14764;
 		rType = 0;
 		vrLen = 1539;
 		vrLoc = 14125;
@@ -2392,7 +2396,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 332";
 		rLen = 0;
-		rLoc = 10102;
+		rLoc = 10051;
 		rType = 0;
 		vrLen = 2183;
 		vrLoc = 8219;
@@ -2412,7 +2416,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 482";
 		rLen = 0;
-		rLoc = 14815;
+		rLoc = 14764;
 		rType = 0;
 		vrLen = 1539;
 		vrLoc = 14125;
@@ -2422,7 +2426,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 332";
 		rLen = 0;
-		rLoc = 10102;
+		rLoc = 10051;
 		rType = 0;
 		vrLen = 2183;
 		vrLoc = 8219;
@@ -2442,7 +2446,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 481";
 		rLen = 0;
-		rLoc = 14815;
+		rLoc = 14764;
 		rType = 0;
 		vrLen = 664;
 		vrLoc = 13563;
@@ -2452,7 +2456,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 457";
 		rLen = 0;
-		rLoc = 14167;
+		rLoc = 14116;
 		rType = 0;
 		vrLen = 758;
 		vrLoc = 13759;
@@ -2462,7 +2466,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 457";
 		rLen = 0;
-		rLoc = 14167;
+		rLoc = 14116;
 		rType = 0;
 		vrLen = 1659;
 		vrLoc = 15777;
@@ -2492,7 +2496,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 332";
 		rLen = 0;
-		rLoc = 10102;
+		rLoc = 10051;
 		rType = 0;
 		vrLen = 2207;
 		vrLoc = 8219;
@@ -2522,7 +2526,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 332";
 		rLen = 0;
-		rLoc = 10102;
+		rLoc = 10051;
 		rType = 0;
 		vrLen = 2183;
 		vrLoc = 8219;
@@ -2552,7 +2556,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 332";
 		rLen = 0;
-		rLoc = 10102;
+		rLoc = 10051;
 		rType = 0;
 		vrLen = 2183;
 		vrLoc = 8219;
@@ -2602,7 +2606,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 457";
 		rLen = 0;
-		rLoc = 14167;
+		rLoc = 14116;
 		rType = 0;
 		vrLen = 758;
 		vrLoc = 13759;
@@ -2632,7 +2636,7 @@
 		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
 		name = "OrangeredAppDelegate.m: 457";
 		rLen = 0;
-		rLoc = 14167;
+		rLoc = 14116;
 		rType = 0;
 		vrLen = 1900;
 		vrLoc = 15639;
@@ -2860,6 +2864,45 @@
 		rType = 0;
 		vrLen = 704;
 		vrLoc = 3184;
+	};
+	2DDE5F7511DBD89B00EDA4F7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 2D7D36C211D6D5D100D9A067 /* prefs.m */;
+		name = "prefs.m: 34";
+		rLen = 0;
+		rLoc = 1006;
+		rType = 0;
+		vrLen = 1359;
+		vrLoc = 2812;
+	};
+	2DDE5F7611DBD89B00EDA4F7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 256AC3D80F4B6AC300CF3369 /* OrangeredAppDelegate.h */;
+		name = "OrangeredAppDelegate.h: 81";
+		rLen = 0;
+		rLoc = 2181;
+		rType = 0;
+		vrLen = 2206;
+		vrLoc = 1206;
+	};
+	2DDE5F7711DBD89B00EDA4F7 /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Expected expression";
+		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 423;
+		rType = 1;
+	};
+	2DDE5F7811DBD89B00EDA4F7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */;
+		name = "OrangeredAppDelegate.m: 293";
+		rLen = 0;
+		rLoc = 8421;
+		rType = 0;
+		vrLen = 1884;
+		vrLoc = 7630;
 	};
 	8D1107260486CEB800E47090 /* Orangered */ = {
 		activeExec = 0;

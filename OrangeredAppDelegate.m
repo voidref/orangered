@@ -293,8 +293,6 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	}
 
 	NSLog(@"CheckResult: %@", statusResult);
-	NSLog(@"Updating Status: %@", self.currentIcon);
-
 	[self setMessageStatus: self.currentIcon];
 	
 	// Check for update every AppUpdatePollInterval minutes hours or so..
