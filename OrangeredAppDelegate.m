@@ -20,7 +20,7 @@
 
 @synthesize loginWindow, userentry, passwordentry, savepassword, loginerror, loginProgress;
 
-@synthesize prefWindow, openAtLoginCB, autoUpdateCheckCB, redditCheckIntervalTF;
+@synthesize prefWindow, openAtLoginCB, autoUpdateCheckCB, redditCheckIntervalTF, appUpdateCheckProgress, appUpdateResultTF;
 
 @synthesize status;
 @synthesize menu;
@@ -72,7 +72,9 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	
 	self.currentIcon = GreyEnvelope;
 	self.noMailIcon = BlackEnvelope;
-			
+
+	[self setupPoller];
+
 	// detect first run / empty username
 	// We have to have an account name in order to check status!
 	if (nil == prefs.name) 
@@ -81,24 +83,29 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	}
 	else 
 	{
-		[self updateStatus];
+		[self updateStatus:nil];
 	}
-
-	[self setupPoller];
 }
 
 // -------------------------------------------------------------------------------------------------------------------
 - (void) setupPoller
 {
+	NSInteger interval = self.prefs.redditCheckInterval * 60;
+	
+	if (60 > interval) 
+	{
+		interval = 60;
+	}
+	
+	[self.poller invalidate];
 	[self.poller release];
-	self.poller = [NSTimer scheduledTimerWithTimeInterval:self.prefs.redditCheckInterval * 60
+	self.poller = [NSTimer scheduledTimerWithTimeInterval:interval
 												   target:self
-												 selector:@selector(updateStatus)
+												 selector:@selector(updateStatus:)
 												 userInfo:nil
 												  repeats:YES];
 	
-	[[NSRunLoop currentRunLoop] addTimer:poller
-								 forMode:NSDefaultRunLoopMode];
+	NSLog(@"Poller set up: %@", self.poller);
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -113,6 +120,8 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	[statusData release];
 	[loginData release];
 	[appUpdateData release];
+	
+	[self.poller release];
 
 	[super dealloc];
 }
@@ -206,13 +215,15 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 
 		self.loginerror.stringValue = @"";
 		[self.loginWindow close];
-		[self updateStatus];
+		[self updateStatus:nil];
 	}
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-- (void) updateStatus
+- (void) updateStatus: (NSTimer*)theTimer
 {
+#pragma unused(theTimer)
+	NSLog(@"Updating status");
 	NSURL* url = [NSURL URLWithString:[self userDataUrl]];
 	
 	NSURLRequest* request = [NSURLRequest requestWithURL:url
@@ -296,12 +307,15 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	[self setMessageStatus: self.currentIcon];
 	
 	// Check for update every AppUpdatePollInterval minutes hours or so..
-	static int appupdatepoller = 0;
-	if ((appupdatepoller % AppUpdatePollInterval) == 0)
+	if (YES == self.prefs.autoUpdateCheck)
 	{
-		[self checkForAppUpdate:nil];
+		static int appupdatepoller = 0;
+		if ((appupdatepoller % AppUpdatePollInterval) == 0)
+		{
+			[self checkForAppUpdate:nil];
+		}
+		++appupdatepoller;
 	}
-	++appupdatepoller;
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -337,10 +351,22 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 - (IBAction) donePrefsWindow: (id)sender
 {
 #pragma unused(sender)
-	self.prefs.redditCheckInterval = [[self.redditCheckIntervalTF stringValue] integerValue];
-	[prefWindow close];
+	NSInteger minutes = [[self.redditCheckIntervalTF stringValue] integerValue];
 	
-	[self setupPoller];
+	// It seems I can't get the validator/formatter to work right, blea.
+	if (1 > minutes) 
+	{
+		minutes = 1;
+	}
+	
+	if (minutes != self.prefs.redditCheckInterval) 
+	{
+		self.prefs.redditCheckInterval = minutes;
+		[self setupPoller];
+	}
+
+	self.prefs.autoUpdateCheck = [self.autoUpdateCheckCB state];
+	[prefWindow close];
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -373,13 +399,14 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 {
 	(void)sender;
 
+	self.appUpdateResultTF.stringValue = @"";
 	self.update.hidden = YES;
 	self.about.hidden = NO;
 	system("open http://www.voidref.com/Site/Orangered.zip &");	
 	self.noMailIcon = BlackEnvelope;
 	
 	// We can do this because we probably will not be checking again.
-	[self updateStatus];
+	[self updateStatus:nil];
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -387,6 +414,10 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 {
 #pragma unused(sender)
 	
+	[self.appUpdateCheckProgress startAnimation:nil];
+	[self.appUpdateCheckProgress setHidden:NO];
+	self.appUpdateResultTF.stringValue = @"Checking for update...";
+
 	NSURL* url = [NSURL URLWithString:@"http://www.voidref.com/Site/orangered_version.txt"];
 	
 	NSURLRequest* request = [NSURLRequest requestWithURL:url
@@ -418,12 +449,16 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 
 	if ([checkResult compare:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]] != NSOrderedSame) 
 	{
+		self.appUpdateResultTF.stringValue = [NSString stringWithFormat:@"New version available: %@", checkResult];
 		self.update.hidden = NO;
 		self.update.title = [NSString stringWithFormat:@"Get Update (%@)", checkResult];
 		self.noMailIcon = BlueEnvelope;
 		[self setMessageStatus: self.noMailIcon];
 		self.about.hidden = YES;
 	}
+	
+	[self.appUpdateCheckProgress stopAnimation:nil];
+	[self.appUpdateCheckProgress setHidden:YES];
 }
 
 // --------------------------------------------------------------------------------------------------------------------

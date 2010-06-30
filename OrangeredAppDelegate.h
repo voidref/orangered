@@ -32,11 +32,14 @@
 	NSTextField*			passwordentry;
 	NSTextField*			loginerror;
 	NSButton*				savepassword;
+	NSProgressIndicator*	loginProgress;
 
     NSWindow*				prefWindow;
 	NSButton*				openAtLoginCB;
 	NSButton*				autoUpdateCheckCB;
 	NSTextField*			redditCheckIntervalTF;
+	NSTextField*			appUpdateResultTF;
+	NSProgressIndicator*	appUpdateCheckProgress;
 
 	NSString*				currentIcon;
 	NSString*				noMailIcon;
@@ -50,7 +53,6 @@
 	NSURLConnection*		loginConnection;
 	NSURLConnection*		appUpdateConnection;
 
-	NSProgressIndicator*	loginProgress;
 	
 	Prefs*					prefs;
 }
@@ -68,12 +70,13 @@
 @property (assign) IBOutlet NSTextField*			loginerror;
 @property (assign) IBOutlet NSButton*				savepassword;
 @property (assign) IBOutlet NSProgressIndicator*	loginProgress;
-
+@property (assign) IBOutlet NSProgressIndicator*	appUpdateCheckProgress;
 
 @property (assign) IBOutlet NSWindow*				prefWindow;
 @property (assign) IBOutlet NSButton*				openAtLoginCB;
 @property (assign) IBOutlet NSButton*				autoUpdateCheckCB;
 @property (assign) IBOutlet NSTextField*			redditCheckIntervalTF;
+@property (assign) IBOutlet NSTextField*			appUpdateResultTF;
 
 @property (retain)          NSString*				currentIcon;
 @property (retain)          NSString*				noMailIcon;
@@ -91,7 +94,7 @@
 - (void)		setupPoller;
 - (void)		login;
 - (void)		dealloc;
-- (void)		updateStatus;
+- (void)		updateStatus: (NSTimer*)theTimer;
 - (NSString*)	userDataUrl;
 - (void)		parseStatus;
 - (void)		parseLogin: (NSHTTPURLResponse*) response;

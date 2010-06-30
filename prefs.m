@@ -36,7 +36,7 @@ static const char*	ServiceName		= "Orangered!";
 		self.openAtLogin = [settings boolForKey:OpenAtLoginKey];
 
 		self.redditCheckInterval = [settings integerForKey:CheckFreqKey];
-		if (self.redditCheckInterval == 0) self.redditCheckInterval = 60;
+		if (self.redditCheckInterval == 0) self.redditCheckInterval = 1;
 
 		self.autoUpdateCheck = YES;		
 		if (nil != [settings objectForKey:AutoUpdateKey]) self.autoUpdateCheck = [settings boolForKey:AutoUpdateKey];
