@@ -65,7 +65,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	self.status.menu = self.menu;
 	self.status.highlightMode = YES;
 	self.status.alternateImage = [NSImage imageNamed:HighlightEnvelope];
-	self.status.image = [NSImage imageNamed:GreyEnvelope];
+	[self setMessageStatus: GreyEnvelope];
 	
 	self.menu.delegate = self;
 	self.menu.autoenablesItems = NO;
@@ -73,8 +73,17 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	self.currentIcon = GreyEnvelope;
 	self.noMailIcon = BlackEnvelope;
 			
-	[self updateStatus];
-	
+	// detect first run / empty username
+	// We have to have an account name in order to check status!
+	if (nil == prefs.name) 
+	{
+		[self showLoginWindow:nil];
+	}
+	else 
+	{
+		[self updateStatus];
+	}
+
 	[self setupPoller];
 }
 
@@ -259,7 +268,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 
 		// Not sure this will actually do anything as we login sync and block the main thread here.
 		self.currentIcon = GreyEnvelope;
-		self.status.image = [NSImage imageNamed:self.currentIcon];
+		[self setMessageStatus: self.currentIcon];
 		
 		// Try to log in. 
 		[self login];
@@ -286,7 +295,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	NSLog(@"CheckResult: %@", statusResult);
 	NSLog(@"Updating Status: %@", self.currentIcon);
 
-	self.status.image = [NSImage imageNamed:self.currentIcon];
+	[self setMessageStatus: self.currentIcon];
 	
 	// Check for update every AppUpdatePollInterval minutes hours or so..
 	static int appupdatepoller = 0;
@@ -349,7 +358,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 
 	// Lets assume they don't want to see the modified envelope after they do this or wait for the next check.
 	self.currentIcon = self.noMailIcon;
-	self.status.image = [NSImage imageNamed:self.currentIcon];
+	[self setMessageStatus: self.currentIcon];
 
 	if (NO == hasModMail) 
 	{
@@ -414,7 +423,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 		self.update.hidden = NO;
 		self.update.title = [NSString stringWithFormat:@"Get Update (%@)", checkResult];
 		self.noMailIcon = BlueEnvelope;
-		self.status.image = [NSImage imageNamed:self.noMailIcon];
+		[self setMessageStatus: self.noMailIcon];
 		self.about.hidden = YES;
 	}
 }
@@ -492,6 +501,15 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	}
 }
 
+
+// --------------------------------------------------------------------------------------------------------------------
+- (void) setMessageStatus: (NSString*) imageName
+{
+	NSLog(@"Setting Status image to: %@", imageName);
+	self.status.image = [NSImage imageNamed:imageName];
+}
+
+
 #pragma mark NSURLConnection delegate interface
 // --------------------------------------------------------------------------------------------------------------------
 - (void)		connection:	(NSURLConnection *)connection	
@@ -505,12 +523,12 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	if ( connection == statusConnection)
 	{
 		self.loginerror.stringValue = [NSString stringWithFormat:@"Unable to retrieve status: %@", [error localizedDescription]];
-		self.status.image = [NSImage imageNamed:GreyEnvelope];
+		[self setMessageStatus: GreyEnvelope];
 	}
 	else if (connection == loginConnection)
 	{
 		self.loginerror.stringValue = [NSString stringWithFormat:@"Unable to login: %@", [error localizedDescription]];
-		self.status.image = [NSImage imageNamed:GreyEnvelope];
+		[self setMessageStatus: GreyEnvelope];
 	}
 	else if (connection == appUpdateConnection)
 	{

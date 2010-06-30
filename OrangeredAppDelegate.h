@@ -96,6 +96,7 @@
 - (void)		parseStatus;
 - (void)		parseLogin: (NSHTTPURLResponse*) response;
 - (void)		setLoadAtStartup;
+- (void)		setMessageStatus: (NSString*) imageName;
 
 - (void)		growlAlert:	(NSString *)message				
 			         title: (NSString *)title				

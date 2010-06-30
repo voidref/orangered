@@ -52,3 +52,4 @@ Todo for 1.0
 
 === b1 - b2
  * Increased timeout for network connections.
+ * Fix logic error on first run, now opens Login window if there is no user name.
