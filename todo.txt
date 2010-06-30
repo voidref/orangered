@@ -2,14 +2,15 @@ Todo for 1.0
 ============
  * Create a DMG based distribution
  * Fix about window not being topmost when invoked / New About Window
-
+ * Option for logging diagnostics
+ 
  Todo for post 1.0
 =================
- * Write a plugin api so people someone can write growl integration if they want.
+ * Write a plugin api so people someone can write growl integration if they want. (I'll leave the GROWL ifdefs in the source until this happens)
  * Option to unobscure password
  * Options for sounds
  * Count of new messages
- * Display for karmas
+ * Display for karmas										
  * http://sparkle.andymatuschak.org/ integration
  * put app up on Bodega
  * Multiple account checking
@@ -49,3 +50,5 @@ Todo for 1.0
  * Option for manual app update check vs automatic
  * Add manual check for update
 
+=== b1 - b2
+ * Increased timeout for network connections.

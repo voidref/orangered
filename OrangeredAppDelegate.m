@@ -168,6 +168,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	{
 		// Is there a way to find the exact error?
 		self.loginerror.stringValue = @"Could not estabilsh connection to reddit.";
+		NSLog(@"login error: %@", self.loginerror.stringValue);
 	}
 }
 

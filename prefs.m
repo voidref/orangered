@@ -30,7 +30,8 @@ static const char*	ServiceName		= "Orangered!";
 		self.name = [settings stringForKey:UserNameKey];
 		self.savePassword = [settings boolForKey:SavePassKey];
 		
-		self.timeout = 30;
+		// Since we are async, we can let it try for a long time.
+		self.timeout = 120;
 		
 		self.openAtLogin = [settings boolForKey:OpenAtLoginKey];
 
