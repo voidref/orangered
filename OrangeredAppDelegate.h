@@ -27,6 +27,9 @@
 	
 	BOOL					hasModMail;
 	
+	NSWindow*				aboutWindow;
+	NSTextField*			versionTF;
+	
     NSWindow*				loginWindow;
 	NSTextField*			userentry;
 	NSTextField*			passwordentry;
@@ -64,6 +67,10 @@
 @property (assign) IBOutlet NSMenuItem*				update;
 @property (assign) IBOutlet NSMenuItem*				about;
 
+@property (assign) IBOutlet NSWindow*				aboutWindow;
+@property (assign) IBOutlet NSTextField*			versionTF;
+
+
 @property (assign) IBOutlet NSWindow*				loginWindow;
 @property (assign) IBOutlet NSTextField*			userentry;
 @property (assign) IBOutlet NSTextField*			passwordentry;
@@ -90,6 +97,8 @@
 - (IBAction)	updateMenuItemClicked:	(id)sender;
 - (IBAction)	checkForAppUpdate:		(id)sender;
 - (IBAction)	loadAtStartupClicked:	(id)sender;
+- (IBAction)	showAboutWindow:		(id)sender;
+- (IBAction)	showAboutButtonClicked:	(id)sender;
 
 - (void)		setupPoller;
 - (void)		login;

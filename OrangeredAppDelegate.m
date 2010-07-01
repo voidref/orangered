@@ -22,6 +22,8 @@
 
 @synthesize prefWindow, openAtLoginCB, autoUpdateCheckCB, redditCheckIntervalTF, appUpdateCheckProgress, appUpdateResultTF;
 
+@synthesize aboutWindow, versionTF;
+
 @synthesize status;
 @synthesize menu;
 @synthesize poller;
@@ -472,6 +474,46 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 {
 	self.prefs.openAtLogin = ([sender state] == NSOnState);
 	[self setLoadAtStartup];
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (IBAction)	showAboutWindow:		(id)sender
+{
+#pragma unused(sender)
+	
+	self.versionTF.stringValue = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
+	// open window and force to the front
+	[aboutWindow makeKeyAndOrderFront:nil];
+	[aboutWindow orderFrontRegardless];
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (IBAction)	showAboutButtonClicked:		(id)sender
+{
+#pragma unused(sender)
+	NSLog(@"Button: %@", [sender title]);
+	
+	NSString* url = nil;
+	switch ([sender tag]) 
+	{
+		case 0:
+			url = @"http://www.voidref.com/Site/Orangered!.html";
+			break;
+			
+		case 1:
+			url = @"http://www.reddit.com/r/Orangered_app/";
+			break;
+
+		case 2:
+			url = @"http://www.github.com/voidref/orangered/";
+			break;
+	}
+	
+	if (nil != url) 
+	{
+		NSString* command = [NSString stringWithFormat:@"open %@ &", url];
+		system([command UTF8String]);
+	}
 }
 
 // --------------------------------------------------------------------------------------------------------------------
