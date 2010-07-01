@@ -20,7 +20,7 @@
 
 @synthesize loginWindow, userentry, passwordentry, savepassword, loginerror, loginProgress;
 
-@synthesize prefWindow, openAtLoginCB, autoUpdateCheckCB, redditCheckIntervalTF, appUpdateCheckProgress, appUpdateResultTF;
+@synthesize prefWindow, openAtLoginCB, logDiagnosticsCB, autoUpdateCheckCB, redditCheckIntervalTF, appUpdateCheckProgress, appUpdateResultTF;
 
 @synthesize aboutWindow, versionTF;
 
@@ -42,6 +42,10 @@ static NSString* ModMailIcon        = @"modmail";
 
 // eventually we will use the version string in the info.plist.
 static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
+
+// Sadly a macro seems the easiest way to do this right now...
+#define OrangeLog1(x) if (true == self.prefs.logDiagnostics) { NSLog(x); }
+#define OrangeLog(x, y) if (true == self.prefs.logDiagnostics) { NSLog(x, y); }
 
 // --------------------------------------------------------------------------------------------------------------------
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification 
@@ -107,7 +111,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 												 userInfo:nil
 												  repeats:YES];
 	
-	NSLog(@"Poller set up: %@", self.poller);
+	OrangeLog(@"Poller set up: %@", self.poller);
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -167,7 +171,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	[self.loginProgress startAnimation:nil];
 	[self.loginProgress setHidden:NO];
 	
-	NSLog(@"Logging in user: %@", self.prefs.name);
+	OrangeLog(@"Logging in user: %@", self.prefs.name);
 	
 	NSURL* url = [NSURL URLWithString:@"http://www.reddit.com/api/login"];
 	
@@ -188,7 +192,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	{
 		// Is there a way to find the exact error?
 		self.loginerror.stringValue = @"Could not estabilsh connection to reddit.";
-		NSLog(@"login error: %@", self.loginerror.stringValue);
+		OrangeLog(@"login error: %@", self.loginerror.stringValue);
 	}
 }
 
@@ -198,7 +202,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	[self.loginProgress stopAnimation:nil];
 	[self.loginProgress setHidden:YES];
 	
-	NSLog(@"Response Headers: %@", [response allHeaderFields]);
+	OrangeLog(@"Response Headers: %@", [response allHeaderFields]);
 	
 	NSArray* cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:[response allHeaderFields]
 															  forURL:[response URL]];
@@ -209,7 +213,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	}
 	else 
 	{
-		NSLog(@"Setting Cookie Array: %@", cookies);
+		OrangeLog(@"Setting Cookie Array: %@", cookies);
 		NSHTTPCookieStorage* cstorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
 		[cstorage setCookies:cookies 
 					  forURL:[NSURL URLWithString:@"http://www.reddit.com/"] 
@@ -225,7 +229,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 - (void) updateStatus: (NSTimer*)theTimer
 {
 #pragma unused(theTimer)
-	NSLog(@"Updating status");
+	OrangeLog1(@"Updating status");
 	NSURL* url = [NSURL URLWithString:[self userDataUrl]];
 	
 	NSURLRequest* request = [NSURLRequest requestWithURL:url
@@ -272,12 +276,12 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 		
 		if ( failcounter > 1 )
 		{
-			NSLog(@"failed to log in twice in one update.");
+			OrangeLog1(@"failed to log in twice in one update.");
 			failcounter = 0;
 			return;
 		}
 
-		NSLog(@"Status Update failed due to not being logged in, attempting re-login");	
+		OrangeLog1(@"Status Update failed due to not being logged in, attempting re-login");	
 
 		// Not sure this will actually do anything as we login sync and block the main thread here.
 		self.currentIcon = GreyEnvelope;
@@ -305,7 +309,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 		hasModMail = YES;
 	}
 
-	NSLog(@"CheckResult: %@", statusResult);
+	OrangeLog(@"CheckResult: %@", statusResult);
 	[self setMessageStatus: self.currentIcon];
 	
 	// Check for update every AppUpdatePollInterval minutes hours or so..
@@ -341,6 +345,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 {
 #pragma unused(sender)
 	[self.autoUpdateCheckCB setState: self.prefs.autoUpdateCheck];
+	[logDiagnosticsCB setState:self.prefs.logDiagnostics];
 	[self.openAtLoginCB setState: self.prefs.openAtLogin];
 	[self.redditCheckIntervalTF setStringValue: [NSString stringWithFormat:@"%d", self.prefs.redditCheckInterval]];
 	
@@ -368,6 +373,8 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	}
 
 	self.prefs.autoUpdateCheck = [self.autoUpdateCheckCB state];
+	self.prefs.logDiagnostics = [self.logDiagnosticsCB state];
+	
 	[prefWindow close];
 }
 
@@ -491,7 +498,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 - (IBAction)	showAboutButtonClicked:		(id)sender
 {
 #pragma unused(sender)
-	NSLog(@"Button: %@", [sender title]);
+	OrangeLog(@"Button: %@", [sender title]);
 	
 	NSString* url = nil;
 	switch ([sender tag]) 
@@ -555,7 +562,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 		BOOL add = self.prefs.openAtLogin;
 		if (add && !exists) 
 		{
-			NSLog(@"Adding to startup items.");
+			OrangeLog1(@"Adding to startup items.");
 			LSSharedFileListItemRef item = LSSharedFileListInsertItemURL(loginItems, 
 																		 kLSSharedFileListItemBeforeFirst, 
 																		 NULL, 
@@ -568,7 +575,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 		} 
 		else if (!add && exists) 
 		{
-			NSLog(@"Removing from startup items.");		
+			OrangeLog1(@"Removing from startup items.");		
 			LSSharedFileListItemRemove(loginItems, removeItem);
 		}
 		
@@ -580,7 +587,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 // --------------------------------------------------------------------------------------------------------------------
 - (void) setMessageStatus: (NSString*) imageName
 {
-	NSLog(@"Setting Status image to: %@", imageName);
+	OrangeLog(@"Setting Status image to: %@", imageName);
 	self.status.image = [NSImage imageNamed:imageName];
 }
 
@@ -590,7 +597,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 - (void)		connection:	(NSURLConnection *)connection	
      	  didFailWithError: (NSError *)error
 {
-	NSLog(@"connection Error: %@", error);
+	OrangeLog(@"connection Error: %@", error);
 	
 	[self.loginProgress stopAnimation:nil];
 	[self.loginProgress setHidden:YES];
@@ -633,7 +640,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 - (void)		connection: (NSURLConnection *)connection
         didReceiveResponse: (NSURLResponse *)response
 {
-	NSLog(@"Got response for %@", [[response URL] path]);
+	OrangeLog(@"Got response for %@", [[response URL] path]);
 	
 	// Here we zero out the data to prepare it to accept new data
 	if ( connection == statusConnection)
@@ -680,7 +687,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	{
 		NSString* output = [[[NSString alloc] initWithData:loginData 
 												  encoding:NSASCIIStringEncoding] autorelease];
-		NSLog(@"Data result: %@", output);
+		OrangeLog(@"Data result: %@", output);
 		
 		if ([output rangeOfString:@"WRONG_PASSWORD"].location != NSNotFound) 
 		{

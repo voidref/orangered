@@ -10,14 +10,15 @@
 
 @implementation Prefs
 
-static NSString*	PasswordKey		= @"password";
-static NSString*	UserNameKey		= @"username";
-static NSString*	SavePassKey		= @"save password";
-static NSString*	OpenAtLoginKey	= @"open at login";
-static NSString*	AutoUpdateKey	= @"auto update check";
-static NSString*	CheckFreqKey	= @"reddit check frequency";
-static NSString*	TimeoutKey		= @"network timeout";
-static const char*	ServiceName		= "Orangered!";
+static NSString*	PasswordKey			= @"password";
+static NSString*	UserNameKey			= @"username";
+static NSString*	SavePassKey			= @"save password";
+static NSString*	OpenAtLoginKey		= @"open at login";
+static NSString*	AutoUpdateKey		= @"auto update check";
+static NSString*	CheckFreqKey		= @"reddit check frequency";
+static NSString*	TimeoutKey			= @"network timeout";
+static NSString*	LogDiagnosticsKey	= @"Log Diagnostics";
+static const char*	ServiceName			= "Orangered!";
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -42,6 +43,7 @@ static const char*	ServiceName		= "Orangered!";
 		if (nil != [settings objectForKey:AutoUpdateKey]) self.autoUpdateCheck = [settings boolForKey:AutoUpdateKey];
 		
 		self.openAtLogin = [settings boolForKey:OpenAtLoginKey];
+		self.logDiagnostics = [settings boolForKey:LogDiagnosticsKey];
 	}
 	
 	return self;
@@ -193,6 +195,20 @@ static const char*	ServiceName		= "Orangered!";
 			   forKey:AutoUpdateKey];
 }
 
+// --------------------------------------------------------------------------------------------------------------------
+- (BOOL) logDiagnostics
+{	
+	return logDiagnostics;
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (void) setLogDiagnostics:(BOOL)value
+{	
+	logDiagnostics = value;
+	
+	[settings setBool:value 
+			   forKey:LogDiagnosticsKey];
+}
 // --------------------------------------------------------------------------------------------------------------------
 - (NSInteger) timeout
 {	

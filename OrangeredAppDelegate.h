@@ -39,6 +39,7 @@
 
     NSWindow*				prefWindow;
 	NSButton*				openAtLoginCB;
+	NSButton*				logDiagnosticsCB;
 	NSButton*				autoUpdateCheckCB;
 	NSTextField*			redditCheckIntervalTF;
 	NSTextField*			appUpdateResultTF;
@@ -81,6 +82,7 @@
 
 @property (assign) IBOutlet NSWindow*				prefWindow;
 @property (assign) IBOutlet NSButton*				openAtLoginCB;
+@property (assign) IBOutlet NSButton*				logDiagnosticsCB;
 @property (assign) IBOutlet NSButton*				autoUpdateCheckCB;
 @property (assign) IBOutlet NSTextField*			redditCheckIntervalTF;
 @property (assign) IBOutlet NSTextField*			appUpdateResultTF;

@@ -18,6 +18,7 @@
 	BOOL			savePassword;
 	BOOL			openAtLogin;
 	BOOL			autoUpdateCheck;
+	BOOL			logDiagnostics;
 	NSInteger		timeout;
 	NSInteger		redditCheckInterval;
 }
@@ -27,6 +28,7 @@
 @property BOOL					savePassword;
 @property BOOL					openAtLogin;
 @property BOOL					autoUpdateCheck;
+@property BOOL					logDiagnostics;
 @property NSInteger				timeout;
 @property NSInteger				redditCheckInterval;
 
