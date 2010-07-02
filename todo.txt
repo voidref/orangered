@@ -1,6 +1,5 @@
 Todo for 1.0
 ============
- * Create a DMG based distribution
  
  Todo for post 1.0
 =================
@@ -56,3 +55,10 @@ Todo for 1.0
  * Add feedback in the prefs window when manually checking for new version.
  * Fix about window not being topmost when invoked / New About Window
  * Option for logging diagnostics
+
+=== b2 - rc1
+ * Fix update check result when there is no update
+ * Force all windows to be focused when invoking
+ * Add Credits 'easter egg' (click on envelope in about window)
+ * Create a DMG based distribution
+ * Change download to get dmg instead of zip

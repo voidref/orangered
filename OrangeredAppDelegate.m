@@ -22,7 +22,7 @@
 
 @synthesize prefWindow, openAtLoginCB, logDiagnosticsCB, autoUpdateCheckCB, redditCheckIntervalTF, appUpdateCheckProgress, appUpdateResultTF;
 
-@synthesize aboutWindow, versionTF;
+@synthesize aboutWindow, versionTF, aboutEnvelope, creditsTF, sloganTF, logoTF;
 
 @synthesize status;
 @synthesize menu;
@@ -64,8 +64,27 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	statusData		= nil;
 	loginData		= nil;
 	appUpdateData	= nil;
+	self.versionTF.stringValue = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
+	self.creditsTF.stringValue = @"written by Alan Westbrook (voidref)\n\nSpecial Thanks to the following redditors:\n"
+								"ashleyw\n"
+								"Condawg\n"
+								"dawnerd\n"
+								"despideme\n"
+								"derekaw\n"
+								"EthicalReasoning\n"
+								"giftedmunchkin\n"
+								"kevinhoagland\n"
+								"loggedout\n" 
+								"polyGone\n"
+								"RamenStein\n"
+								"shinratdr\n"
+								"sporadicmonster\n";
+	
+	[self.creditsTF setHidden:YES];
 	
 	self.loginWindow.collectionBehavior = NSWindowCollectionBehaviorCanJoinAllSpaces;
+	self.aboutWindow.collectionBehavior = NSWindowCollectionBehaviorCanJoinAllSpaces;
+	self.prefWindow.collectionBehavior = NSWindowCollectionBehaviorCanJoinAllSpaces;
 	
 	self.status = [[[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength] retain];
 	self.status.menu = self.menu;
@@ -79,8 +98,6 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	self.currentIcon = GreyEnvelope;
 	self.noMailIcon = BlackEnvelope;
 
-	[self setupPoller];
-
 	// detect first run / empty username
 	// We have to have an account name in order to check status!
 	if (nil == prefs.name) 
@@ -91,6 +108,8 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	{
 		[self updateStatus:nil];
 	}
+
+	[self setupPoller];
 }
 
 // -------------------------------------------------------------------------------------------------------------------
@@ -335,7 +354,10 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 
 	if (nil != self.prefs.password) [passwordentry setStringValue:self.prefs.password];			
 	 
+	self.appUpdateResultTF.stringValue = @"";
+
 	// open window and force to the front
+	[NSApp activateIgnoringOtherApps:YES];
 	[self.loginWindow makeKeyAndOrderFront:nil];
 	[self.loginWindow orderFrontRegardless];
 }
@@ -350,6 +372,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	[self.redditCheckIntervalTF setStringValue: [NSString stringWithFormat:@"%d", self.prefs.redditCheckInterval]];
 	
 	// open window and force to the front
+	[NSApp activateIgnoringOtherApps:YES];
 	[prefWindow makeKeyAndOrderFront:nil];
 	[prefWindow orderFrontRegardless];
 }
@@ -411,7 +434,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	self.appUpdateResultTF.stringValue = @"";
 	self.update.hidden = YES;
 	self.about.hidden = NO;
-	system("open http://www.voidref.com/Site/Orangered.zip &");	
+	system("open http://www.voidref.com/Site/Orangered.dmg &");	
 	self.noMailIcon = BlackEnvelope;
 	
 	// We can do this because we probably will not be checking again.
@@ -456,7 +479,8 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	NSString* checkResult = [[[NSString alloc] initWithData:appUpdateData 
 													encoding:NSASCIIStringEncoding] autorelease];
 
-	if ([checkResult compare:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]] != NSOrderedSame) 
+	NSString* currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
+	if ([checkResult compare:currentVersion] != NSOrderedSame) 
 	{
 		self.appUpdateResultTF.stringValue = [NSString stringWithFormat:@"New version available: %@", checkResult];
 		self.update.hidden = NO;
@@ -466,6 +490,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 		self.about.hidden = YES;
 	}
 	
+	self.appUpdateResultTF.stringValue = [NSString stringWithFormat:@"Orangered! is up to date, Version: %@", currentVersion];
 	[self.appUpdateCheckProgress stopAnimation:nil];
 	[self.appUpdateCheckProgress setHidden:YES];
 }
@@ -487,9 +512,14 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 - (IBAction)	showAboutWindow:		(id)sender
 {
 #pragma unused(sender)
-	
-	self.versionTF.stringValue = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
+	[self.logoTF setHidden:NO];
+	[self.sloganTF setHidden:NO];
+	[self.versionTF setHidden:NO];
+	[self.aboutEnvelope setHidden:NO];
+	[self.creditsTF setHidden:YES];	
+
 	// open window and force to the front
+	[NSApp activateIgnoringOtherApps:YES];
 	[aboutWindow makeKeyAndOrderFront:nil];
 	[aboutWindow orderFrontRegardless];
 }
@@ -521,6 +551,17 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 		NSString* command = [NSString stringWithFormat:@"open %@ &", url];
 		system([command UTF8String]);
 	}
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+- (IBAction)	aboutEnvelopeClicked:	(id)sender
+{
+#pragma unused(sender)
+	[self.logoTF setHidden:YES];
+	[self.sloganTF setHidden:YES];
+	[self.versionTF setHidden:YES];
+	[self.aboutEnvelope setHidden:YES];
+	[self.creditsTF setHidden:NO];
 }
 
 // --------------------------------------------------------------------------------------------------------------------

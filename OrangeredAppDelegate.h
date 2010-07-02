@@ -29,6 +29,10 @@
 	
 	NSWindow*				aboutWindow;
 	NSTextField*			versionTF;
+	NSButton*				aboutEnvelope;
+	NSTextField*			creditsTF;
+	NSTextField*			sloganTF;
+	NSTextField*			logoTF;
 	
     NSWindow*				loginWindow;
 	NSTextField*			userentry;
@@ -70,6 +74,10 @@
 
 @property (assign) IBOutlet NSWindow*				aboutWindow;
 @property (assign) IBOutlet NSTextField*			versionTF;
+@property (assign) IBOutlet NSButton*				aboutEnvelope;
+@property (assign) IBOutlet NSTextField*			creditsTF;
+@property (assign) IBOutlet NSTextField*			sloganTF;
+@property (assign) IBOutlet NSTextField*			logoTF;
 
 
 @property (assign) IBOutlet NSWindow*				loginWindow;
@@ -101,6 +109,7 @@
 - (IBAction)	loadAtStartupClicked:	(id)sender;
 - (IBAction)	showAboutWindow:		(id)sender;
 - (IBAction)	showAboutButtonClicked:	(id)sender;
+- (IBAction)	aboutEnvelopeClicked:	(id)sender;
 
 - (void)		setupPoller;
 - (void)		login;
