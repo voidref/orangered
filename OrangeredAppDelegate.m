@@ -8,7 +8,6 @@
 
 #import "OrangeredAppDelegate.h"
 #import "Foundation/NSURLConnection.h"
-#import "NSDataGzipCategory.h"
 
 
 // I can't believe this is working.
@@ -367,9 +366,10 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 {
 #pragma unused(sender)
 	[self.autoUpdateCheckCB setState: self.prefs.autoUpdateCheck];
-	[logDiagnosticsCB setState:self.prefs.logDiagnostics];
+	[self.logDiagnosticsCB setState:self.prefs.logDiagnostics];
 	[self.openAtLoginCB setState: self.prefs.openAtLogin];
 	[self.redditCheckIntervalTF setStringValue: [NSString stringWithFormat:@"%d", self.prefs.redditCheckInterval]];
+	self.appUpdateResultTF.stringValue = @"";
 	
 	// open window and force to the front
 	[NSApp activateIgnoringOtherApps:YES];
@@ -395,8 +395,8 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 		[self setupPoller];
 	}
 
-	self.prefs.autoUpdateCheck = [self.autoUpdateCheckCB state];
-	self.prefs.logDiagnostics = [self.logDiagnosticsCB state];
+	self.prefs.autoUpdateCheck = (BOOL)[self.autoUpdateCheckCB state];
+	self.prefs.logDiagnostics = (BOOL)[self.logDiagnosticsCB state];
 	
 	[prefWindow close];
 }
@@ -453,7 +453,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	NSURL* url = [NSURL URLWithString:@"http://www.voidref.com/Site/orangered_version.txt"];
 	
 	NSURLRequest* request = [NSURLRequest requestWithURL:url
-											 cachePolicy:NSURLRequestUseProtocolCachePolicy
+											 cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
 										 timeoutInterval:self.prefs.timeout];
 	
 	[appUpdateConnection release];
@@ -469,7 +469,7 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	else 
 	{
 		// Is there a way to find the exact error?
-		self.loginerror.stringValue = @"Could not estabilsh connection to Orangered! update server.";
+		self.appUpdateResultTF.stringValue = @"Could not estabilsh connection to Orangered! update server.";
 	}
 }
 
@@ -489,8 +489,11 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 		[self setMessageStatus: self.noMailIcon];
 		self.about.hidden = YES;
 	}
-	
-	self.appUpdateResultTF.stringValue = [NSString stringWithFormat:@"Orangered! is up to date, Version: %@", currentVersion];
+	else 
+	{
+		self.appUpdateResultTF.stringValue = [NSString stringWithFormat:@"Orangered! is up to date, Version: %@", currentVersion];
+	}
+
 	[self.appUpdateCheckProgress stopAnimation:nil];
 	[self.appUpdateCheckProgress setHidden:YES];
 }

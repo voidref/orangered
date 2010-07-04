@@ -1,8 +1,9 @@
-Todo for 1.0
-============
+Todo for 1.0.1
+==============
+ * Keyboard accelearators for window closing (and possibly copy/paste as well)
  
- Todo for post 1.0
-=================
+ Todo for post 1.0.1
+=====================
  * Write a plugin api so people someone can write growl integration if they want. (I'll leave the GROWL ifdefs in the source until this happens)
  * Option to unobscure password
  * Options for sounds
@@ -62,3 +63,9 @@ Todo for 1.0
  * Add Credits 'easter egg' (click on envelope in about window)
  * Create a DMG based distribution
  * Change download to get dmg instead of zip
+ 
+=== rc1 - 1
+ * Changed version number
+ 
+=== 1.0 - 1.0.1
+ * Fix app update check bug.

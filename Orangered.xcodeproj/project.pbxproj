@@ -13,8 +13,6 @@
 		2D7D31B111CCB7FC00D9A067 /* orangered_version.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2D7D31B011CCB7FC00D9A067 /* orangered_version.txt */; };
 		2D7D323811CCBF9200D9A067 /* BlueEnvelope.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D7D323711CCBF9200D9A067 /* BlueEnvelope.png */; };
 		2D7D32B611CD47DA00D9A067 /* todo.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2D7D32B511CD47DA00D9A067 /* todo.txt */; };
-		2D7D340011CF0B9400D9A067 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7D33FF11CF0B9400D9A067 /* libz.dylib */; };
-		2D7D360F11D1315D00D9A067 /* NSDataGzipCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D7D360E11D1315D00D9A067 /* NSDataGzipCategory.m */; };
 		2D7D369511D1FC9C00D9A067 /* HighlightEnvelope.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D7D369411D1FC9C00D9A067 /* HighlightEnvelope.png */; };
 		2D7D36C311D6D5D100D9A067 /* prefs.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D7D36C211D6D5D100D9A067 /* prefs.m */; };
 		2D7D38A511D8750100D9A067 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7D38A411D8750100D9A067 /* Security.framework */; };
@@ -44,9 +42,6 @@
 		2D7D31B011CCB7FC00D9A067 /* orangered_version.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = orangered_version.txt; sourceTree = "<group>"; };
 		2D7D323711CCBF9200D9A067 /* BlueEnvelope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BlueEnvelope.png; sourceTree = "<group>"; };
 		2D7D32B511CD47DA00D9A067 /* todo.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = todo.txt; sourceTree = "<group>"; };
-		2D7D33FF11CF0B9400D9A067 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		2D7D360D11D1315D00D9A067 /* NSDataGzipCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataGzipCategory.h; sourceTree = "<group>"; };
-		2D7D360E11D1315D00D9A067 /* NSDataGzipCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataGzipCategory.m; sourceTree = "<group>"; };
 		2D7D369411D1FC9C00D9A067 /* HighlightEnvelope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HighlightEnvelope.png; sourceTree = "<group>"; };
 		2D7D36C111D6D5D100D9A067 /* prefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefs.h; sourceTree = "<group>"; };
 		2D7D36C211D6D5D100D9A067 /* prefs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = prefs.m; sourceTree = "<group>"; };
@@ -67,7 +62,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
-				2D7D340011CF0B9400D9A067 /* libz.dylib in Frameworks */,
 				2D7D38A511D8750100D9A067 /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -78,8 +72,6 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				2D7D360D11D1315D00D9A067 /* NSDataGzipCategory.h */,
-				2D7D360E11D1315D00D9A067 /* NSDataGzipCategory.m */,
 				256AC3D80F4B6AC300CF3369 /* OrangeredAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */,
 				2D7D36C111D6D5D100D9A067 /* prefs.h */,
@@ -124,7 +116,6 @@
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				2D7D32B511CD47DA00D9A067 /* todo.txt */,
-				2D7D33FF11CF0B9400D9A067 /* libz.dylib */,
 				2D7D38A411D8750100D9A067 /* Security.framework */,
 			);
 			name = Orangered;
@@ -238,7 +229,6 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				256AC3DA0F4B6AC300CF3369 /* OrangeredAppDelegate.m in Sources */,
-				2D7D360F11D1315D00D9A067 /* NSDataGzipCategory.m in Sources */,
 				2D7D36C311D6D5D100D9A067 /* prefs.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
