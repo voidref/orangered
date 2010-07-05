@@ -51,7 +51,8 @@
 
 	NSString*				currentIcon;
 	NSString*				noMailIcon;
-	NSTimer*				poller;
+	NSTimer*				statusPoller;
+	NSTimer*				updatePoller;
 	
 	NSMutableData*			statusData;
 	NSMutableData*			loginData;
@@ -97,7 +98,6 @@
 
 @property (retain)          NSString*				currentIcon;
 @property (retain)          NSString*				noMailIcon;
-@property (retain)			NSTimer*				poller;
 
 - (IBAction)	loginChanged:			(id)sender;
 - (IBAction)	showLoginWindow:		(id)sender;
@@ -111,7 +111,7 @@
 - (IBAction)	showAboutButtonClicked:	(id)sender;
 - (IBAction)	aboutEnvelopeClicked:	(id)sender;
 
-- (void)		setupPoller;
+- (void)		setupPollers;
 - (void)		login;
 - (void)		dealloc;
 - (void)		updateStatus: (NSTimer*)theTimer;

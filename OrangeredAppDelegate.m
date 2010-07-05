@@ -25,7 +25,6 @@
 
 @synthesize status;
 @synthesize menu;
-@synthesize poller;
 @synthesize update;
 @synthesize about;
 @synthesize currentIcon;
@@ -40,7 +39,7 @@ static NSString* HighlightEnvelope  = @"HighlightEnvelope";
 static NSString* ModMailIcon        = @"modmail";
 
 // eventually we will use the version string in the info.plist.
-static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
+static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 
 // Sadly a macro seems the easiest way to do this right now...
 #define OrangeLog1(x) if (true == self.prefs.logDiagnostics) { NSLog(x); }
@@ -63,7 +62,8 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	statusData		= nil;
 	loginData		= nil;
 	appUpdateData	= nil;
-	self.versionTF.stringValue = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
+	updatePoller    = nil;
+	self.versionTF.stringValue = [NSString stringWithFormat:@"Version %@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
 	self.creditsTF.stringValue = @"written by Alan Westbrook (voidref)\n\nSpecial Thanks to the following redditors:\n"
 								"ashleyw\n"
 								"Condawg\n"
@@ -107,12 +107,12 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	{
 		[self updateStatus:nil];
 	}
-
-	[self setupPoller];
+	
+	[self setupPollers];
 }
 
 // -------------------------------------------------------------------------------------------------------------------
-- (void) setupPoller
+- (void) setupPollers
 {
 	NSInteger interval = self.prefs.redditCheckInterval * 60;
 	
@@ -121,15 +121,32 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 		interval = 60;
 	}
 	
-	[self.poller invalidate];
-	[self.poller release];
-	self.poller = [NSTimer scheduledTimerWithTimeInterval:interval
-												   target:self
-												 selector:@selector(updateStatus:)
-												 userInfo:nil
-												  repeats:YES];
-	
-	OrangeLog(@"Poller set up: %@", self.poller);
+	[statusPoller invalidate];
+	[statusPoller release];
+	statusPoller = [NSTimer scheduledTimerWithTimeInterval:interval
+													target:self
+												  selector:@selector(updateStatus:)
+												  userInfo:nil
+												   repeats:YES];
+	// App update poller.
+	if (YES == self.prefs.autoUpdateCheck)
+	{
+		if (nil == updatePoller) 
+		{
+			updatePoller = [NSTimer scheduledTimerWithTimeInterval:AppUpdatePollInterval
+																 target:self
+															   selector:@selector(checkForAppUpdate:)
+															   userInfo:nil
+																repeats:YES];
+		}
+	}
+	else if (nil != updatePoller) 
+	{
+		[updatePoller invalidate];
+		[updatePoller release];
+		updatePoller = nil;
+	}
+
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -145,8 +162,9 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 	[loginData release];
 	[appUpdateData release];
 	
-	[self.poller release];
-
+	[statusPoller release];
+	[updatePoller release];
+	
 	[super dealloc];
 }
 
@@ -329,17 +347,6 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 
 	OrangeLog(@"CheckResult: %@", statusResult);
 	[self setMessageStatus: self.currentIcon];
-	
-	// Check for update every AppUpdatePollInterval minutes hours or so..
-	if (YES == self.prefs.autoUpdateCheck)
-	{
-		static int appupdatepoller = 0;
-		if ((appupdatepoller % AppUpdatePollInterval) == 0)
-		{
-			[self checkForAppUpdate:nil];
-		}
-		++appupdatepoller;
-	}
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -389,13 +396,24 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 		minutes = 1;
 	}
 	
+	bool adjustPollers = false;
 	if (minutes != self.prefs.redditCheckInterval) 
 	{
 		self.prefs.redditCheckInterval = minutes;
-		[self setupPoller];
+		adjustPollers = true;
 	}
 
-	self.prefs.autoUpdateCheck = (BOOL)[self.autoUpdateCheckCB state];
+	if (self.prefs.autoUpdateCheck != (BOOL)[self.autoUpdateCheckCB state])
+	{
+		self.prefs.autoUpdateCheck = (BOOL)[self.autoUpdateCheckCB state];
+		adjustPollers = true;		
+	}
+	
+	if (true == adjustPollers)
+	{
+		[self setupPollers];
+	}
+	
 	self.prefs.logDiagnostics = (BOOL)[self.logDiagnosticsCB state];
 	
 	[prefWindow close];
@@ -445,7 +463,9 @@ static const int AppUpdatePollInterval    = (60 * 4); // 4 hours
 - (IBAction) checkForAppUpdate: (id)sender
 {
 #pragma unused(sender)
-	
+
+	if (NO == self.prefs.autoUpdateCheck) return;
+
 	[self.appUpdateCheckProgress startAnimation:nil];
 	[self.appUpdateCheckProgress setHidden:NO];
 	self.appUpdateResultTF.stringValue = @"Checking for update...";

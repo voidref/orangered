@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		256AC3DA0F4B6AC300CF3369 /* OrangeredAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */; };
+		2D255C5E11E1DE7C00C5B32D /* Orangered.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D255C5D11E1DE7B00C5B32D /* Orangered.png */; };
 		2D6EB99111CC0B1D008888B7 /* Orangered.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2D6EB99011CC0B1D008888B7 /* Orangered.icns */; };
 		2D7D31B111CCB7FC00D9A067 /* orangered_version.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2D7D31B011CCB7FC00D9A067 /* orangered_version.txt */; };
 		2D7D323811CCBF9200D9A067 /* BlueEnvelope.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D7D323711CCBF9200D9A067 /* BlueEnvelope.png */; };
@@ -38,6 +39,7 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		2D255C5D11E1DE7B00C5B32D /* Orangered.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Orangered.png; sourceTree = "<group>"; };
 		2D6EB99011CC0B1D008888B7 /* Orangered.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Orangered.icns; sourceTree = "<group>"; };
 		2D7D31B011CCB7FC00D9A067 /* orangered_version.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = orangered_version.txt; sourceTree = "<group>"; };
 		2D7D323711CCBF9200D9A067 /* BlueEnvelope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BlueEnvelope.png; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2D255C5D11E1DE7B00C5B32D /* Orangered.png */,
 				2D7D38B611D8789200D9A067 /* modmail.png */,
 				2D7D369411D1FC9C00D9A067 /* HighlightEnvelope.png */,
 				2D7D323711CCBF9200D9A067 /* BlueEnvelope.png */,
@@ -217,6 +220,7 @@
 				2D7D32B611CD47DA00D9A067 /* todo.txt in Resources */,
 				2D7D369511D1FC9C00D9A067 /* HighlightEnvelope.png in Resources */,
 				2D7D38B711D8789200D9A067 /* modmail.png in Resources */,
+				2D255C5E11E1DE7C00C5B32D /* Orangered.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

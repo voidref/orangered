@@ -1,6 +1,5 @@
 Todo for 1.0.1
 ==============
- * Keyboard accelearators for window closing (and possibly copy/paste as well)
  
  Todo for post 1.0.1
 =====================
@@ -69,3 +68,10 @@ Todo for 1.0.1
  
 === 1.0 - 1.0.1
  * Fix app update check bug.
+ * Keyboard accelearators for window closing (Command + W)
+ * Updated version info display to show "Version X" instead of just "X"
+ * Change app update checker to 1 time per day instead of being based on how often your status is checked.
+ * Updated app icon, lets hope it's ok with reddit, it may be infringing...
+ 
+ 
+ 
