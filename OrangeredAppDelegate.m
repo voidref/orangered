@@ -134,10 +134,10 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 		if (nil == updatePoller) 
 		{
 			updatePoller = [NSTimer scheduledTimerWithTimeInterval:AppUpdatePollInterval
-																 target:self
-															   selector:@selector(checkForAppUpdate:)
-															   userInfo:nil
-																repeats:YES];
+															target:self
+														  selector:@selector(checkForAppUpdate:)
+														  userInfo:nil
+														   repeats:YES];
 		}
 	}
 	else if (nil != updatePoller) 
@@ -344,6 +344,11 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 		self.currentIcon = ModMailIcon;
 		hasModMail = YES;
 	}
+	else 
+	{
+		hasModMail = NO;
+	}
+
 
 	OrangeLog(@"CheckResult: %@", statusResult);
 	[self setMessageStatus: self.currentIcon];
@@ -430,18 +435,27 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 {
 #pragma unused(sender)
 
-	// Lets assume they don't want to see the modified envelope after they do this or wait for the next check.
-	self.currentIcon = self.noMailIcon;
-	[self setMessageStatus: self.currentIcon];
-
+	// Why didn't I do this with enums?
 	if (NO == hasModMail) 
 	{
-		system("open http://www.reddit.com/message/unread/ &");
+		if (self.currentIcon == self.noMailIcon) 
+		{
+			system("open http://www.reddit.com/message/inbox/ &");			
+		}
+		else
+		{
+			system("open http://www.reddit.com/message/unread/ &");			
+		}
 	}
 	else 
 	{
 		system("open http://www.reddit.com/message/moderator/ &");
+		hasModMail = NO;
 	}
+	
+	// Lets assume they don't want to see the modified envelope after they do this or wait for the next check.
+	self.currentIcon = self.noMailIcon;
+	[self setMessageStatus: self.currentIcon];
 }
 
 // --------------------------------------------------------------------------------------------------------------------

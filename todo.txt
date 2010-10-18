@@ -11,6 +11,7 @@ Todo for 1.0.1
  * http://sparkle.andymatuschak.org/ integration
  * put app up on Bodega
  * Multiple account checking
+ * Use system password input instead of my custom one. (Research this, is there such a thing?)
  
 === Changes 1.2 -> 1.3
  * No longer shells out to curl for reddit related networking
@@ -73,5 +74,12 @@ Todo for 1.0.1
  * Change app update checker to 1 time per day instead of being based on how often your status is checked.
  * Updated app icon, lets hope it's ok with reddit, it may be infringing...
  
+=== 1.0.1 - X
+ * Upddate login and about look. (Helevetica Neue / watermark graphics)
  
+=== 1.0.2
+ * Fix moderator message bug (http://www.reddit.com/r/Orangered_app/comments/ds7ru/orangeredbug_after_receiving_a_moderator_message/)
+ * Change no new message mailbox opening to all messages instead of new messages 
+   - Thanks to Wizpig64 for both the aforementioned changes
+ * Fix bug where clicking the console log option would also toggle the start at login option.
  
