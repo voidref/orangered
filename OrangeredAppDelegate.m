@@ -209,7 +209,7 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 	
 	OrangeLog(@"Logging in user: %@", self.prefs.name);
 	
-	NSURL* url = [NSURL URLWithString:@"http://www.reddit.com/api/login"];
+	NSURL* url = [NSURL URLWithString:@"https://ssl.reddit.com/api/login"];
 	
 	NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url
 														   cachePolicy:NSURLRequestUseProtocolCachePolicy
