@@ -55,7 +55,7 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 	[self registrationDictionaryForGrowl];
 #endif
 	
-	self.prefs = [[Prefs alloc] init];
+	self.prefs = [[[Prefs alloc] init] autorelease];
 	[self setLoadAtStartup];
 	
 	hasModMail		= NO;
@@ -85,7 +85,7 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 	self.aboutWindow.collectionBehavior = NSWindowCollectionBehaviorCanJoinAllSpaces;
 	self.prefWindow.collectionBehavior = NSWindowCollectionBehaviorCanJoinAllSpaces;
 	
-	self.status = [[[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength] retain];
+	self.status = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
 	self.status.menu = self.menu;
 	self.status.highlightMode = YES;
 	self.status.alternateImage = [NSImage imageNamed:HighlightEnvelope];
@@ -195,7 +195,7 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-- (IBAction) login
+- (void) login
 {
 	if ((self.prefs.name.length < 1) || (self.prefs.password.length < 1))
 	{
@@ -380,7 +380,7 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 	[self.autoUpdateCheckCB setState: self.prefs.autoUpdateCheck];
 	[self.logDiagnosticsCB setState:self.prefs.logDiagnostics];
 	[self.openAtLoginCB setState: self.prefs.openAtLogin];
-	[self.redditCheckIntervalTF setStringValue: [NSString stringWithFormat:@"%d", self.prefs.redditCheckInterval]];
+	[self.redditCheckIntervalTF setStringValue: [NSString stringWithFormat:@"%ld", self.prefs.redditCheckInterval]];
 	self.appUpdateResultTF.stringValue = @"";
 	
 	// open window and force to the front

@@ -79,7 +79,7 @@ static const char*	ServiceName			= "Orangered!";
 {
 	SecKeychainItemRef ref = nil;
 	UInt32 len = 0;
-	void* data = nil;
+	void* data = NULL;
 	OSStatus status =	
 	SecKeychainFindGenericPassword (
 									NULL,					// default keychain
@@ -96,8 +96,11 @@ static const char*	ServiceName			= "Orangered!";
 	{
 		password = [[NSString alloc] initWithBytes:data
 											length:len
-										encoding:NSUTF8StringEncoding];
+                                          encoding:NSUTF8StringEncoding];
+
 	}
+
+    if (NULL != data) SecKeychainItemFreeContent(NULL, data);
 
 	return status;
 }
