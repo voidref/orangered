@@ -89,3 +89,7 @@ Todo for 1.0.1
  * Fix the goto site button to go to voidref.com/orangered/Orangered!.html
  * Updated the todo.txt (famously misnamed at this point) with this section
  
+=== 1.0.4
+ * Apparently I am an idiot, and missed the previous 1.0.3 release somehow.
+ * Fixed check against version and removed whitespace that suddenly started showing up
+

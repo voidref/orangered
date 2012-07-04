@@ -528,8 +528,9 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 - (void) parseAppUpdateResult
 {
 	NSString* checkResult = [[[NSString alloc] initWithData:appUpdateData 
-													encoding:NSASCIIStringEncoding] autorelease];
+                                                   encoding:NSUTF8StringEncoding] autorelease];
 
+    checkResult = [checkResult stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	NSString* currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
 	if (([checkResult compare:currentVersion] != NSOrderedSame) &&
         (NO == [checkResult hasPrefix:@"<"])    // This happens on website error
@@ -721,7 +722,6 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 {
 	if (connection == statusConnection)
 	{
-        
 		[statusData appendData:data];
 	}
 	else if (connection == loginConnection)
