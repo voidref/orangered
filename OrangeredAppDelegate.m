@@ -17,11 +17,27 @@
 
 @implementation OrangeredAppDelegate
 
-@synthesize loginWindow, userentry, passwordentry, savepassword, loginerror, loginProgress;
+@synthesize loginWindow,
+            userentry,
+            passwordentry,
+            savepassword,
+            loginerror,
+            loginProgress;
 
-@synthesize prefWindow, openAtLoginCB, logDiagnosticsCB, autoUpdateCheckCB, redditCheckIntervalTF, appUpdateCheckProgress, appUpdateResultTF;
+@synthesize prefWindow,
+            openAtLoginCB,
+            logDiagnosticsCB,
+            autoUpdateCheckCB,
+            redditCheckIntervalTF,
+            appUpdateCheckProgress,
+            appUpdateResultTF;
 
-@synthesize aboutWindow, versionTF, aboutEnvelope, creditsTF, sloganTF, logoTF;
+@synthesize aboutWindow,
+            versionTF,
+            aboutEnvelope,
+            creditsTF,
+            sloganTF,
+            logoTF;
 
 @synthesize status;
 @synthesize menu;
@@ -38,7 +54,6 @@ static NSString* OrangeredEnvelope  = @"OrangeredEnvelope";
 static NSString* HighlightEnvelope  = @"HighlightEnvelope";
 static NSString* ModMailIcon        = @"modmail";
 
-// eventually we will use the version string in the info.plist.
 static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 
 // Sadly a macro seems the easiest way to do this right now...
@@ -50,6 +65,8 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 {
 	// We don't use this. Must appease the warning gods.
 #pragma unused(aNotification)
+    
+    // TODO: Replace this with system notification center calls!
 #if GROWL
 	[GrowlApplicationBridge setGrowlDelegate: self];
 	[self registrationDictionaryForGrowl];
@@ -484,7 +501,7 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 	[self.appUpdateCheckProgress setHidden:NO];
 	self.appUpdateResultTF.stringValue = @"Checking for update...";
 
-	NSURL* url = [NSURL URLWithString:@"http://www.voidref.com/Site/orangered_version.txt"];
+	NSURL* url = [NSURL URLWithString:@"http://www.voidref.com/orangered/orangered_version.txt"];
 	
 	NSURLRequest* request = [NSURLRequest requestWithURL:url
 											 cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
@@ -492,7 +509,7 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 	
 	[appUpdateConnection release];
 	appUpdateConnection = [[NSURLConnection alloc] initWithRequest:request 
-			  										   delegate:self];
+                                                          delegate:self];
 	if (nil != appUpdateConnection) 
 	{
 		if (nil == appUpdateData) 
@@ -514,7 +531,9 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 													encoding:NSASCIIStringEncoding] autorelease];
 
 	NSString* currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
-	if ([checkResult compare:currentVersion] != NSOrderedSame) 
+	if (([checkResult compare:currentVersion] != NSOrderedSame) &&
+        (NO == [checkResult hasPrefix:@"<"])    // This happens on website error
+       )
 	{
 		self.appUpdateResultTF.stringValue = [NSString stringWithFormat:@"New version available: %@", checkResult];
 		self.update.hidden = NO;
@@ -571,7 +590,7 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 	switch ([sender tag]) 
 	{
 		case 0:
-			url = @"http://www.voidref.com/Site/Orangered!.html";
+			url = @"http://www.voidref.com/orangered/Orangered!.html";
 			break;
 			
 		case 1:
@@ -700,8 +719,9 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 - (void)		connection:	(NSURLConnection *)connection	
 	        didReceiveData: (NSData *)data
 {
-	if ( connection == statusConnection)
+	if (connection == statusConnection)
 	{
+        
 		[statusData appendData:data];
 	}
 	else if (connection == loginConnection)
@@ -721,7 +741,7 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 	OrangeLog(@"Got response for %@", [[response URL] path]);
 	
 	// Here we zero out the data to prepare it to accept new data
-	if ( connection == statusConnection)
+	if (connection == statusConnection)
 	{
 		statusData.length = 0;
 	}
