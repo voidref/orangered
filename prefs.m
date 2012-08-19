@@ -50,11 +50,6 @@ static const char*	ServiceName			= "Orangered!";
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-- (void) dealloc
-{	
-	[password release];
-	[super dealloc];
-}
 
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -65,10 +60,10 @@ static const char*	ServiceName			= "Orangered!";
 									NULL,							// default keychain
 									10,								// length of service name
 									ServiceName,					// service name
-									(UInt32)name.length,					// length of account name
-									[name UTF8String],				// account name
-									(UInt32)password.length,				// length of password
-									[password UTF8String],			// pointer to password data
+									(UInt32)self.name.length,					// length of account name
+									[self.name UTF8String],				// account name
+									(UInt32)self.password.length,				// length of password
+									[self.password UTF8String],			// pointer to password data
 									NULL							// the item reference
 								);
     return status;
@@ -85,8 +80,8 @@ static const char*	ServiceName			= "Orangered!";
 									NULL,					// default keychain
 									10,					// length of service name
 									ServiceName,			// service name
-									(UInt32)name.length,          // length of account name
-									[name UTF8String],	// account name
+									(UInt32)self.name.length,          // length of account name
+									[self.name UTF8String],	// account name
 									&len,		// length of password
 									&data,			// pointer to password data
 									&ref				// the item reference
@@ -94,7 +89,7 @@ static const char*	ServiceName			= "Orangered!";
 	
 	if (len > 0)
 	{
-		password = [[NSString alloc] initWithBytes:data
+		self.password = [[NSString alloc] initWithBytes:data
 											length:len
                                           encoding:NSUTF8StringEncoding];
 
@@ -108,21 +103,19 @@ static const char*	ServiceName			= "Orangered!";
 // --------------------------------------------------------------------------------------------------------------------
 - (NSString*) password
 {
-	if (nil == password) 
+	if (_password.length < 1)
 	{
 		// see if it's in the user defaults
 		[self getPasswordFromKeychain]; 
 	}
 	
-	return password;
+	return _password;
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 - (void) setPassword:(NSString*)value
 {	
-	[password release];
-	password = value;
-	[password retain];
+	_password = value;
 
 	if (NSOnState == self.savePassword) 
 	{
@@ -133,95 +126,65 @@ static const char*	ServiceName			= "Orangered!";
 // --------------------------------------------------------------------------------------------------------------------
 - (NSString*) name
 {
-	if (nil == name) 
+	if (_name.length < 1)
 	{
 		// see if it's in the user defaults
-		name = [settings stringForKey:UserNameKey]; 
+		self.name = [settings stringForKey:UserNameKey];
 	}
 	
-	return name;
+	return _name;
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 - (void) setName:(NSString*)value
 {	
-	[name release];
-	name = value;
-	[name retain];
+	_name = value;
 	
 	[settings setObject:value 
 				 forKey:UserNameKey];
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-- (BOOL) savePassword
-{	
-	return savePassword;
-}
-
-// --------------------------------------------------------------------------------------------------------------------
 - (void) setSavePassword:(BOOL)value
 {	
-	savePassword = value;
+	_savePassword = value;
 	
 	[settings setBool:value 
-				 forKey:SavePassKey];
-}
-
-// --------------------------------------------------------------------------------------------------------------------
-- (BOOL) openAtLogin
-{	
-	return openAtLogin;
+               forKey:SavePassKey];
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 - (void) setOpenAtLogin:(BOOL)value
 {	
-	openAtLogin = value;
+	_openAtLogin = value;
 	
 	[settings setBool:value 
 			   forKey:OpenAtLoginKey];
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-- (BOOL) autoUpdateCheck
-{	
-	return autoUpdateCheck;
-}
-
-// --------------------------------------------------------------------------------------------------------------------
 - (void) setAutoUpdateCheck:(BOOL)value
 {	
-	autoUpdateCheck = value;
+	_autoUpdateCheck = value;
 	
 	[settings setBool:value 
 			   forKey:AutoUpdateKey];
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-- (BOOL) logDiagnostics
-{	
-	return logDiagnostics;
-}
-
-// --------------------------------------------------------------------------------------------------------------------
 - (void) setLogDiagnostics:(BOOL)value
 {	
-	logDiagnostics = value;
+	_logDiagnostics = value;
 	
 	[settings setBool:value 
 			   forKey:LogDiagnosticsKey];
 }
-// --------------------------------------------------------------------------------------------------------------------
-- (NSInteger) timeout
-{	
-	return timeout;
-}
+
 
 // --------------------------------------------------------------------------------------------------------------------
 - (void) setTimeout:(NSInteger)value
 {	
-	timeout = value;
+	_timeout = value;
 	
 	[settings setInteger:value 
 			   forKey:TimeoutKey];
@@ -230,13 +193,13 @@ static const char*	ServiceName			= "Orangered!";
 // --------------------------------------------------------------------------------------------------------------------
 - (NSInteger) redditCheckInterval
 {	
-	return redditCheckInterval / 60;
+	return _redditCheckInterval / 60;
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 - (void) setRedditCheckInterval:(NSInteger)value
 {	
-	redditCheckInterval = value * 60;
+	_redditCheckInterval = value * 60;
 	
 	[settings setInteger:value 
 			   forKey:CheckFreqKey];

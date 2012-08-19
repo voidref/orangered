@@ -9,48 +9,12 @@
 #import <Cocoa/Cocoa.h>
 #import "prefs.h"
 
-#define GROWL 0
-
-#if GROWL
-#import "Growl/Growl.h"
-
-@interface OrangeredAppDelegate : NSObject <NSApplicationDelegate, NSMenuDelegate, GrowlApplicationBridgeDelegate> 
-#else
-@interface OrangeredAppDelegate : NSObject <NSApplicationDelegate, NSMenuDelegate> 
-#endif
+@interface OrangeredAppDelegate : NSObject <NSApplicationDelegate, NSMenuDelegate, NSUserNotificationCenterDelegate>
 {
-	NSStatusItem*			status;
-	NSMenu*					menu;
 	NSMenuItem*				preference;
-	NSMenuItem*				update;
-	NSMenuItem*				about;
 	
 	BOOL					hasModMail;
 	
-	NSWindow*				aboutWindow;
-	NSTextField*			versionTF;
-	NSButton*				aboutEnvelope;
-	NSTextField*			creditsTF;
-	NSTextField*			sloganTF;
-	NSTextField*			logoTF;
-	
-    NSWindow*				loginWindow;
-	NSTextField*			userentry;
-	NSTextField*			passwordentry;
-	NSTextField*			loginerror;
-	NSButton*				savepassword;
-	NSProgressIndicator*	loginProgress;
-
-    NSWindow*				prefWindow;
-	NSButton*				openAtLoginCB;
-	NSButton*				logDiagnosticsCB;
-	NSButton*				autoUpdateCheckCB;
-	NSTextField*			redditCheckIntervalTF;
-	NSTextField*			appUpdateResultTF;
-	NSProgressIndicator*	appUpdateCheckProgress;
-
-	NSString*				currentIcon;
-	NSString*				noMailIcon;
 	NSTimer*				statusPoller;
 	NSTimer*				updatePoller;
 	
@@ -61,43 +25,40 @@
 	NSURLConnection*		statusConnection;
 	NSURLConnection*		loginConnection;
 	NSURLConnection*		appUpdateConnection;
-
-	
-	Prefs*					prefs;
 }
 
-@property (assign) Prefs* prefs;
+@property (strong, atomic) Prefs* prefs;
 
-@property (assign)			NSStatusItem*			status;
-@property (assign) IBOutlet NSMenu*					menu;
-@property (assign) IBOutlet NSMenuItem*				update;
-@property (assign) IBOutlet NSMenuItem*				about;
+@property (strong, atomic)			NSStatusItem*			status;
+@property (strong, atomic) IBOutlet NSMenu*					menu;
+@property (strong, atomic) IBOutlet NSMenuItem*				update;
+@property (strong, atomic) IBOutlet NSMenuItem*				about;
 
-@property (assign) IBOutlet NSWindow*				aboutWindow;
-@property (assign) IBOutlet NSTextField*			versionTF;
-@property (assign) IBOutlet NSButton*				aboutEnvelope;
-@property (assign) IBOutlet NSTextField*			creditsTF;
-@property (assign) IBOutlet NSTextField*			sloganTF;
-@property (assign) IBOutlet NSTextField*			logoTF;
+@property (strong, atomic) IBOutlet NSWindow*				aboutWindow;
+@property (strong, atomic) IBOutlet NSTextField*			versionTF;
+@property (strong, atomic) IBOutlet NSButton*				aboutEnvelope;
+@property (strong, atomic) IBOutlet NSTextField*			creditsTF;
+@property (strong, atomic) IBOutlet NSTextField*			sloganTF;
+@property (strong, atomic) IBOutlet NSTextField*			logoTF;
 
 
-@property (assign) IBOutlet NSWindow*				loginWindow;
-@property (assign) IBOutlet NSTextField*			userentry;
-@property (assign) IBOutlet NSTextField*			passwordentry;
-@property (assign) IBOutlet NSTextField*			loginerror;
-@property (assign) IBOutlet NSButton*				savepassword;
-@property (assign) IBOutlet NSProgressIndicator*	loginProgress;
-@property (assign) IBOutlet NSProgressIndicator*	appUpdateCheckProgress;
+@property (strong, atomic) IBOutlet NSWindow*				loginWindow;
+@property (strong, atomic) IBOutlet NSTextField*			userentry;
+@property (strong, atomic) IBOutlet NSTextField*			passwordentry;
+@property (strong, atomic) IBOutlet NSTextField*			loginerror;
+@property (strong, atomic) IBOutlet NSButton*				savepassword;
+@property (strong, atomic) IBOutlet NSProgressIndicator*	loginProgress;
+@property (strong, atomic) IBOutlet NSProgressIndicator*	appUpdateCheckProgress;
 
-@property (assign) IBOutlet NSWindow*				prefWindow;
-@property (assign) IBOutlet NSButton*				openAtLoginCB;
-@property (assign) IBOutlet NSButton*				logDiagnosticsCB;
-@property (assign) IBOutlet NSButton*				autoUpdateCheckCB;
-@property (assign) IBOutlet NSTextField*			redditCheckIntervalTF;
-@property (assign) IBOutlet NSTextField*			appUpdateResultTF;
+@property (strong, atomic) IBOutlet NSWindow*				prefWindow;
+@property (strong, atomic) IBOutlet NSButton*				openAtLoginCB;
+@property (strong, atomic) IBOutlet NSButton*				logDiagnosticsCB;
+@property (strong, atomic) IBOutlet NSButton*				autoUpdateCheckCB;
+@property (strong, atomic) IBOutlet NSTextField*			redditCheckIntervalTF;
+@property (strong, atomic) IBOutlet NSTextField*			appUpdateResultTF;
 
-@property (retain)          NSString*				currentIcon;
-@property (retain)          NSString*				noMailIcon;
+@property (strong, atomic)          NSString*				currentIcon;
+@property (strong, atomic)          NSString*				noMailIcon;
 
 - (IBAction)	loginChanged:			(id)sender;
 - (IBAction)	showLoginWindow:		(id)sender;
@@ -113,17 +74,12 @@
 
 - (void)		setupPollers;
 - (void)		login;
-- (void)		dealloc;
 - (void)		updateStatus: (NSTimer*)theTimer;
 - (NSString*)	userDataUrl;
 - (void)		parseStatus;
 - (void)		parseLogin: (NSHTTPURLResponse*) response;
 - (void)		setLoadAtStartup;
 - (void)		setMessageStatus: (NSString*) imageName;
-
-- (void)		growlAlert:	(NSString *)message				
-			         title: (NSString *)title				
-				      type: (NSString *)type;
 
 // NSURLConnection delegate methods:
 - (void)		connection:	(NSURLConnection *)connection	
@@ -141,5 +97,8 @@
  totalBytesExpectedToWrite: (NSInteger)totalBytesExpectedToWrite;
 
 - (void) connectionDidFinishLoading: (NSURLConnection *)connection;
+
+- (void)userNotificationCenter:(NSUserNotificationCenter *)center didActivateNotification:(NSUserNotification *)notification;
+
 
 @end

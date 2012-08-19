@@ -12,27 +12,22 @@
 @interface Prefs : NSObject 
 {
 	NSUserDefaults* settings;
-	
-	NSString*		name;
-	NSString*		password;
-	BOOL			savePassword;
-	BOOL			openAtLogin;
-	BOOL			autoUpdateCheck;
-	BOOL			logDiagnostics;
-	NSInteger		timeout;
-	NSInteger		redditCheckInterval;
+    
+    // I have no odea why these aren't being auto synthesized, but everything else is
+    NSString*       _name;
+    NSString*       _password;
+    NSInteger       _redditCheckInterval;
 }
 
-@property (retain) NSString*	password;
-@property (retain) NSString*	name;
-@property BOOL					savePassword;
-@property BOOL					openAtLogin;
-@property BOOL					autoUpdateCheck;
-@property BOOL					logDiagnostics;
-@property NSInteger				timeout;
-@property NSInteger				redditCheckInterval;
+@property (strong, atomic)  NSString*	password;
+@property (strong, atomic)  NSString*	name;
+@property (nonatomic)       BOOL        savePassword;
+@property (nonatomic)       BOOL        openAtLogin;
+@property (nonatomic)       BOOL        autoUpdateCheck;
+@property (nonatomic)       BOOL        logDiagnostics;
+@property (nonatomic)       NSInteger   timeout;
+@property (nonatomic)       NSInteger   redditCheckInterval;
 
 - (id) init;
-- (void) dealloc;
 
 @end

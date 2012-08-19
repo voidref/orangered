@@ -17,35 +17,6 @@
 
 @implementation OrangeredAppDelegate
 
-@synthesize loginWindow,
-            userentry,
-            passwordentry,
-            savepassword,
-            loginerror,
-            loginProgress;
-
-@synthesize prefWindow,
-            openAtLoginCB,
-            logDiagnosticsCB,
-            autoUpdateCheckCB,
-            redditCheckIntervalTF,
-            appUpdateCheckProgress,
-            appUpdateResultTF;
-
-@synthesize aboutWindow,
-            versionTF,
-            aboutEnvelope,
-            creditsTF,
-            sloganTF,
-            logoTF;
-
-@synthesize status;
-@synthesize menu;
-@synthesize update;
-@synthesize about;
-@synthesize currentIcon;
-@synthesize noMailIcon;
-@synthesize prefs;
 
 static NSString* GreyEnvelope		= @"GreyEnvelope";
 static NSString* BlackEnvelope		= @"BlackEnvelope";
@@ -65,14 +36,8 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 {
 	// We don't use this. Must appease the warning gods.
 #pragma unused(aNotification)
-    
-    // TODO: Replace this with system notification center calls!
-#if GROWL
-	[GrowlApplicationBridge setGrowlDelegate: self];
-	[self registrationDictionaryForGrowl];
-#endif
-	
-	self.prefs = [[[Prefs alloc] init] autorelease];
+    	
+	self.prefs = [[Prefs alloc] init];
 	[self setLoadAtStartup];
 	
 	hasModMail		= NO;
@@ -116,7 +81,7 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 
 	// detect first run / empty username
 	// We have to have an account name in order to check status!
-	if (nil == prefs.name) 
+	if (nil == _prefs.name)
 	{
 		[self showLoginWindow:nil];
 	}
@@ -126,6 +91,8 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 	}
 	
 	[self setupPollers];
+    [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
+    
 }
 
 // -------------------------------------------------------------------------------------------------------------------
@@ -139,7 +106,6 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 	}
 	
 	[statusPoller invalidate];
-	[statusPoller release];
 	statusPoller = [NSTimer scheduledTimerWithTimeInterval:interval
 													target:self
 												  selector:@selector(updateStatus:)
@@ -160,38 +126,20 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 	else if (nil != updatePoller) 
 	{
 		[updatePoller invalidate];
-		[updatePoller release];
 		updatePoller = nil;
 	}
 
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-- (void) dealloc
-{
-	[prefs release];
-
-	[statusConnection release];
-	[loginConnection release];
-	[appUpdateConnection release];
-	
-	[statusData release];
-	[loginData release];
-	[appUpdateData release];
-	
-	[statusPoller release];
-	[updatePoller release];
-	
-	[super dealloc];
-}
 
 // --------------------------------------------------------------------------------------------------------------------
 - (IBAction) loginChanged:(id)sender
 {
 #pragma unused(sender)
 	
-	NSString* uname = [userentry stringValue];
-	NSString* pword = [passwordentry stringValue];
+	NSString* uname = [_userentry stringValue];
+	NSString* pword = [_passwordentry stringValue];
 	
 	if ((uname.length < 1) || (pword.length < 1)) 
 	{
@@ -204,7 +152,7 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 	}
 	 
 	self.prefs.name = uname;
-	self.prefs.savePassword = ([savepassword state] == NSOnState);
+	self.prefs.savePassword = ([_savepassword state] == NSOnState);
 
 	self.prefs.password = pword;
 	
@@ -234,12 +182,11 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 	[request setHTTPMethod: @"POST"];
 	[request setHTTPBody: [[NSString stringWithFormat:@"user=%@&passwd=%@", self.prefs.name, self.prefs.password] dataUsingEncoding:NSUTF8StringEncoding]];
 	
-	[loginConnection release];
 	loginConnection = [[NSURLConnection alloc] initWithRequest:request 
 			  										   delegate:self];
 	if (nil != loginConnection) 
 	{
-		loginData = [[NSMutableData data] retain];
+		loginData = [NSMutableData data];
 	} 
 	else 
 	{
@@ -282,6 +229,12 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 - (void) updateStatus: (NSTimer*)theTimer
 {
 #pragma unused(theTimer)
+    
+    // We only show one status at a time anyway, but we do need to continue polling if we have no connection.
+    if ((self.currentIcon == BlackEnvelope) || (self.currentIcon == GreyEnvelope))
+    {}
+    else return;
+    
 	OrangeLog1(@"Updating status");
 	NSURL* url = [NSURL URLWithString:[self userDataUrl]];
 	
@@ -289,14 +242,13 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 											 cachePolicy:NSURLRequestUseProtocolCachePolicy
 										 timeoutInterval:self.prefs.timeout];
 
-	[statusConnection release];
 	statusConnection = [[NSURLConnection alloc] initWithRequest:request 
 			  										   delegate:self];
 	if (nil != statusConnection) 
 	{
 		if (nil == statusData) 
 		{
-			statusData = [[NSMutableData data] retain];
+			statusData = [NSMutableData data];
 		}
 	} 
 	else 
@@ -309,17 +261,22 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 // --------------------------------------------------------------------------------------------------------------------
 - (void) parseStatus
 {
-	NSString* statusResult = [[[NSString alloc] initWithData:statusData 
-													encoding:NSASCIIStringEncoding] autorelease];
+	NSString* statusResult = [[NSString alloc] initWithData:statusData 
+                                                   encoding:NSUTF8StringEncoding];
 
 	if ([statusResult rangeOfString:@"\"has_mail\": true"].location != NSNotFound ) 
 	{
 		self.loginerror.stringValue = @"";
 		self.currentIcon = OrangeredEnvelope;
 
-		[self growlAlert:@"You've recieved a new message on reddit" 
-				   title:@"New reddit message" 
-					type:@"message"];
+        NSUserNotification* note    = [NSUserNotification new];
+        note.title                  = @"Orangered!";
+        note.informativeText        = @"You have a new message on reddit!";
+        note.actionButtonTitle      = @"Read";
+        note.otherButtonTitle       = @"";
+        
+        [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:note];
+        
 	}
 	else if ([statusResult rangeOfString:@"\"has_mail\": null"].location != NSNotFound ) 
 	{
@@ -376,11 +333,11 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 {
 #pragma unused(sender)
 	
-	[savepassword setState:self.prefs.savePassword];
+	[_savepassword setState:self.prefs.savePassword];
 	 
-	if (nil != self.prefs.name) [userentry setStringValue:self.prefs.name];
+	if (nil != self.prefs.name) [_userentry setStringValue:self.prefs.name];
 
-	if (nil != self.prefs.password) [passwordentry setStringValue:self.prefs.password];			
+	if (nil != self.prefs.password) [_passwordentry setStringValue:self.prefs.password];
 	 
 	self.appUpdateResultTF.stringValue = @"";
 
@@ -402,8 +359,8 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 	
 	// open window and force to the front
 	[NSApp activateIgnoringOtherApps:YES];
-	[prefWindow makeKeyAndOrderFront:nil];
-	[prefWindow orderFrontRegardless];
+	[_prefWindow makeKeyAndOrderFront:nil];
+	[_prefWindow orderFrontRegardless];
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -438,7 +395,7 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 	
 	self.prefs.logDiagnostics = (BOOL)[self.logDiagnosticsCB state];
 	
-	[prefWindow close];
+	[_prefWindow close];
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -473,6 +430,9 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 	// Lets assume they don't want to see the modified envelope after they do this or wait for the next check.
 	self.currentIcon = self.noMailIcon;
 	[self setMessageStatus: self.currentIcon];
+    
+    [[NSUserNotificationCenter defaultUserNotificationCenter] removeAllDeliveredNotifications];
+
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -507,14 +467,13 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 											 cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
 										 timeoutInterval:self.prefs.timeout];
 	
-	[appUpdateConnection release];
 	appUpdateConnection = [[NSURLConnection alloc] initWithRequest:request 
                                                           delegate:self];
 	if (nil != appUpdateConnection) 
 	{
 		if (nil == appUpdateData) 
 		{
-			appUpdateData = [[NSMutableData data] retain];
+			appUpdateData = [NSMutableData data];
 		}
 	} 
 	else 
@@ -527,8 +486,8 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 // --------------------------------------------------------------------------------------------------------------------
 - (void) parseAppUpdateResult
 {
-	NSString* checkResult = [[[NSString alloc] initWithData:appUpdateData 
-                                                   encoding:NSUTF8StringEncoding] autorelease];
+	NSString* checkResult = [[NSString alloc] initWithData:appUpdateData 
+                                                   encoding:NSUTF8StringEncoding];
 
     checkResult = [checkResult stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	NSString* currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
@@ -577,14 +536,13 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 
 	// open window and force to the front
 	[NSApp activateIgnoringOtherApps:YES];
-	[aboutWindow makeKeyAndOrderFront:nil];
-	[aboutWindow orderFrontRegardless];
+	[_aboutWindow makeKeyAndOrderFront:nil];
+	[_aboutWindow orderFrontRegardless];
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 - (IBAction)	showAboutButtonClicked:		(id)sender
 {
-#pragma unused(sender)
 	OrangeLog(@"Button: %@", [sender title]);
 	
 	NSString* url = nil;
@@ -633,22 +591,22 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 	{
 		UInt32 seedValue = 0;
 		CFArrayRef loginItemsArrayRef = LSSharedFileListCopySnapshot(loginItems, &seedValue);
-		NSArray* loginItemsArray = (NSArray *)loginItemsArrayRef;
+		NSArray* loginItemsArray = (__bridge  NSArray *)loginItemsArrayRef;
 		
-		LSSharedFileListItemRef removeItem;
+		LSSharedFileListItemRef removeItem = NULL;
 		
 		for (id item in loginItemsArray) 
 		{
-			LSSharedFileListItemRef itemRef = (LSSharedFileListItemRef)item;
+			LSSharedFileListItemRef itemRef = (__bridge  LSSharedFileListItemRef)item;
 			CFURLRef URL = NULL;
 			
 			if (LSSharedFileListItemResolve(itemRef, 0, &URL, NULL) == noErr) 
 			{				
-				if ([[[(NSURL *)URL path] lastPathComponent] isEqualToString: [[thePath path] lastPathComponent]]) 
+				if ([[[(__bridge  NSURL *)URL path] lastPathComponent] isEqualToString: [[thePath path] lastPathComponent]])
 				{
 					exists = YES;
 					CFRelease(URL);
-					removeItem = (LSSharedFileListItemRef)item;
+					removeItem = (__bridge  LSSharedFileListItemRef)item;
 					break;
 				}
 			}
@@ -665,7 +623,7 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 																		 kLSSharedFileListItemBeforeFirst, 
 																		 NULL, 
 																		 NULL, 
-																		 (CFURLRef)thePath, 
+																		 (__bridge  CFURLRef)thePath,
 																		 NULL, 
 																		 NULL);
 			
@@ -783,8 +741,8 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 	}
 	else if (connection == loginConnection)
 	{
-		NSString* output = [[[NSString alloc] initWithData:loginData 
-												  encoding:NSASCIIStringEncoding] autorelease];
+		NSString* output = [[NSString alloc] initWithData:loginData 
+												  encoding:NSASCIIStringEncoding];
 		OrangeLog(@"Data result: %@", output);
 		
 		if ([output rangeOfString:@"WRONG_PASSWORD"].location != NSNotFound) 
@@ -802,42 +760,14 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 	}	
 }
 
-
-
 // --------------------------------------------------------------------------------------------------------------------
-// --------------------------------------------------------------------------------------------------------------------
-// dawnerd's basic growl integration
-#if GROWL
-- (NSDictionary *) registrationDictionaryForGrowl 
-{	/* Only implement this method if you do not plan on just placing a plist with the same data in your app bundle (see growl documentation) */
-    NSArray *array = [NSArray arrayWithObjects:@"message", @"error", nil];	/* each string represents a notification name that will be valid for us to use in alert methods */
-    
-	NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
-									                                [NSNumber numberWithInt:1],	/* growl 0.7 through growl 1.1 use ticket version 1 */
-																	@"TicketVersion",			/* Required key in dictionary */
-																	array,						/* defines which notification names our application can use, we defined example and error above */
-																	@"AllNotifications",		/*Required key in dictionary */
-																	array,						/* using the same array sets all notification names on by default */
-																	@"DefaultNotifications",	/* Required key in dictionary */
-																	nil];
-    return dict;
-}
-#endif
-// --------------------------------------------------------------------------------------------------------------------
--(void) growlAlert:(NSString *)message 
-			 title:(NSString *)title 
-			  type:(NSString *)type
+- (void)userNotificationCenter:(NSUserNotificationCenter *)center_
+       didActivateNotification:(NSUserNotification *)notification_
 {
-#pragma unused(message, title, type)
-#if GROWL
-    [GrowlApplicationBridge notifyWithTitle:title	/* notifyWithTitle is a required parameter */
-								description:message /* description is a required parameter */
-						   notificationName:type	/* notification name is a required parameter, and must exist in the dictionary we registered with growl */
-								   iconData:nil		/* not required, growl defaults to using the application icon, only needed if you want to specify an icon. */ 
-								   priority:0		/* how high of priority the alert is, 0 is default */
-								   isSticky:NO		/* indicates if we want the alert to stay on screen till clicked */
-							   clickContext:nil];	/* click context is the method we want called when the alert is clicked, nil for none */
-#endif
+#pragma unused(center_)
+#pragma unused(notification_)
+    
+    [self openMailbox:self];
 }
 
 // --------------------------------------------------------------------------------------------------------------------
