@@ -6,59 +6,42 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
 #import "prefs.h"
 
 @interface OrangeredAppDelegate : NSObject <NSApplicationDelegate, NSMenuDelegate, NSUserNotificationCenterDelegate>
-{
-	NSMenuItem*				preference;
-	
-	BOOL					hasModMail;
-	
-	NSTimer*				statusPoller;
-	NSTimer*				updatePoller;
-	
-	NSMutableData*			statusData;
-	NSMutableData*			loginData;
-	NSMutableData*			appUpdateData;
-	
-	NSURLConnection*		statusConnection;
-	NSURLConnection*		loginConnection;
-	NSURLConnection*		appUpdateConnection;
-}
 
-@property (strong, atomic) Prefs* prefs;
+@property (strong)          Prefs*                  prefs;
 
-@property (strong, atomic)			NSStatusItem*			status;
-@property (strong, atomic) IBOutlet NSMenu*					menu;
-@property (strong, atomic) IBOutlet NSMenuItem*				update;
-@property (strong, atomic) IBOutlet NSMenuItem*				about;
+@property (strong)			NSStatusItem*			status;
+@property (strong) IBOutlet NSMenu*					menu;
+@property (strong) IBOutlet NSMenuItem*				update;
+@property (strong) IBOutlet NSMenuItem*				about;
 
-@property (strong, atomic) IBOutlet NSWindow*				aboutWindow;
-@property (strong, atomic) IBOutlet NSTextField*			versionTF;
-@property (strong, atomic) IBOutlet NSButton*				aboutEnvelope;
-@property (strong, atomic) IBOutlet NSTextField*			creditsTF;
-@property (strong, atomic) IBOutlet NSTextField*			sloganTF;
-@property (strong, atomic) IBOutlet NSTextField*			logoTF;
+@property (strong) IBOutlet NSWindow*				aboutWindow;
+@property (strong) IBOutlet NSTextField*			versionTF;
+@property (strong) IBOutlet NSButton*				aboutEnvelope;
+@property (strong) IBOutlet NSTextField*			creditsTF;
+@property (strong) IBOutlet NSTextField*			sloganTF;
+@property (strong) IBOutlet NSTextField*			logoTF;
 
 
-@property (strong, atomic) IBOutlet NSWindow*				loginWindow;
-@property (strong, atomic) IBOutlet NSTextField*			userentry;
-@property (strong, atomic) IBOutlet NSTextField*			passwordentry;
-@property (strong, atomic) IBOutlet NSTextField*			loginerror;
-@property (strong, atomic) IBOutlet NSButton*				savepassword;
-@property (strong, atomic) IBOutlet NSProgressIndicator*	loginProgress;
-@property (strong, atomic) IBOutlet NSProgressIndicator*	appUpdateCheckProgress;
+@property (strong) IBOutlet NSWindow*				loginWindow;
+@property (strong) IBOutlet NSTextField*			userentry;
+@property (strong) IBOutlet NSTextField*			passwordentry;
+@property (strong) IBOutlet NSTextField*			loginerror;
+@property (strong) IBOutlet NSButton*				savepassword;
+@property (strong) IBOutlet NSProgressIndicator*	loginProgress;
+@property (strong) IBOutlet NSProgressIndicator*	appUpdateCheckProgress;
 
-@property (strong, atomic) IBOutlet NSWindow*				prefWindow;
-@property (strong, atomic) IBOutlet NSButton*				openAtLoginCB;
-@property (strong, atomic) IBOutlet NSButton*				logDiagnosticsCB;
-@property (strong, atomic) IBOutlet NSButton*				autoUpdateCheckCB;
-@property (strong, atomic) IBOutlet NSTextField*			redditCheckIntervalTF;
-@property (strong, atomic) IBOutlet NSTextField*			appUpdateResultTF;
+@property (strong) IBOutlet NSWindow*				prefWindow;
+@property (strong) IBOutlet NSButton*				openAtLoginCB;
+@property (strong) IBOutlet NSButton*				logDiagnosticsCB;
+@property (strong) IBOutlet NSButton*				autoUpdateCheckCB;
+@property (strong) IBOutlet NSTextField*			redditCheckIntervalTF;
+@property (strong) IBOutlet NSTextField*			appUpdateResultTF;
 
-@property (strong, atomic)          NSString*				currentIcon;
-@property (strong, atomic)          NSString*				noMailIcon;
+@property (strong)          NSString*				currentIcon;
+@property (strong)          NSString*				noMailIcon;
 
 - (IBAction)	loginChanged:			(id)sender;
 - (IBAction)	showLoginWindow:		(id)sender;

@@ -7,12 +7,29 @@
 //
 
 #import "OrangeredAppDelegate.h"
-#import "Foundation/NSURLConnection.h"
-
 
 // I can't believe this is working.
 @interface NSMenuItem (hiddenpropcat)
 @property  BOOL hidden;
+@end
+
+@interface OrangeredAppDelegate()
+{
+    NSMenuItem*				preference;
+    
+    BOOL					hasModMail;
+    
+    NSTimer*				statusPoller;
+    NSTimer*				updatePoller;
+    
+    NSMutableData*			statusData;
+    NSMutableData*			loginData;
+    NSMutableData*			appUpdateData;
+    
+    NSURLConnection*		statusConnection;
+    NSURLConnection*		loginConnection;
+    NSURLConnection*		appUpdateConnection;
+}
 @end
 
 @implementation OrangeredAppDelegate
@@ -67,7 +84,7 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 	self.aboutWindow.collectionBehavior = NSWindowCollectionBehaviorCanJoinAllSpaces;
 	self.prefWindow.collectionBehavior = NSWindowCollectionBehaviorCanJoinAllSpaces;
 	
-	self.status = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+	self.status = [[NSStatusBar systemStatusBar] statusItemWithLength:NSSquareStatusItemLength];
 	self.status.menu = self.menu;
 	self.status.highlightMode = YES;
 	self.status.alternateImage = [NSImage imageNamed:HighlightEnvelope];
@@ -514,13 +531,15 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 // --------------------------------------------------------------------------------------------------------------------
 - (IBAction) automaticCheckForUpdateClicked: (id)sender
 {
-	self.prefs.autoUpdateCheck = ([sender state] == NSOnState);
+    NSButton *btn = (NSButton*)sender;
+	self.prefs.autoUpdateCheck = (btn.state == NSOnState);
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 - (IBAction) loadAtStartupClicked: (id)sender
 {
-	self.prefs.openAtLogin = ([sender state] == NSOnState);
+    NSButton *btn = (NSButton*)sender;
+	self.prefs.openAtLogin = (btn.state == NSOnState);
 	[self setLoadAtStartup];
 }
 

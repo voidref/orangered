@@ -8,6 +8,15 @@
 
 #import "prefs.h"
 
+@interface Prefs()
+{
+    NSString *_password;
+}
+
+@property (strong) NSUserDefaults* settings;
+
+@end
+
 @implementation Prefs
 
 static NSString*	PasswordKey			= @"password";
@@ -27,23 +36,23 @@ static const char*	ServiceName			= "Orangered!";
 	self = [super init];
 	if (nil != self) 
 	{
-		settings = [NSUserDefaults standardUserDefaults];
-		self.name = [settings stringForKey:UserNameKey];
-		self.savePassword = [settings boolForKey:SavePassKey];
+		self.settings = [NSUserDefaults standardUserDefaults];
+		self.name = [self.settings stringForKey:UserNameKey];
+		self.savePassword = [self.settings boolForKey:SavePassKey];
 		
 		// Since we are async, we can let it try for a long time.
 		self.timeout = 120;
 		
-		self.openAtLogin = [settings boolForKey:OpenAtLoginKey];
+		self.openAtLogin = [self.settings boolForKey:OpenAtLoginKey];
 
-		self.redditCheckInterval = [settings integerForKey:CheckFreqKey];
+		self.redditCheckInterval = [self.settings integerForKey:CheckFreqKey];
 		if (self.redditCheckInterval == 0) self.redditCheckInterval = 1;
 
 		self.autoUpdateCheck = YES;		
-		if (nil != [settings objectForKey:AutoUpdateKey]) self.autoUpdateCheck = [settings boolForKey:AutoUpdateKey];
+		if (nil != [self.settings objectForKey:AutoUpdateKey]) self.autoUpdateCheck = [self.settings boolForKey:AutoUpdateKey];
 		
-		self.openAtLogin = [settings boolForKey:OpenAtLoginKey];
-		self.logDiagnostics = [settings boolForKey:LogDiagnosticsKey];
+		self.openAtLogin = [self.settings boolForKey:OpenAtLoginKey];
+		self.logDiagnostics = [self.settings boolForKey:LogDiagnosticsKey];
 	}
 	
 	return self;
@@ -70,7 +79,7 @@ static const char*	ServiceName			= "Orangered!";
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-- (OSStatus) getPasswordFromKeychain 
+- (NSString *) getPasswordFromKeychain
 {
 	SecKeychainItemRef ref = nil;
 	UInt32 len = 0;
@@ -87,29 +96,28 @@ static const char*	ServiceName			= "Orangered!";
 									&ref				// the item reference
 								);
 	
-	if (len > 0)
+    NSString *result = nil;
+	if (len > 0 && status == errSecSuccess )
 	{
-		self.password = [[NSString alloc] initWithBytes:data
+		result = [[NSString alloc] initWithBytes:data
 											length:len
                                           encoding:NSUTF8StringEncoding];
 
 	}
+    else
+    {
+        result = self->_password;
+    }
 
     if (NULL != data) SecKeychainItemFreeContent(NULL, data);
 
-	return status;
+	return result;
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 - (NSString*) password
 {
-	if (_password.length < 1)
-	{
-		// see if it's in the user defaults
-		[self getPasswordFromKeychain]; 
-	}
-	
-	return _password;
+    return [self getPasswordFromKeychain];
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -126,22 +134,14 @@ static const char*	ServiceName			= "Orangered!";
 // --------------------------------------------------------------------------------------------------------------------
 - (NSString*) name
 {
-	if (_name.length < 1)
-	{
-		// see if it's in the user defaults
-		self.name = [settings stringForKey:UserNameKey];
-	}
-	
-	return _name;
+    return [self.settings stringForKey:UserNameKey];
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 - (void) setName:(NSString*)value
 {	
-	_name = value;
-	
-	[settings setObject:value 
-				 forKey:UserNameKey];
+	[self.settings setObject:value
+                      forKey:UserNameKey];
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -149,7 +149,7 @@ static const char*	ServiceName			= "Orangered!";
 {	
 	_savePassword = value;
 	
-	[settings setBool:value 
+	[self.settings setBool:value
                forKey:SavePassKey];
 }
 
@@ -158,7 +158,7 @@ static const char*	ServiceName			= "Orangered!";
 {	
 	_openAtLogin = value;
 	
-	[settings setBool:value 
+	[self.settings setBool:value
 			   forKey:OpenAtLoginKey];
 }
 
@@ -167,7 +167,7 @@ static const char*	ServiceName			= "Orangered!";
 {	
 	_autoUpdateCheck = value;
 	
-	[settings setBool:value 
+	[self.settings setBool:value
 			   forKey:AutoUpdateKey];
 }
 
@@ -176,7 +176,7 @@ static const char*	ServiceName			= "Orangered!";
 {	
 	_logDiagnostics = value;
 	
-	[settings setBool:value 
+	[self.settings setBool:value
 			   forKey:LogDiagnosticsKey];
 }
 
@@ -186,23 +186,21 @@ static const char*	ServiceName			= "Orangered!";
 {	
 	_timeout = value;
 	
-	[settings setInteger:value 
-			   forKey:TimeoutKey];
+	[self.settings setInteger:value
+                       forKey:TimeoutKey];
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 - (NSInteger) redditCheckInterval
 {	
-	return _redditCheckInterval / 60;
+	return [self.settings integerForKey:CheckFreqKey];
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 - (void) setRedditCheckInterval:(NSInteger)value
 {	
-	_redditCheckInterval = value * 60;
-	
-	[settings setInteger:value 
-			   forKey:CheckFreqKey];
+	[self.settings setInteger:value
+                       forKey:CheckFreqKey];
 }
 
 @end
