@@ -197,7 +197,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0640;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Voidref Software";
 				TargetAttributes = {
 					8D1107260486CEB800E47090 = {
@@ -315,6 +315,7 @@
 				INFOPLIST_FILE = "Orangered-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.voidref.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Orangered;
 				SDKROOT = macosx;
 				WARNING_CFLAGS = (
@@ -357,6 +358,7 @@
 				INFOPLIST_FILE = "Orangered-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.voidref.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Orangered;
 				SDKROOT = macosx;
 				WARNING_CFLAGS = (
@@ -371,6 +373,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_DEBUGGING_SYMBOLS = full;
 				GCC_OPTIMIZATION_LEVEL = 0;

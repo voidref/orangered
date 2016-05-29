@@ -9,7 +9,7 @@
 	<key>CFBundleGetInfoString</key>
 	<string>1.0.4, http://www.voidref.com/orangered/Orangered!.html</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.voidref.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
