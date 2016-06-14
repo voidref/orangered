@@ -7,38 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
-		256AC3DA0F4B6AC300CF3369 /* OrangeredAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */; };
-		2D6EB99111CC0B1D008888B7 /* Orangered.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2D6EB99011CC0B1D008888B7 /* Orangered.icns */; };
-		2D7D323811CCBF9200D9A067 /* BlueEnvelope.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D7D323711CCBF9200D9A067 /* BlueEnvelope.png */; };
-		2D7D32B611CD47DA00D9A067 /* todo.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2D7D32B511CD47DA00D9A067 /* todo.txt */; };
-		2D7D369511D1FC9C00D9A067 /* HighlightEnvelope.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D7D369411D1FC9C00D9A067 /* HighlightEnvelope.png */; };
-		2D7D36C311D6D5D100D9A067 /* prefs.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D7D36C211D6D5D100D9A067 /* prefs.m */; };
-		2D7D38A511D8750100D9A067 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7D38A411D8750100D9A067 /* Security.framework */; };
-		2D7D38B711D8789200D9A067 /* modmail.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D7D38B611D8789200D9A067 /* modmail.png */; };
-		2DC5530B11C9EF4E00D9B5C1 /* GreyEnvelope.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC5530A11C9EF4E00D9B5C1 /* GreyEnvelope.png */; };
-		2DC5532D11C9F52000D9B5C1 /* BlackEnvelope.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC5532C11C9F52000D9B5C1 /* BlackEnvelope.png */; };
-		2DC5533D11C9F78C00D9B5C1 /* OrangeredEnvelope.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC5533C11C9F78C00D9B5C1 /* OrangeredEnvelope.png */; };
-		2DC5542711CA1D2700D9B5C1 /* o-mail.png in Resources */ = {isa = PBXBuildFile; fileRef = 2DC5542611CA1D2700D9B5C1 /* o-mail.png */; };
-		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
-		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
-		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		E757731C1D0F9E5500BA4B85 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E757731B1D0F9E5500BA4B85 /* LoginViewController.swift */; };
 		E7591DBB1CFB60450074F56B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7591DBA1CFB60450074F56B /* AppDelegate.swift */; };
 		E7591DBD1CFB60450074F56B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7591DBC1CFB60450074F56B /* Assets.xcassets */; };
 		E7591DC61CFC017A0074F56B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7591DC51CFC017A0074F56B /* main.swift */; };
-		E776C14C187901190044BDE2 /* BlackEnvelope@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E776C14B187901190044BDE2 /* BlackEnvelope@2x.png */; };
-		E776C14E187903A40044BDE2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E776C14D187903A40044BDE2 /* Images.xcassets */; };
-		E776C1511879046B0044BDE2 /* GreyEnvelope@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E776C14F1879046B0044BDE2 /* GreyEnvelope@2x.png */; };
-		E776C1521879046B0044BDE2 /* HighlightEnvelope@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E776C1501879046B0044BDE2 /* HighlightEnvelope@2x.png */; };
-		E776C1561879049E0044BDE2 /* OrangeredEnvelope@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E776C1551879049E0044BDE2 /* OrangeredEnvelope@2x.png */; };
-		E776C158187905690044BDE2 /* BlueEnvelope@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E776C157187905690044BDE2 /* BlueEnvelope@2x.png */; };
 		E7E2FFAA1D0F7D4800C8234C /* StatusItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E2FFA91D0F7D4800C8234C /* StatusItemController.swift */; };
 		E7E2FFAC1D0F7DFF00C8234C /* UserDefaults+Orangered.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E2FFAB1D0F7DFF00C8234C /* UserDefaults+Orangered.swift */; };
 		E7E2FFAE1D0F7E8200C8234C /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E2FFAD1D0F7E8200C8234C /* Menu.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		256AC3D80F4B6AC300CF3369 /* OrangeredAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrangeredAppDelegate.h; sourceTree = "<group>"; };
@@ -47,46 +25,22 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		2D6EB99011CC0B1D008888B7 /* Orangered.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Orangered.icns; sourceTree = "<group>"; };
-		2D7D323711CCBF9200D9A067 /* BlueEnvelope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BlueEnvelope.png; sourceTree = "<group>"; };
 		2D7D32B511CD47DA00D9A067 /* todo.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = todo.txt; sourceTree = "<group>"; };
-		2D7D369411D1FC9C00D9A067 /* HighlightEnvelope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HighlightEnvelope.png; sourceTree = "<group>"; };
 		2D7D36C111D6D5D100D9A067 /* prefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefs.h; sourceTree = "<group>"; };
 		2D7D36C211D6D5D100D9A067 /* prefs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = prefs.m; sourceTree = "<group>"; };
 		2D7D38A411D8750100D9A067 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		2D7D38B611D8789200D9A067 /* modmail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = modmail.png; sourceTree = "<group>"; };
-		2DC5530A11C9EF4E00D9B5C1 /* GreyEnvelope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GreyEnvelope.png; sourceTree = "<group>"; };
-		2DC5532C11C9F52000D9B5C1 /* BlackEnvelope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BlackEnvelope.png; sourceTree = "<group>"; };
-		2DC5533C11C9F78C00D9B5C1 /* OrangeredEnvelope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OrangeredEnvelope.png; sourceTree = "<group>"; };
-		2DC5542611CA1D2700D9B5C1 /* o-mail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "o-mail.png"; sourceTree = "<group>"; };
-		8D1107310486CEB800E47090 /* Orangered-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Orangered-Info.plist"; sourceTree = "<group>"; };
-		8D1107320486CEB800E47090 /* Orangered.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Orangered.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E757731B1D0F9E5500BA4B85 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E7591DB81CFB60450074F56B /* Orangered.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Orangered.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7591DBA1CFB60450074F56B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E7591DBC1CFB60450074F56B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		E7591DC11CFB60450074F56B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E7591DBC1CFB60450074F56B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Orangered-Swift/Assets.xcassets"; sourceTree = "<group>"; };
+		E7591DC11CFB60450074F56B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Orangered-Swift/Info.plist"; sourceTree = "<group>"; };
 		E7591DC51CFC017A0074F56B /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		E776C14B187901190044BDE2 /* BlackEnvelope@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BlackEnvelope@2x.png"; sourceTree = "<group>"; };
-		E776C14D187903A40044BDE2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Orangered/Images.xcassets; sourceTree = "<group>"; };
-		E776C14F1879046B0044BDE2 /* GreyEnvelope@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GreyEnvelope@2x.png"; sourceTree = "<group>"; };
-		E776C1501879046B0044BDE2 /* HighlightEnvelope@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HighlightEnvelope@2x.png"; sourceTree = "<group>"; };
-		E776C1551879049E0044BDE2 /* OrangeredEnvelope@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "OrangeredEnvelope@2x.png"; sourceTree = "<group>"; };
-		E776C157187905690044BDE2 /* BlueEnvelope@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BlueEnvelope@2x.png"; sourceTree = "<group>"; };
 		E7E2FFA91D0F7D4800C8234C /* StatusItemController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusItemController.swift; sourceTree = "<group>"; };
 		E7E2FFAB1D0F7DFF00C8234C /* UserDefaults+Orangered.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Orangered.swift"; sourceTree = "<group>"; };
 		E7E2FFAD1D0F7E8200C8234C /* Menu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		8D11072E0486CEB800E47090 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
-				2D7D38A511D8750100D9A067 /* Security.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		E7591DB51CFB60450074F56B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -97,21 +51,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		080E96DDFE201D6D7F000001 /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				256AC3D80F4B6AC300CF3369 /* OrangeredAppDelegate.h */,
-				256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */,
-				2D7D36C111D6D5D100D9A067 /* prefs.h */,
-				2D7D36C211D6D5D100D9A067 /* prefs.m */,
-			);
-			name = Classes;
-			sourceTree = "<group>";
-		};
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+				2D7D38A411D8750100D9A067 /* Security.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -119,9 +65,6 @@
 		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				2D7D38A411D8750100D9A067 /* Security.framework */,
-				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
-				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
 			);
 			name = "Other Frameworks";
 			sourceTree = "<group>";
@@ -129,7 +72,6 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D1107320486CEB800E47090 /* Orangered.app */,
 				E7591DB81CFB60450074F56B /* Orangered.app */,
 			);
 			name = Products;
@@ -138,10 +80,9 @@
 		29B97314FDCFA39411CA2CEA /* Orangered */ = {
 			isa = PBXGroup;
 			children = (
-				080E96DDFE201D6D7F000001 /* Classes */,
-				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				E7591DB91CFB60450074F56B /* Source */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
-				E7591DB91CFB60450074F56B /* Orangered-Swift */,
+				E7E6A00E1D10A632008F27BF /* olde */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				2D7D32B511CD47DA00D9A067 /* todo.txt */,
@@ -149,35 +90,11 @@
 			name = Orangered;
 			sourceTree = "<group>";
 		};
-		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
-			isa = PBXGroup;
-			children = (
-				256AC3F00F4B6AF500CF3369 /* Orangered_Prefix.pch */,
-				29B97316FDCFA39411CA2CEA /* main.m */,
-			);
-			name = "Other Sources";
-			sourceTree = "<group>";
-		};
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				E776C157187905690044BDE2 /* BlueEnvelope@2x.png */,
-				2DC5532C11C9F52000D9B5C1 /* BlackEnvelope.png */,
-				E776C14B187901190044BDE2 /* BlackEnvelope@2x.png */,
-				2D7D323711CCBF9200D9A067 /* BlueEnvelope.png */,
-				2DC5530A11C9EF4E00D9B5C1 /* GreyEnvelope.png */,
-				E776C14F1879046B0044BDE2 /* GreyEnvelope@2x.png */,
-				2D7D369411D1FC9C00D9A067 /* HighlightEnvelope.png */,
-				E776C1501879046B0044BDE2 /* HighlightEnvelope@2x.png */,
-				E776C14D187903A40044BDE2 /* Images.xcassets */,
-				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
-				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
-				2D7D38B611D8789200D9A067 /* modmail.png */,
-				2DC5542611CA1D2700D9B5C1 /* o-mail.png */,
-				8D1107310486CEB800E47090 /* Orangered-Info.plist */,
-				2D6EB99011CC0B1D008888B7 /* Orangered.icns */,
-				2DC5533C11C9F78C00D9B5C1 /* OrangeredEnvelope.png */,
-				E776C1551879049E0044BDE2 /* OrangeredEnvelope@2x.png */,
+				E7591DBC1CFB60450074F56B /* Assets.xcassets */,
+				E7591DC11CFB60450074F56B /* Info.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -191,41 +108,37 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		E7591DB91CFB60450074F56B /* Orangered-Swift */ = {
+		E7591DB91CFB60450074F56B /* Source */ = {
 			isa = PBXGroup;
 			children = (
 				E7591DBA1CFB60450074F56B /* AppDelegate.swift */,
-				E7591DBC1CFB60450074F56B /* Assets.xcassets */,
-				E7591DC11CFB60450074F56B /* Info.plist */,
+				E757731B1D0F9E5500BA4B85 /* LoginViewController.swift */,
 				E7591DC51CFC017A0074F56B /* main.swift */,
+				E7E2FFAD1D0F7E8200C8234C /* Menu.swift */,
 				E7E2FFA91D0F7D4800C8234C /* StatusItemController.swift */,
 				E7E2FFAB1D0F7DFF00C8234C /* UserDefaults+Orangered.swift */,
-				E7E2FFAD1D0F7E8200C8234C /* Menu.swift */,
 			);
+			name = Source;
 			path = "Orangered-Swift";
+			sourceTree = "<group>";
+		};
+		E7E6A00E1D10A632008F27BF /* olde */ = {
+			isa = PBXGroup;
+			children = (
+				256AC3F00F4B6AF500CF3369 /* Orangered_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+				256AC3D80F4B6AC300CF3369 /* OrangeredAppDelegate.h */,
+				256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */,
+				2D7D36C111D6D5D100D9A067 /* prefs.h */,
+				2D7D36C211D6D5D100D9A067 /* prefs.m */,
+				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
+			);
+			name = olde;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8D1107260486CEB800E47090 /* Orangered-obcj */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Orangered-obcj" */;
-			buildPhases = (
-				8D1107290486CEB800E47090 /* Resources */,
-				8D11072C0486CEB800E47090 /* Sources */,
-				8D11072E0486CEB800E47090 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Orangered-obcj";
-			productInstallPath = "$(HOME)/Applications";
-			productName = Orangered;
-			productReference = 8D1107320486CEB800E47090 /* Orangered.app */;
-			productType = "com.apple.product-type.application";
-		};
 		E7591DB71CFB60450074F56B /* Orangered */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E7591DC41CFB60450074F56B /* Build configuration list for PBXNativeTarget "Orangered" */;
@@ -253,9 +166,6 @@
 				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Rockwood Software";
 				TargetAttributes = {
-					8D1107260486CEB800E47090 = {
-						DevelopmentTeam = SR7K2S8GE4;
-					};
 					E7591DB71CFB60450074F56B = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = SR7K2S8GE4;
@@ -275,37 +185,12 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8D1107260486CEB800E47090 /* Orangered-obcj */,
 				E7591DB71CFB60450074F56B /* Orangered */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		8D1107290486CEB800E47090 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E776C158187905690044BDE2 /* BlueEnvelope@2x.png in Resources */,
-				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				E776C1521879046B0044BDE2 /* HighlightEnvelope@2x.png in Resources */,
-				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
-				2DC5530B11C9EF4E00D9B5C1 /* GreyEnvelope.png in Resources */,
-				2DC5532D11C9F52000D9B5C1 /* BlackEnvelope.png in Resources */,
-				2DC5533D11C9F78C00D9B5C1 /* OrangeredEnvelope.png in Resources */,
-				E776C1561879049E0044BDE2 /* OrangeredEnvelope@2x.png in Resources */,
-				E776C1511879046B0044BDE2 /* GreyEnvelope@2x.png in Resources */,
-				E776C14E187903A40044BDE2 /* Images.xcassets in Resources */,
-				2DC5542711CA1D2700D9B5C1 /* o-mail.png in Resources */,
-				2D6EB99111CC0B1D008888B7 /* Orangered.icns in Resources */,
-				2D7D323811CCBF9200D9A067 /* BlueEnvelope.png in Resources */,
-				2D7D32B611CD47DA00D9A067 /* todo.txt in Resources */,
-				2D7D369511D1FC9C00D9A067 /* HighlightEnvelope.png in Resources */,
-				2D7D38B711D8789200D9A067 /* modmail.png in Resources */,
-				E776C14C187901190044BDE2 /* BlackEnvelope@2x.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		E7591DB61CFB60450074F56B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -317,16 +202,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		8D11072C0486CEB800E47090 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8D11072D0486CEB800E47090 /* main.m in Sources */,
-				256AC3DA0F4B6AC300CF3369 /* OrangeredAppDelegate.m in Sources */,
-				2D7D36C311D6D5D100D9A067 /* prefs.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		E7591DB41CFB60450074F56B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -334,6 +209,7 @@
 				E7E2FFAC1D0F7DFF00C8234C /* UserDefaults+Orangered.swift in Sources */,
 				E7591DC61CFC017A0074F56B /* main.swift in Sources */,
 				E7591DBB1CFB60450074F56B /* AppDelegate.swift in Sources */,
+				E757731C1D0F9E5500BA4B85 /* LoginViewController.swift in Sources */,
 				E7E2FFAA1D0F7D4800C8234C /* StatusItemController.swift in Sources */,
 				E7E2FFAE1D0F7E8200C8234C /* Menu.swift in Sources */,
 			);
@@ -342,14 +218,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				089C165DFE840E0CC02AAC07 /* English */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 		1DDD58140DA1D0A300B32029 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -361,81 +229,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		C01FCF4B08A954540054247B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_OBJCPP_ARC_ABI = YES;
-				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
-				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = NO;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
-				CLANG_WARN_OBJC_RECEIVER_WEAK = YES;
-				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-				);
-				INFOPLIST_FILE = "Orangered-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.voidref.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Orangered;
-				SDKROOT = macosx;
-				WARNING_CFLAGS = (
-					"-Weverything",
-					"-Wno-direct-ivar-access",
-					"-Wno-objc-missing-property-synthesis",
-				);
-			};
-			name = Debug;
-		};
-		C01FCF4C08A954540054247B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_OBJCPP_ARC_ABI = YES;
-				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
-				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = NO;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
-				CLANG_WARN_OBJC_RECEIVER_WEAK = YES;
-				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
-				COMBINE_HIDPI_IMAGES = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-				);
-				INFOPLIST_FILE = "Orangered-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.voidref.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Orangered;
-				SDKROOT = macosx;
-				WARNING_CFLAGS = (
-					"-Weverything",
-					"-Wno-direct-ivar-access",
-					"-Wno-objc-missing-property-synthesis",
-				);
-			};
-			name = Release;
-		};
-		C01FCF4F08A954540054247B /* Debug */ = {
+		C01FCF4F08A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -529,20 +323,10 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Orangered-obcj" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C01FCF4B08A954540054247B /* Debug */,
-				C01FCF4C08A954540054247B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Orangered" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C01FCF4F08A954540054247B /* Debug */,
-				C01FCF5008A954540054247B /* Release */,
+				C01FCF4F08A954540054247B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

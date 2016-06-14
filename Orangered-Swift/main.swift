@@ -3,7 +3,7 @@
 //  Orangered
 //
 //  Created by Alan Westbrook on 5/29/16.
-//  Copyright © 2016 Voidref Software. All rights reserved.
+//  Copyright © 2016 Rockwood Software. All rights reserved.
 //
 
 import AppKit

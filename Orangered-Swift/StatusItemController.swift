@@ -9,46 +9,75 @@
 import Foundation
 import Cocoa
 
-class StatusItemController: NSObject {
+class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     
     enum State {
         case disconnected
-        case connected
-        case new
+        case mailfree
+        case orangered
+        case modmail
+        
+        private static let imageMap = [
+            disconnected: #imageLiteral(resourceName: "GreyEnvelope"),
+            mailfree:#imageLiteral(resourceName: "BlackEnvelope"),
+            orangered: #imageLiteral(resourceName: "OrangeredEnvelope"),
+            modmail: #imageLiteral(resourceName: "modmailgrey")]
+        
+        private static let urlMap = [
+            disconnected: nil,
+            mailfree: URL(string: "https://www.reddit.com/message/inbox/"),
+            orangered: URL(string: "https://www.reddit.com/message/unread/"),
+            modmail: URL(string: "https://www.reddit.com/message/moderator/")
+        ]
+        
+        func image() -> NSImage {
+            return State.imageMap[self]!
+        }
+        
+        func mailboxUrl() -> URL? {
+            return State.urlMap[self]!
+        }
     }
     
     private var state = State.disconnected {
         didSet {
-            updateState()
+            handleStateChanged()
         }
     }
     
     private let statusItem = NSStatusBar.system().statusItem(withLength: NSSquareStatusItemLength)
     
-    private var statusPoller = Timer()
+    private var statusPoller:Timer?
     private let prefs = UserDefaults.standard()
     private var statusConnection:URLSession?
     private let session = URLSession.shared()
+    private var loginWindowController:NSWindowController?
+    private var mailboxItem:NSMenuItem?
     
     override init() {
-        prefs.password = "refreddvoid"
         super.init()
         setup()
         login()
     }
     
     private func setup() {
-        prefs.username = "voidref"
         setupMenu()
     }
     
     private func setupMenu() {
         let menu = Menu()
         
-        let loginItem = NSMenuItem(title: "Login...", action: #selector(handleLoginMenuSelected), keyEquivalent: "")
-        menu.addItem(loginItem)
+        mailboxItem = NSMenuItem(title: "Mailbox...", action: #selector(handleMailboxItemSelected), keyEquivalent: "")
+        menu.addItem(mailboxItem!)
         menu.addItem(NSMenuItem.separator())
-        
+
+        let loginItem = NSMenuItem(title: "Login...", action: #selector(handleLoginItemSelected), keyEquivalent: "")
+        menu.addItem(loginItem)
+
+        let prefsItem = NSMenuItem(title: "Preferences...", action: #selector(handleLoginItemSelected), keyEquivalent: "")
+        menu.addItem(prefsItem)
+
+        menu.addItem(NSMenuItem.separator())
         let quitItem = NSMenuItem(title: "Quit", action: #selector(quit), keyEquivalent: "")
         menu.addItem(quitItem)
         
@@ -65,11 +94,14 @@ class StatusItemController: NSObject {
     }
     
     private func login() {
-        guard let url = URL(string: "https://ssl.reddit.com/api/login"),
-            let uname = prefs.username,
-            let password = prefs.password else {
-                print("Error bad url, wat?")
-                return
+        guard let url = URL(string: "https://ssl.reddit.com/api/login") else {
+            print("Error bad url, wat?")
+            return
+        }
+        
+        guard let uname = prefs.username, let password = prefs.password else {
+            showLoginWindow()
+            return
         }
         
         var request = URLRequest(url: url)
@@ -104,20 +136,83 @@ class StatusItemController: NSObject {
         else {
             HTTPCookieStorage.shared().setCookies(cookies, for: URL(string: "https://reddit.com"), mainDocumentURL: nil)
             
+            prefs.loggedIn = true
             setupStatusPoller()
         }
     }
     
     private func setupStatusPoller() {
-        statusPoller.invalidate()
+        statusPoller?.invalidate()
         let interval:TimeInterval = 60
-        
-        statusPoller = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(updateState), userInfo: nil, repeats: true)
-        statusPoller.fire()
+        statusPoller = Timer(timeInterval: interval, target: self, selector: #selector(updateState), userInfo: nil, repeats: true)
+        RunLoop.main().add(statusPoller!, forMode: RunLoopMode.defaultRunLoopMode)
     }
     
     private func showLoginWindow() {
+        loginWindowController = NSWindowController(window: NSWindow(contentViewController: LoginViewController()))
         
+        NSApp.activateIgnoringOtherApps(true)
+        loginWindowController?.showWindow(self)
+    }
+    
+    private func interpretResponse(json: String) {
+        // Crude, but remarkably immune to data restructuring as long as the key value pair doesn't change.
+
+        if json.contains("has_mod_mail\": true") {
+            state = .modmail
+            return
+        }
+
+        if json.contains("has_mail\": true") {
+            state = .orangered
+        }
+        else if json.contains("has_mail\": false") {
+            state = .mailfree
+        }
+        else {
+            // probably login error
+            state = .disconnected
+        }
+        
+    }
+    
+    private func handleStateChanged() {
+        statusItem.image = state.image()
+        
+        switch state {
+            case .orangered, .modmail:
+                notifyMail()
+                
+            case .disconnected:
+                mailboxItem?.isEnabled = false
+                DispatchQueue.main.after(when: DispatchTime.now() + 10, execute: { 
+                    self.login()
+                })
+
+            case .mailfree:
+                mailboxItem?.isEnabled = true
+        }
+    }
+    
+    private func notifyMail() {
+        let note = NSUserNotification()
+        note.title                  = "Orangered!";
+        note.informativeText        = "You have a new message on reddit!";
+        note.actionButtonTitle      = "Read";
+        
+        NSUserNotificationCenter.default().deliver(note)
+    }
+    
+    private func openMailbox() {        
+        if let url = state.mailboxUrl() {
+            NSWorkspace.shared().open(url)
+        }
+        
+        DispatchQueue.main.async { 
+            self.updateState()
+        }
+        
+        NSUserNotificationCenter.default().removeAllDeliveredNotifications()
     }
     
     @objc private func updateState() {
@@ -128,8 +223,8 @@ class StatusItemController: NSObject {
         }
         
         let task = session.dataTask(with: url) { (data, respose, error) in
-            if let dataActual = data {
-                print(try? JSONSerialization.jsonObject(with: dataActual, options: JSONSerialization.ReadingOptions.allowFragments))
+            if let dataActual = data, let json = String(data: dataActual, encoding: String.Encoding.utf8) {
+                self.interpretResponse(json: json)
             }
             else {
                 print("Failure: \(respose)")
@@ -137,13 +232,23 @@ class StatusItemController: NSObject {
         }
         
         task.resume()
+        print("update triggered")
     }
     
     @objc private func quit() {
         NSApplication.shared().stop(nil)
     }
     
-    @objc  func handleLoginMenuSelected() {
+    @objc func handleLoginItemSelected() {
         showLoginWindow()
+    }
+    
+    @objc func handleMailboxItemSelected() {
+        openMailbox()
+    }
+    // MARK: uset notification center
+    
+    @objc func userNotificationCenter(_ center: NSUserNotificationCenter, didActivate notification: NSUserNotification) {
+        openMailbox()
     }
 }

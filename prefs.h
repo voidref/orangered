@@ -3,7 +3,7 @@
 //  Orangered
 //
 //  Created by Alan Westbrook on 6/26/10.
-//  Copyright 2010 Voidref Software. All rights reserved.
+//  Copyright 2010 Rockwood Software. All rights reserved.
 //
 
 

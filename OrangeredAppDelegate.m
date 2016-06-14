@@ -2,8 +2,8 @@
 //  OrangeredAppDelegate.m
 //  Orangered
 //
-//  Created by voidref on 6/16/10.
-//  Copyright 2010 Voidref Software. All rights reserved.
+//  Created by Alan on 6/16/10.
+//  Copyright 2010 Rockwood Software. All rights reserved.
 //
 
 #import "OrangeredAppDelegate.h"
@@ -63,7 +63,7 @@ static const int AppUpdatePollInterval    = (60 * 60 * 24); // 1 day
 	appUpdateData	= nil;
 	updatePoller    = nil;
 	self.versionTF.stringValue = [NSString stringWithFormat:@"Version %@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
-	self.creditsTF.stringValue = @"written by Alan Westbrook (voidref)\n\nSpecial Thanks to the following redditors:\n"
+	self.creditsTF.stringValue = @"written by Alan Westbrook\n\nSpecial Thanks to the following redditors:\n"
 								"ashleyw\n"
 								"Condawg\n"
 								"dawnerd\n"

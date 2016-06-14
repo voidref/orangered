@@ -3,13 +3,14 @@
 //  Orangered
 //
 //  Created by Alan Westbrook on 6/13/16.
-//  Copyright © 2016 Voidref Software. All rights reserved.
+//  Copyright © 2016 Rockwood Software. All rights reserved.
 //
 
 import Foundation
 import Cocoa
 
 private let kUserNameKey = "username"
+private let kLoggedInKey = "logged in"
 private let kServiceName = "Orangered!"
 
 extension UserDefaults {
@@ -33,6 +34,14 @@ extension UserDefaults {
         }
     }
     
+    var loggedIn:Bool {
+        get {
+            return bool(forKey: kLoggedInKey)
+        }
+        set {
+            set(newValue, forKey: kLoggedInKey)
+        }
+    }
     // C APIs are *the worst*
     static private var keychainItem:SecKeychainItem? = nil
     
