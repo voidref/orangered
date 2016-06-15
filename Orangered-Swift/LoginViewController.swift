@@ -8,6 +8,7 @@
 
 import Cocoa
 
+typealias LoginAction = (name:String, password:String) -> Void
 class LoginViewController: NSViewController {
 
     let nameLabel = NSTextField()
@@ -15,9 +16,11 @@ class LoginViewController: NSViewController {
     let nameField = NSTextField()
     let passwordField = NSSecureTextField()
     let loginButton = NSButton()
+    let loginAction:LoginAction
     
-    init() {
-        
+    init(loginAction action: LoginAction) {
+        loginAction = action
+
         // Effit, I want to override init (unfailable override), but I am required to call a failable initializer?
         super.init(nibName: nil, bundle: nil)!
         
@@ -58,6 +61,8 @@ class LoginViewController: NSViewController {
         loginButton.title = "Login"
         loginButton.bezelStyle = .roundedBezelStyle
         loginButton.keyEquivalent = "\r"
+        loginButton.target = self
+        loginButton.action = #selector(loginClicked)
         
         let space:CGFloat = 16
         let fieldWidth:CGFloat = 160
@@ -97,4 +102,7 @@ class LoginViewController: NSViewController {
         view.addSubview(sub)
     }
     
+    @objc private func loginClicked() {
+        loginAction(name: nameField.stringValue, password: passwordField.stringValue)
+    }
 }

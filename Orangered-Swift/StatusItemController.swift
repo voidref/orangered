@@ -9,6 +9,8 @@
 import Foundation
 import Cocoa
 
+private let kUpdateURL = URL(string: "http://voidref.com/orangered/version")
+
 class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     
     enum State {
@@ -16,18 +18,21 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         case mailfree
         case orangered
         case modmail
+        case update
         
         private static let imageMap = [
             disconnected: #imageLiteral(resourceName: "GreyEnvelope"),
-            mailfree:#imageLiteral(resourceName: "BlackEnvelope"),
+            mailfree: #imageLiteral(resourceName: "BlackEnvelope"),
             orangered: #imageLiteral(resourceName: "OrangeredEnvelope"),
-            modmail: #imageLiteral(resourceName: "modmailgrey")]
+            modmail: #imageLiteral(resourceName: "modmailgrey"),
+            update: #imageLiteral(resourceName: "BlueEnvelope")]
         
         private static let urlMap = [
             disconnected: nil,
             mailfree: URL(string: "https://www.reddit.com/message/inbox/"),
             orangered: URL(string: "https://www.reddit.com/message/unread/"),
-            modmail: URL(string: "https://www.reddit.com/message/moderator/")
+            modmail: URL(string: "https://www.reddit.com/message/moderator/"),
+            update: nil
         ]
         
         func image() -> NSImage {
@@ -111,6 +116,9 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
             if let responseActual = response as? HTTPURLResponse {
                 self.handleLoginResponse(responseActual)
             }
+            else {
+                self.state = .disconnected
+            }
         })
         
         task.resume()
@@ -132,6 +140,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         
         if cookies.count < 1 {
             print("Login error: \(response)")
+            state = .disconnected
         }
         else {
             HTTPCookieStorage.shared().setCookies(cookies, for: URL(string: "https://reddit.com"), mainDocumentURL: nil)
@@ -149,7 +158,14 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     }
     
     private func showLoginWindow() {
-        loginWindowController = NSWindowController(window: NSWindow(contentViewController: LoginViewController()))
+        let login = LoginViewController { [weak self] (name, password) in
+            self?.loginWindowController?.close()
+            self?.prefs.username = name
+            self?.prefs.password = password
+            self?.login()
+        }
+        
+        loginWindowController = NSWindowController(window: NSWindow(contentViewController: login))
         
         NSApp.activateIgnoringOtherApps(true)
         loginWindowController?.showWindow(self)
@@ -178,6 +194,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     
     private func handleStateChanged() {
         statusItem.image = state.image()
+        mailboxItem?.isEnabled = true
         
         switch state {
             case .orangered, .modmail:
@@ -189,8 +206,8 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
                     self.login()
                 })
 
-            case .mailfree:
-                mailboxItem?.isEnabled = true
+            case .mailfree, .update:
+                break
         }
     }
     
@@ -232,7 +249,6 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         }
         
         task.resume()
-        print("update triggered")
     }
     
     @objc private func quit() {
@@ -246,6 +262,8 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     @objc func handleMailboxItemSelected() {
         openMailbox()
     }
+    
+    
     // MARK: uset notification center
     
     @objc func userNotificationCenter(_ center: NSUserNotificationCenter, didActivate notification: NSUserNotification) {
