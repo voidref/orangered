@@ -112,26 +112,22 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = "user=\(uname)&passwd=\(password)".data(using: String.Encoding.utf8)
-        let task = session.dataTask(with: request, completionHandler: { (data, response, error) in
-            if let responseActual = response as? HTTPURLResponse {
-                self.handleLoginResponse(responseActual)
-            }
-            else {
-                self.state = .disconnected
-            }
-        })
+
+        let task = session.dataTask(with: request) { (data, response, error) in
+            self.handleLogin(response: response as? HTTPURLResponse, data:data, error: error)
+        }
         
         task.resume()
     }
     
-    private func handleLoginResponse(_ response:HTTPURLResponse) {
-        
-        guard let headers = response.allHeaderFields as? [String:String] else {
-            print("wrong headers ... or so: \(response.allHeaderFields)")
+    private func handleLogin(response:HTTPURLResponse?, data:Data?, error:NSError?) {
+        // wrong password
+        guard let headers = response?.allHeaderFields as? [String:String] else {
+            print("wrong headers ... or so: \(response?.allHeaderFields)")
             return
         }
         
-        guard let url = response.url else {
+        guard let url = response?.url else {
             print("missing url from response: \(response)")
             return
         }
