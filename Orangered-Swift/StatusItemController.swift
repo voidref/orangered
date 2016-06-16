@@ -10,6 +10,8 @@ import Foundation
 import Cocoa
 
 private let kUpdateURL = URL(string: "http://voidref.com/orangered/version")
+private let kLoginMenuTitle = NSLocalizedString("Login...", comment: "Menu item title for bringing up the login window")
+private let kLogoutMenuTitle = NSLocalizedString("Log Out", comment: "Menu item title for logging out")
 
 class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     
@@ -58,6 +60,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     private let session = URLSession.shared()
     private var loginWindowController:NSWindowController?
     private var mailboxItem:NSMenuItem?
+    private var loginItem:NSMenuItem?
     
     override init() {
         super.init()
@@ -66,24 +69,34 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     }
     
     private func setup() {
+        NSUserNotificationCenter.default().delegate = self
         setupMenu()
     }
     
     private func setupMenu() {
         let menu = Menu()
         
-        mailboxItem = NSMenuItem(title: "Mailbox...", action: #selector(handleMailboxItemSelected), keyEquivalent: "")
+        mailboxItem = NSMenuItem(title: NSLocalizedString("Mailbox...", comment:"Menu item for opening the reddit mailbox"), 
+                                 action: #selector(handleMailboxItemSelected), keyEquivalent: "")
         menu.addItem(mailboxItem!)
         menu.addItem(NSMenuItem.separator())
 
-        let loginItem = NSMenuItem(title: "Login...", action: #selector(handleLoginItemSelected), keyEquivalent: "")
-        menu.addItem(loginItem)
+        var logIOMenuTitle = kLoginMenuTitle
+        
+        if prefs.loggedIn {
+            logIOMenuTitle = kLogoutMenuTitle
+        }
+        
+        loginItem = NSMenuItem(title: logIOMenuTitle, action: #selector(handleLoginItemSelected), keyEquivalent: "")
+        menu.addItem(loginItem!)
 
-        let prefsItem = NSMenuItem(title: "Preferences...", action: #selector(handleLoginItemSelected), keyEquivalent: "")
+        let prefsItem = NSMenuItem(title: NSLocalizedString("Preferences...", comment:"Menu item title for opening the preferences window"),
+                                   action: #selector(handleLoginItemSelected), keyEquivalent: "")
         menu.addItem(prefsItem)
 
         menu.addItem(NSMenuItem.separator())
-        let quitItem = NSMenuItem(title: "Quit", action: #selector(quit), keyEquivalent: "")
+        let quitItem = NSMenuItem(title: NSLocalizedString("Quit", comment:"Quit menu item title"), 
+                                  action: #selector(quit), keyEquivalent: "")
         menu.addItem(quitItem)
         
         menu.items.forEach { (item) in
@@ -216,7 +229,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         NSUserNotificationCenter.default().deliver(note)
     }
     
-    private func openMailbox() {        
+    private func openMailbox() {    
         if let url = state.mailboxUrl() {
             NSWorkspace.shared().open(url)
         }
@@ -226,6 +239,10 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         }
         
         NSUserNotificationCenter.default().removeAllDeliveredNotifications()
+    }
+    
+    private func logout() {
+        
     }
     
     @objc private func updateState() {
@@ -252,7 +269,12 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     }
     
     @objc func handleLoginItemSelected() {
-        showLoginWindow()
+        if prefs.loggedIn {
+            logout()
+        }
+        else {
+            showLoginWindow()
+        }
     }
     
     @objc func handleMailboxItemSelected() {
@@ -266,3 +288,4 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         openMailbox()
     }
 }
+

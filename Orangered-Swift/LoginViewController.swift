@@ -24,7 +24,7 @@ class LoginViewController: NSViewController {
         // Effit, I want to override init (unfailable override), but I am required to call a failable initializer?
         super.init(nibName: nil, bundle: nil)!
         
-        title = "Login"
+        title = "Orangered! Login"
     }
     
     required init?(coder: NSCoder) {
@@ -58,7 +58,11 @@ class LoginViewController: NSViewController {
         setupLabel(label: nameLabel, text: "User Name:")
         setupLabel(label: passwordLabel, text: "Password:")
         
-        loginButton.title = "Login"
+        let pref = UserDefaults.standard()
+        nameField.stringValue = pref.username ?? ""
+        passwordField.stringValue = pref.password ?? ""
+                
+        loginButton.title = NSLocalizedString("Login", comment: "login button title on the login window")
         loginButton.bezelStyle = .roundedBezelStyle
         loginButton.keyEquivalent = "\r"
         loginButton.target = self
@@ -94,7 +98,6 @@ class LoginViewController: NSViewController {
             view.bottomAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: space),
             view.widthAnchor.constraint(equalTo: fieldGuide.widthAnchor, constant: space * 2)
         ])
-        
     }
     
     private func add(sub:NSView) {
