@@ -10,35 +10,45 @@ import Foundation
 import Cocoa
 
 private let kUpdateURL = URL(string: "http://voidref.com/orangered/version")
-private let kLoginMenuTitle = NSLocalizedString("Login...", comment: "Menu item title for bringing up the login window")
+private let kRedditCookieURL = URL(string: "https://reddit.com")
+private let kLoginMenuTitle = NSLocalizedString("Login…", comment: "Menu item title for bringing up the login window")
 private let kLogoutMenuTitle = NSLocalizedString("Log Out", comment: "Menu item title for logging out")
+private let kAttemptingLoginTitle = NSLocalizedString("Attempting Login…", comment: "Title of the login menu item while it's attemping to log in")
 
 class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     
     enum State {
+        case loggedout
+        case invalidcredentials
         case disconnected
         case mailfree
         case orangered
         case modmail
         case update
         
-        private static let imageMap = [
-            disconnected: #imageLiteral(resourceName: "GreyEnvelope"),
-            mailfree: #imageLiteral(resourceName: "BlackEnvelope"),
-            orangered: #imageLiteral(resourceName: "OrangeredEnvelope"),
-            modmail: #imageLiteral(resourceName: "modmailgrey"),
-            update: #imageLiteral(resourceName: "BlueEnvelope")]
-        
         private static let urlMap = [
+            loggedout: nil,
+            invalidcredentials: nil,
             disconnected: nil,
             mailfree: URL(string: "https://www.reddit.com/message/inbox/"),
             orangered: URL(string: "https://www.reddit.com/message/unread/"),
             modmail: URL(string: "https://www.reddit.com/message/moderator/"),
             update: nil
         ]
-        
-        func image() -> NSImage {
-            return State.imageMap[self]!
+                
+        func image(forAppearance appearanceName: String) -> NSImage {
+            let imageMap = [
+                loggedout: ["not-connected", "not-connected-dark"],
+                invalidcredentials:  ["not-connected", "not-connected-dark"],
+                disconnected: ["not-connected", "not-connected-dark"],
+                mailfree: ["logged-in", "logged-in-dark"],
+                orangered: ["message", "message-dark"],
+                modmail: ["mod", "mod-dark"],
+                update: ["BlueEnvelope", "BlueEnvelope"]
+            ]
+
+            let index = appearanceName == NSAppearanceNameVibrantDark ? 1 : 0
+            return NSImage(named: imageMap[self]![index])!
         }
         
         func mailboxUrl() -> URL? {
@@ -59,13 +69,16 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     private var statusConnection:URLSession?
     private let session = URLSession.shared()
     private var loginWindowController:NSWindowController?
+    private var prefWindowController:NSWindowController?
     private var mailboxItem:NSMenuItem?
     private var loginItem:NSMenuItem?
     
     override init() {
         super.init()
         setup()
-        login()
+        if prefs.loggedIn {
+            login()
+        }
     }
     
     private func setup() {
@@ -76,24 +89,20 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     private func setupMenu() {
         let menu = Menu()
         
-        mailboxItem = NSMenuItem(title: NSLocalizedString("Mailbox...", comment:"Menu item for opening the reddit mailbox"), 
+        mailboxItem = NSMenuItem(title: NSLocalizedString("Mailbox…", comment:"Menu item for opening the reddit mailbox"), 
                                  action: #selector(handleMailboxItemSelected), keyEquivalent: "")
         menu.addItem(mailboxItem!)
         menu.addItem(NSMenuItem.separator())
 
-        var logIOMenuTitle = kLoginMenuTitle
-        
-        if prefs.loggedIn {
-            logIOMenuTitle = kLogoutMenuTitle
-        }
-        
-        loginItem = NSMenuItem(title: logIOMenuTitle, action: #selector(handleLoginItemSelected), keyEquivalent: "")
+        loginItem = NSMenuItem(title: kLoginMenuTitle, 
+                               action: #selector(handleLoginItemSelected), keyEquivalent: "")
         menu.addItem(loginItem!)
 
-        let prefsItem = NSMenuItem(title: NSLocalizedString("Preferences...", comment:"Menu item title for opening the preferences window"),
-                                   action: #selector(handleLoginItemSelected), keyEquivalent: "")
+#if PrefsDone
+        let prefsItem = NSMenuItem(title: NSLocalizedString("Preferences…", comment:"Menu item title for opening the preferences window"),
+                                   action: #selector(handlePrefItemSelected), keyEquivalent: "")
         menu.addItem(prefsItem)
-
+#endif
         menu.addItem(NSMenuItem.separator())
         let quitItem = NSMenuItem(title: NSLocalizedString("Quit", comment:"Quit menu item title"), 
                                   action: #selector(quit), keyEquivalent: "")
@@ -104,11 +113,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         }
         
         statusItem.menu = menu
-        
-        let image = NSImage(named: "GreyEnvelope")
-        image?.isTemplate = true
-        statusItem.image = image
-        statusItem.highlightMode = true
+        statusItem.alternateImage = NSImage(named: "logged-in-dark")
     }
     
     private func login() {
@@ -126,6 +131,8 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         request.httpMethod = "POST"
         request.httpBody = "user=\(uname)&passwd=\(password)".data(using: String.Encoding.utf8)
 
+        loginItem?.title = kAttemptingLoginTitle
+        
         let task = session.dataTask(with: request) { (data, response, error) in
             self.handleLogin(response: response as? HTTPURLResponse, data:data, error: error)
         }
@@ -134,7 +141,15 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     }
     
     private func handleLogin(response:HTTPURLResponse?, data:Data?, error:NSError?) {
-        // wrong password
+        if let dataActual = data, let 
+               dataString = String(data:dataActual, encoding:String.Encoding.utf8) {
+            if dataString.contains("wrong password") {
+                // TODO: wrong password error
+                print("Wrong password")
+                return
+            }
+        }
+        
         guard let headers = response?.allHeaderFields as? [String:String] else {
             print("wrong headers ... or so: \(response?.allHeaderFields)")
             return
@@ -152,9 +167,10 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
             state = .disconnected
         }
         else {
-            HTTPCookieStorage.shared().setCookies(cookies, for: URL(string: "https://reddit.com"), mainDocumentURL: nil)
+            HTTPCookieStorage.shared().setCookies(cookies, for: kRedditCookieURL, mainDocumentURL: nil)
             
             prefs.loggedIn = true
+            state = .mailfree
             setupStatusPoller()
         }
     }
@@ -162,8 +178,9 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     private func setupStatusPoller() {
         statusPoller?.invalidate()
         let interval:TimeInterval = 60
-        statusPoller = Timer(timeInterval: interval, target: self, selector: #selector(updateState), userInfo: nil, repeats: true)
+        statusPoller = Timer(timeInterval: interval, target: self, selector: #selector(checkReddit), userInfo: nil, repeats: true)
         RunLoop.main().add(statusPoller!, forMode: RunLoopMode.defaultRunLoopMode)
+        statusPoller?.fire()
     }
     
     private func showLoginWindow() {
@@ -174,10 +191,20 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
             self?.login()
         }
         
-        loginWindowController = NSWindowController(window: NSWindow(contentViewController: login))
+        let window = NSPanel(contentViewController: login)
+        window.appearance = NSAppearance(named: NSAppearanceNameVibrantDark)
+        loginWindowController = NSWindowController(window: window)
         
         NSApp.activateIgnoringOtherApps(true)
         loginWindowController?.showWindow(self)
+    }
+    
+    private func showPrefWindow() {
+        let pref = NSWindowController(window: NSPanel(contentViewController: PrefViewController()))
+        
+        prefWindowController = pref
+        NSApp.activateIgnoringOtherApps(true)
+        pref.showWindow(self)
     }
     
     private func interpretResponse(json: String) {
@@ -197,24 +224,27 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         else {
             // probably login error
             state = .disconnected
-        }
-        
+        }        
     }
     
     private func handleStateChanged() {
-        statusItem.image = state.image()
+        statusItem.image = state.image(forAppearance: statusItem.button!.effectiveAppearance.name)
         mailboxItem?.isEnabled = true
+        loginItem?.title = prefs.loggedIn ? kLogoutMenuTitle : kLoginMenuTitle
         
         switch state {
             case .orangered, .modmail:
                 notifyMail()
                 
             case .disconnected:
-                mailboxItem?.isEnabled = false
                 DispatchQueue.main.after(when: DispatchTime.now() + 10, execute: { 
                     self.login()
                 })
-
+            fallthrough
+            case .loggedout, .invalidcredentials:
+                mailboxItem?.isEnabled = false
+                
+            
             case .mailfree, .update:
                 break
         }
@@ -222,9 +252,9 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     
     private func notifyMail() {
         let note = NSUserNotification()
-        note.title                  = "Orangered!";
-        note.informativeText        = "You have a new message on reddit!";
-        note.actionButtonTitle      = "Read";
+        note.title                  = "Orangered!"
+        note.informativeText        = NSLocalizedString("You have a new message on reddit!", comment: "new message notification text")
+        note.actionButtonTitle      = NSLocalizedString("Read", comment: "notification call to action button")
         
         NSUserNotificationCenter.default().deliver(note)
     }
@@ -234,30 +264,34 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
             NSWorkspace.shared().open(url)
         }
         
-        DispatchQueue.main.async { 
-            self.updateState()
+        DispatchQueue.main.after(when: DispatchTime.now() + 5) { 
+            self.checkReddit()
         }
         
         NSUserNotificationCenter.default().removeAllDeliveredNotifications()
     }
     
     private func logout() {
-        
+        prefs.loggedIn = false
+        statusPoller?.invalidate()
+        let storage = HTTPCookieStorage.shared() 
+        storage.cookies(for: kRedditCookieURL!)?.forEach { storage.deleteCookie($0) }
+        state = .loggedout
     }
     
-    @objc private func updateState() {
+    @objc private func checkReddit() {
         guard let uname = prefs.username,
             let url = URL(string: "http://www.reddit.com/user/\(uname)/about.json") else {
                 print("User name empty")
                 return
         }
         
-        let task = session.dataTask(with: url) { (data, respose, error) in
+        let task = session.dataTask(with: url) { (data, response, error) in
             if let dataActual = data, let json = String(data: dataActual, encoding: String.Encoding.utf8) {
                 self.interpretResponse(json: json)
             }
             else {
-                print("Failure: \(respose)")
+                print("Failure: \(response)")
             }
         }
         
@@ -277,12 +311,16 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         }
     }
     
+    @objc func handlePrefItemSelected() {
+        showPrefWindow()
+    }
+    
     @objc func handleMailboxItemSelected() {
         openMailbox()
     }
     
     
-    // MARK: uset notification center
+    // MARK: User Notification Center
     
     @objc func userNotificationCenter(_ center: NSUserNotificationCenter, didActivate notification: NSUserNotification) {
         openMailbox()

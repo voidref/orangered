@@ -11,12 +11,12 @@ import Cocoa
 typealias LoginAction = (name:String, password:String) -> Void
 class LoginViewController: NSViewController {
 
-    let nameLabel = NSTextField()
-    let passwordLabel = NSTextField()
-    let nameField = NSTextField()
-    let passwordField = NSSecureTextField()
-    let loginButton = NSButton()
-    let loginAction:LoginAction
+    private let nameLabel = NSTextField()
+    private let passwordLabel = NSTextField()
+    private let nameField = NSTextField()
+    private let passwordField = NSSecureTextField()
+    private let loginButton = NSButton()
+    private let loginAction:LoginAction
     
     init(loginAction action: LoginAction) {
         loginAction = action
@@ -24,7 +24,7 @@ class LoginViewController: NSViewController {
         // Effit, I want to override init (unfailable override), but I am required to call a failable initializer?
         super.init(nibName: nil, bundle: nil)!
         
-        title = "Orangered! Login"
+        title = NSLocalizedString("Orangered! Login", comment: "The login window title")
     }
     
     required init?(coder: NSCoder) {
@@ -38,7 +38,9 @@ class LoginViewController: NSViewController {
     
     override func loadView() {
         // Don't call into super, as we don't want it to try to load from a nib
-        view = NSView()
+        let vev = NSVisualEffectView()
+        view = vev
+        
         view.translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -76,23 +78,23 @@ class LoginViewController: NSViewController {
         
         NSLayoutConstraint.activate([
             fieldGuide.topAnchor.constraint(equalTo: nameLabel.topAnchor),
-            fieldGuide.leftAnchor.constraint(equalTo: nameLabel.leftAnchor),
-            fieldGuide.rightAnchor.constraint(equalTo: nameField.rightAnchor),
+            fieldGuide.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
+            fieldGuide.trailingAnchor.constraint(equalTo: nameField.trailingAnchor),
             fieldGuide.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             fieldGuide.bottomAnchor.constraint(equalTo: passwordLabel.bottomAnchor),
             
-            nameLabel.rightAnchor.constraint(equalTo: nameField.leftAnchor, constant: -space / 2),
+            nameLabel.trailingAnchor.constraint(equalTo: nameField.leadingAnchor, constant: -space / 2),
             nameField.firstBaselineAnchor.constraint(equalTo: nameLabel.firstBaselineAnchor),
             nameField.widthAnchor.constraint(equalToConstant: fieldWidth),
             
             passwordLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: space / 2),
-            passwordLabel.rightAnchor.constraint(equalTo: nameLabel.rightAnchor),
+            passwordLabel.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor),
             passwordField.firstBaselineAnchor.constraint(equalTo: passwordLabel.firstBaselineAnchor),
-            passwordField.leftAnchor.constraint(equalTo: nameField.leftAnchor),
-            passwordField.rightAnchor.constraint(equalTo: nameField.rightAnchor),
+            passwordField.leadingAnchor.constraint(equalTo: nameField.leadingAnchor),
+            passwordField.trailingAnchor.constraint(equalTo: nameField.trailingAnchor),
             
             loginButton.topAnchor.constraint(equalTo: fieldGuide.bottomAnchor, constant: space),
-            loginButton.rightAnchor.constraint(equalTo: fieldGuide.rightAnchor),
+            loginButton.trailingAnchor.constraint(equalTo: fieldGuide.trailingAnchor),
 
             view.topAnchor.constraint(equalTo: nameLabel.topAnchor, constant: -space),
             view.bottomAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: space),
