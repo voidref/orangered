@@ -114,6 +114,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         
         statusItem.menu = menu
         statusItem.alternateImage = NSImage(named: "logged-in-dark")
+        updateIcon()
     }
     
     private func login() {
@@ -228,7 +229,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     }
     
     private func handleStateChanged() {
-        statusItem.image = state.image(forAppearance: statusItem.button!.effectiveAppearance.name)
+        updateIcon()
         mailboxItem?.isEnabled = true
         loginItem?.title = prefs.loggedIn ? kLogoutMenuTitle : kLoginMenuTitle
         
@@ -248,6 +249,10 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
             case .mailfree, .update:
                 break
         }
+    }
+    
+    private func updateIcon() {
+        statusItem.image = state.image(forAppearance: statusItem.button!.effectiveAppearance.name)
     }
     
     private func notifyMail() {
