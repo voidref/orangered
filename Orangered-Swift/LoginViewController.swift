@@ -38,15 +38,13 @@ class LoginViewController: NSViewController {
     
     override func loadView() {
         // Don't call into super, as we don't want it to try to load from a nib
-        let vev = NSVisualEffectView()
-        view = vev
-        
+        view = NSVisualEffectView()
         view.translatesAutoresizingMaskIntoConstraints = false
     }
     
     private func setup() {
         view.translatesAutoresizingMaskIntoConstraints = false
-        for sub in [nameLabel, nameField, passwordLabel, passwordField, loginButton] { add(sub: sub) }
+        for subview in [nameLabel, nameField, passwordLabel, passwordField, loginButton] { add(subview) }
         
         func setupLabel(label:NSTextField, text:String) {
             label.stringValue = text
@@ -102,7 +100,7 @@ class LoginViewController: NSViewController {
         ])
     }
     
-    private func add(sub:NSView) {
+    private func add(_ sub:NSView) {
         sub.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sub)
     }
