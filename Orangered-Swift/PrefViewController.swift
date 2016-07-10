@@ -53,7 +53,7 @@ extension NSButton {
             self.init(checkboxWithTitle: title, target: target, action: action)
         } else {
             self.init()
-            self.setButtonType(.switchButton)
+            setButtonType(.switch)
             self.title = title
             self.target = target
             self.action = action

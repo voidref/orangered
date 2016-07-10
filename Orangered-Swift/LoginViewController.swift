@@ -58,12 +58,12 @@ class LoginViewController: NSViewController {
         setupLabel(label: nameLabel, text: "User Name:")
         setupLabel(label: passwordLabel, text: "Password:")
         
-        let pref = UserDefaults.standard()
+        let pref = UserDefaults.standard
         nameField.stringValue = pref.username ?? ""
         passwordField.stringValue = pref.password ?? ""
                 
         loginButton.title = NSLocalizedString("Login", comment: "login button title on the login window")
-        loginButton.bezelStyle = .roundedBezelStyle
+        loginButton.bezelStyle = .rounded
         loginButton.keyEquivalent = "\r"
         loginButton.target = self
         loginButton.action = #selector(loginClicked)

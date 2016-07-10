@@ -48,7 +48,16 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
             ]
 
             let index = appearanceName == NSAppearanceNameVibrantDark ? 1 : 0
-            return NSImage(named: imageMap[self]![index])!
+            
+            guard let name = imageMap[self]?[index] else {
+                fatalError("you really messed up this time, missing case: imageMap for \(self), index: \(index)")
+            }
+            
+            guard let image = NSImage(named: name) else {
+                fatalError("fix yo assets, missing image: \(name)")
+            }
+            
+            return image
         }
         
         func mailboxUrl() -> URL? {
@@ -65,9 +74,9 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     private let statusItem = NSStatusBar.system().statusItem(withLength: NSSquareStatusItemLength)
     
     private var statusPoller:Timer?
-    private let prefs = UserDefaults.standard()
+    private let prefs = UserDefaults.standard
     private var statusConnection:URLSession?
-    private let session = URLSession.shared()
+    private let session = URLSession.shared
     private var loginWindowController:NSWindowController?
     private var prefWindowController:NSWindowController?
     private var mailboxItem:NSMenuItem?
@@ -82,21 +91,25 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     }
     
     private func setup() {
-        NSUserNotificationCenter.default().delegate = self
+        NSUserNotificationCenter.default.delegate = self
         setupMenu()
     }
     
     private func setupMenu() {
         let menu = Menu()
         
-        mailboxItem = NSMenuItem(title: NSLocalizedString("Mailbox…", comment:"Menu item for opening the reddit mailbox"), 
+        let mailbox = NSMenuItem(title: NSLocalizedString("Mailbox…", comment:"Menu item for opening the reddit mailbox"), 
                                  action: #selector(handleMailboxItemSelected), keyEquivalent: "")
-        menu.addItem(mailboxItem!)
+        mailbox.isEnabled = false
+        menu.addItem(mailbox)
         menu.addItem(NSMenuItem.separator())
 
-        loginItem = NSMenuItem(title: kLoginMenuTitle, 
+        mailboxItem = mailbox
+        
+        let login = NSMenuItem(title: kLoginMenuTitle, 
                                action: #selector(handleLoginItemSelected), keyEquivalent: "")
-        menu.addItem(loginItem!)
+        menu.addItem(login)
+        loginItem = login
 
 #if PrefsDone
         let prefsItem = NSMenuItem(title: NSLocalizedString("Preferences…", comment:"Menu item title for opening the preferences window"),
@@ -113,7 +126,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         }
         
         statusItem.menu = menu
-        statusItem.alternateImage = NSImage(named: "logged-in-dark")
+        statusItem.alternateImage = NSImage(named: "active")
         updateIcon()
     }
     
@@ -168,7 +181,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
             state = .disconnected
         }
         else {
-            HTTPCookieStorage.shared().setCookies(cookies, for: kRedditCookieURL, mainDocumentURL: nil)
+            HTTPCookieStorage.shared.setCookies(cookies, for: kRedditCookieURL, mainDocumentURL: nil)
             
             prefs.loggedIn = true
             state = .mailfree
@@ -180,7 +193,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         statusPoller?.invalidate()
         let interval:TimeInterval = 60
         statusPoller = Timer(timeInterval: interval, target: self, selector: #selector(checkReddit), userInfo: nil, repeats: true)
-        RunLoop.main().add(statusPoller!, forMode: RunLoopMode.defaultRunLoopMode)
+        RunLoop.main.add(statusPoller!, forMode: RunLoopMode.defaultRunLoopMode)
         statusPoller?.fire()
     }
     
@@ -261,7 +274,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         note.informativeText        = NSLocalizedString("You have a new message on reddit!", comment: "new message notification text")
         note.actionButtonTitle      = NSLocalizedString("Read", comment: "notification call to action button")
         
-        NSUserNotificationCenter.default().deliver(note)
+        NSUserNotificationCenter.default.deliver(note)
     }
     
     private func openMailbox() {    
@@ -273,13 +286,13 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
             self.checkReddit()
         }
         
-        NSUserNotificationCenter.default().removeAllDeliveredNotifications()
+        NSUserNotificationCenter.default.removeAllDeliveredNotifications()
     }
     
     private func logout() {
         prefs.loggedIn = false
         statusPoller?.invalidate()
-        let storage = HTTPCookieStorage.shared() 
+        let storage = HTTPCookieStorage.shared 
         storage.cookies(for: kRedditCookieURL!)?.forEach { storage.deleteCookie($0) }
         state = .loggedout
     }
