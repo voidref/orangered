@@ -66,8 +66,13 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     }
     
     private var state = State.disconnected {
-        didSet {
-            handleStateChanged()
+        willSet {
+            if newValue != state {
+                // In order to avoid having to set flags for handling values set that were already set, we check `willSet`. This, however, necessitates we reschedule handling until the value is actually set as there doesn't seem to be a way to let it set and then call a method synchronously
+                DispatchQueue.main.async(execute: { 
+                    self.handleStateChanged()
+                })
+            }
         }
     }
     
@@ -81,6 +86,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     private var prefWindowController:NSWindowController?
     private var mailboxItem:NSMenuItem?
     private var loginItem:NSMenuItem?
+    private var mailCount = 0
     
     override init() {
         super.init()
@@ -206,7 +212,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         }
         
         let window = NSPanel(contentViewController: login)
-        window.appearance = NSAppearance(named: NSAppearanceNameVibrantDark)
+        window.appearance = NSAppearance(named: NSAppearanceNameVibrantLight)
         loginWindowController = NSWindowController(window: window)
         
         NSApp.activateIgnoringOtherApps(true)
@@ -221,19 +227,33 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         pref.showWindow(self)
     }
     
-    private func interpretResponse(json: String) {
-        // Crude, but remarkably immune to data restructuring as long as the key value pair doesn't change.
+    private func interpretResponse(json: AnyObject) {
+        // Crude, but remarkably immune to data restructuring as long as the key value pairs don't change.
 
-        if json.contains("has_mod_mail\": true") {
+        guard let jsonActual = json["data"] as? [String:AnyObject] else {
+            print("response json unexpected format: \(json)")
+            return
+        }
+        
+        if let newMailCount = jsonActual["inbox_count"] as? Int {
+            if newMailCount != mailCount {
+                mailCount = newMailCount
+                notifyMail()
+            }
+        }
+        
+        if let modMailState = jsonActual["has_mod_mail"] as? Bool where modMailState == true {
             state = .modmail
             return
         }
 
-        if json.contains("has_mail\": true") {
-            state = .orangered
-        }
-        else if json.contains("has_mail\": false") {
-            state = .mailfree
+        if let mailState = jsonActual["has_mail"] as? Bool {
+            if mailState {
+                state = .orangered
+            }
+            else {
+                state = .mailfree
+            }
         }
         else {
             // probably login error
@@ -274,6 +294,11 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         note.informativeText        = NSLocalizedString("You have a new message on reddit!", comment: "new message notification text")
         note.actionButtonTitle      = NSLocalizedString("Read", comment: "notification call to action button")
         
+        if mailCount > 1 {
+            // Note: This localization is not going to work...
+            note.informativeText = NSLocalizedString("You have \(mailCount) unread messages on reddit", comment: "plural message notification text")
+        }
+        
         NSUserNotificationCenter.default.deliver(note)
     }
     
@@ -303,10 +328,14 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
                 print("User name empty")
                 return
         }
-        
+
         let task = session.dataTask(with: url) { (data, response, error) in
-            if let dataActual = data, let json = String(data: dataActual, encoding: String.Encoding.utf8) {
-                self.interpretResponse(json: json)
+            if let dataActual = data {
+                do {
+                    try self.interpretResponse(json: JSONSerialization.jsonObject(with: dataActual, options: .allowFragments))
+                } catch let error {
+                    print("Error reading response json: \(error)")
+                }
             }
             else {
                 print("Failure: \(response)")
