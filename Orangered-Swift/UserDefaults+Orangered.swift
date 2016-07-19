@@ -63,7 +63,7 @@ extension UserDefaults {
                                                  &passwordLength, 
                                                  &passwordData, 
                                                  &UserDefaults.keychainItem)
-        if let pass = passwordData where err == errSecSuccess {
+        if let pass = passwordData, err == errSecSuccess {
             let password = String(bytesNoCopy: pass, length: Int(passwordLength), encoding: String.Encoding.utf8, freeWhenDone: true)
             return password
         }

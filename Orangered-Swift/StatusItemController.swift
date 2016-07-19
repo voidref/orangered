@@ -14,6 +14,7 @@ private let kRedditCookieURL = URL(string: "https://reddit.com")
 private let kLoginMenuTitle = NSLocalizedString("Login…", comment: "Menu item title for bringing up the login window")
 private let kLogoutMenuTitle = NSLocalizedString("Log Out", comment: "Menu item title for logging out")
 private let kAttemptingLoginTitle = NSLocalizedString("Attempting Login…", comment: "Title of the login menu item while it's attemping to log in")
+private let kOpenMailboxRecheckDelay = 5.0
 
 class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     
@@ -238,11 +239,14 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         if let newMailCount = jsonActual["inbox_count"] as? Int {
             if newMailCount != mailCount {
                 mailCount = newMailCount
-                notifyMail()
+                
+                if mailCount > 0 {
+                    notifyMail()
+                }
             }
         }
         
-        if let modMailState = jsonActual["has_mod_mail"] as? Bool where modMailState == true {
+        if let modMailState = jsonActual["has_mod_mail"] as? Bool, modMailState == true {
             state = .modmail
             return
         }
@@ -307,7 +311,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
             NSWorkspace.shared().open(url)
         }
         
-        DispatchQueue.main.after(when: DispatchTime.now() + 5) { 
+        DispatchQueue.main.after(when: DispatchTime.now() + kOpenMailboxRecheckDelay) { 
             self.checkReddit()
         }
         
