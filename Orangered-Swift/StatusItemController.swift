@@ -37,21 +37,29 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
             update: nil
         ]
                 
-        func image(forAppearance appearanceName: String) -> NSImage {
+        func image(forAppearance appearanceName: String, useAlt:Bool = false) -> NSImage {
             let imageMap = [
-                loggedout: ["not-connected", "not-connected-dark"],
-                invalidcredentials:  ["not-connected", "not-connected-dark"],
-                disconnected: ["not-connected", "not-connected-dark"],
-                mailfree: ["logged-in", "logged-in-dark"],
-                orangered: ["message", "message-dark"],
-                modmail: ["mod", "mod-dark"],
-                update: ["BlueEnvelope", "BlueEnvelope"]
+                loggedout: "not-connected",
+                invalidcredentials:  "not-connected",
+                disconnected: "not-connected",
+                mailfree: "logged-in",
+                orangered: "message",
+                modmail: "mod",
+                update: "BlueEnvelope" // TODO: Sort this out
             ]
 
-            let index = appearanceName == NSAppearanceNameVibrantDark ? 1 : 0
+            guard let basename = imageMap[self] else {
+                fatalError("you really messed up this time, missing case: imageMap for \(self)")
+            }
+
+            var name = basename
             
-            guard let name = imageMap[self]?[index] else {
-                fatalError("you really messed up this time, missing case: imageMap for \(self), index: \(index)")
+            if appearanceName == NSAppearanceNameVibrantDark {
+                name = "\(basename)-dark"
+            }
+            
+            if useAlt {
+                name = "alt-\(basename)" // no separate dark versions as supplied...
             }
             
             guard let image = NSImage(named: name) else {
@@ -91,10 +99,11 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     
     override init() {
         super.init()
+
         setup()
         if prefs.loggedIn {
             login()
-        }
+        }        
     }
     
     private func setup() {
@@ -133,7 +142,13 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         }
         
         statusItem.menu = menu
-        statusItem.alternateImage = NSImage(named: "active")
+        
+        var altImageName = "active"
+        if prefs.useAltImages {
+            altImageName = "alt-\(altImageName)"
+        }
+        
+        statusItem.alternateImage = NSImage(named: altImageName)
         updateIcon()
     }
     
@@ -289,7 +304,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     }
     
     private func updateIcon() {
-        statusItem.image = state.image(forAppearance: statusItem.button!.effectiveAppearance.name)
+        statusItem.image = state.image(forAppearance: statusItem.button!.effectiveAppearance.name, useAlt: prefs.useAltImages)
     }
     
     private func notifyMail() {

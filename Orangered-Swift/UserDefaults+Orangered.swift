@@ -11,6 +11,7 @@ import Cocoa
 
 private let kUserNameKey = "username"
 private let kLoggedInKey = "logged in"
+private let kUseAltImagesKey = "use alt images"
 private let kServiceName = "Orangered!"
 
 extension UserDefaults {
@@ -42,6 +43,16 @@ extension UserDefaults {
             set(newValue, forKey: kLoggedInKey)
         }
     }
+    
+    var useAltImages:Bool {
+        get {
+            return bool(forKey: kUseAltImagesKey)
+        }
+        set {
+            set(newValue, forKey: kUseAltImagesKey)
+        }
+    }
+    
     // C APIs are *the worst*
     static private var keychainItem:SecKeychainItem? = nil
     
