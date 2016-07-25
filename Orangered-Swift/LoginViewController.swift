@@ -8,7 +8,10 @@
 
 import Cocoa
 
+let kHelpURL = URL(string: "https://www.github.com/voidref/orangered")
+
 typealias LoginAction = (name:String, password:String) -> Void
+
 class LoginViewController: NSViewController {
 
     private let nameLabel = NSTextField()
@@ -16,6 +19,7 @@ class LoginViewController: NSViewController {
     private let nameField = NSTextField()
     private let passwordField = NSSecureTextField()
     private let loginButton = NSButton()
+    private let helpButton = NSButton()
     private let loginAction:LoginAction
     
     init(loginAction action: LoginAction) {
@@ -74,6 +78,12 @@ class LoginViewController: NSViewController {
         let fieldGuide = NSLayoutGuide()
         view.addLayoutGuide(fieldGuide)
         
+        helpButton.bezelStyle = .helpButton
+        helpButton.title = ""
+        helpButton.target = self
+        helpButton.action = #selector(helpClicked)
+        add(helpButton)
+        
         NSLayoutConstraint.activate([
             fieldGuide.topAnchor.constraint(equalTo: nameLabel.topAnchor),
             fieldGuide.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
@@ -94,6 +104,9 @@ class LoginViewController: NSViewController {
             loginButton.topAnchor.constraint(equalTo: fieldGuide.bottomAnchor, constant: space),
             loginButton.trailingAnchor.constraint(equalTo: fieldGuide.trailingAnchor),
 
+            helpButton.leadingAnchor.constraint(equalTo: fieldGuide.leadingAnchor),
+            helpButton.centerYAnchor.constraint(equalTo: loginButton.centerYAnchor),
+            
             view.topAnchor.constraint(equalTo: nameLabel.topAnchor, constant: -space),
             view.bottomAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: space),
             view.widthAnchor.constraint(equalTo: fieldGuide.widthAnchor, constant: space * 2)
@@ -108,4 +121,14 @@ class LoginViewController: NSViewController {
     @objc private func loginClicked() {
         loginAction(name: nameField.stringValue, password: passwordField.stringValue)
     }
+    
+    @objc private func helpClicked() {
+        if let urlActual = kHelpURL {
+            NSWorkspace.shared().open(urlActual)
+        }
+        else {
+            print("Umm, fix your url?")
+        }
+    }
 }
+

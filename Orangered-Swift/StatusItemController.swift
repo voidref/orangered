@@ -100,12 +100,13 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     override init() {
         super.init()
 
+        prefs.useAltImages = false
         setup()
         if prefs.loggedIn {
             login()
         }        
     }
-    
+
     private func setup() {
         NSUserNotificationCenter.default.delegate = self
         setupMenu()
@@ -181,7 +182,17 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
                dataString = String(data:dataActual, encoding:String.Encoding.utf8) {
             if dataString.contains("wrong password") {
                 // TODO: wrong password error
-                print("Wrong password")
+                state = .invalidcredentials
+                let alert = NSAlert()
+                alert.messageText = NSLocalizedString("Username and password do not match any recognized by Reddit", comment: "username/password mismatch error")
+                alert.addButton(withTitle: NSLocalizedString("Lemme fix that...", comment:"Wrong password dialog acknowledgement button"))
+                alert.runModal()
+                
+                // There seems to be a problem with showing another window while this one has just been dismissed, rescheduling on the main thread solves this.
+                DispatchQueue.main.async { 
+                    self.showLoginWindow()
+                }
+
                 return
             }
         }
@@ -210,7 +221,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
             setupStatusPoller()
         }
     }
-    
+         
     private func setupStatusPoller() {
         statusPoller?.invalidate()
         let interval:TimeInterval = 60

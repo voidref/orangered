@@ -145,7 +145,6 @@
 				E7591DB41CFB60450074F56B /* Sources */,
 				E7591DB51CFB60450074F56B /* Frameworks */,
 				E7591DB61CFB60450074F56B /* Resources */,
-				E7FEE2491D19CDD6002F624C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -200,22 +199,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		E7FEE2491D19CDD6002F624C /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cd $BUILT_PRODUCTS_DIR/Orangered.app\nmkdir -p Contents/Library/LoginItems\ncd Contents/Library/LoginItems\nln -sf ../../../../Orangered.app .";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E7591DB41CFB60450074F56B /* Sources */ = {
