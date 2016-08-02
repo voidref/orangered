@@ -119,10 +119,10 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
                                  action: #selector(handleMailboxItemSelected), keyEquivalent: "")
         mailbox.isEnabled = false
         menu.addItem(mailbox)
-        menu.addItem(NSMenuItem.separator())
 
         mailboxItem = mailbox
         
+        menu.addItem(NSMenuItem.separator())
         let login = NSMenuItem(title: kLoginMenuTitle, 
                                action: #selector(handleLoginItemSelected), keyEquivalent: "")
         menu.addItem(login)
@@ -133,7 +133,6 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
                                    action: #selector(handlePrefItemSelected), keyEquivalent: "")
         menu.addItem(prefsItem)
 #endif
-        menu.addItem(NSMenuItem.separator())
         let quitItem = NSMenuItem(title: NSLocalizedString("Quit", comment:"Quit menu item title"), 
                                   action: #selector(quit), keyEquivalent: "")
         menu.addItem(quitItem)
