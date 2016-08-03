@@ -39,13 +39,13 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
                 
         func image(forAppearance appearanceName: String, useAlt:Bool = false) -> NSImage {
             let imageMap = [
-                loggedout: "not-connected",
-                invalidcredentials:  "not-connected",
-                disconnected: "not-connected",
-                mailfree: "logged-in",
-                orangered: "message",
-                modmail: "mod",
-                update: "BlueEnvelope" // TODO: Sort this out
+                State.loggedout: "not-connected",
+                State.invalidcredentials:  "not-connected",
+                State.disconnected: "not-connected",
+                State.mailfree: "logged-in",
+                State.orangered: "message",
+                State.modmail: "mod",
+                State.update: "BlueEnvelope" // TODO: Sort this out
             ]
 
             guard let basename = imageMap[self] else {
@@ -300,7 +300,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
                 notifyMail()
                 
             case .disconnected:
-                DispatchQueue.main.after(when: DispatchTime.now() + 10, execute: { 
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 10, execute: { 
                     self.login()
                 })
             fallthrough
@@ -336,7 +336,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
             NSWorkspace.shared().open(url)
         }
         
-        DispatchQueue.main.after(when: DispatchTime.now() + kOpenMailboxRecheckDelay) { 
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + kOpenMailboxRecheckDelay) { 
             self.checkReddit()
         }
         

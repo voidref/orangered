@@ -50,7 +50,7 @@ class LoginViewController: NSViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         for subview in [nameLabel, nameField, passwordLabel, passwordField, loginButton] { add(subview) }
         
-        func setupLabel(label:NSTextField, text:String) {
+        func setup(label:NSTextField, text:String) {
             label.stringValue = text
             label.isEditable = false
             label.backgroundColor = #colorLiteral(red: 0.6470588235, green: 0.631372549, blue: 0.7725490196, alpha: 0)
@@ -59,8 +59,8 @@ class LoginViewController: NSViewController {
             label.isBezeled = false
         }
         
-        setupLabel(label: nameLabel, text: "User Name:")
-        setupLabel(label: passwordLabel, text: "Password:")
+        setup(label: nameLabel, text: "User Name:")
+        setup(label: passwordLabel, text: "Password:")
         
         let pref = UserDefaults.standard
         nameField.stringValue = pref.username ?? ""
