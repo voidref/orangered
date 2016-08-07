@@ -59,8 +59,8 @@ class LoginViewController: NSViewController {
             label.isBezeled = false
         }
         
-        setup(label: nameLabel, text: "User Name:")
-        setup(label: passwordLabel, text: "Password:")
+        setup(label: nameLabel, text: NSLocalizedString("User Name:", comment: "reddit user name field label"))
+        setup(label: passwordLabel, text: NSLocalizedString("Password:", comment: "password field label"))
         
         let pref = UserDefaults.standard
         nameField.stringValue = pref.username ?? ""

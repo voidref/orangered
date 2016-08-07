@@ -324,14 +324,16 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         note.actionButtonTitle      = NSLocalizedString("Read", comment: "notification call to action button")
         
         if mailCount > 1 {
-            // Note: This localization is not going to work...
-            note.informativeText = NSLocalizedString("You have \(mailCount) unread messages on reddit", comment: "plural message notification text")
+            note.informativeText = String
+                .localizedStringWithFormat(NSLocalizedString("You have %@ unread messages on reddit", 
+                                                            comment: "plural message notification text"), 
+                                          mailCount) 
         }
         
         NSUserNotificationCenter.default.deliver(note)
     }
     
-    private func openMailbox() {    
+    private func openMailbox() {
         if let url = state.mailboxUrl() {
             NSWorkspace.shared().open(url)
         }
