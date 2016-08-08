@@ -54,13 +54,14 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
 
             var name = basename
             
+            if useAlt {
+                name = "alt-\(basename)"
+            }
+
             if appearanceName == NSAppearanceNameVibrantDark {
-                name = "\(basename)-dark"
+                name = "\(name)-dark"
             }
             
-            if useAlt {
-                name = "alt-\(basename)" // no separate dark versions as supplied...
-            }
             
             guard let image = NSImage(named: name) else {
                 fatalError("fix yo assets, missing image: \(name)")

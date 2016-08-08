@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "alt-not-connected.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "alt-not-connected@2x.png",
       "scale" : "2x"
     },
     {
