@@ -19,7 +19,6 @@
 
 /* Begin PBXFileReference section */
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrangeredAppDelegate.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		2D7D38A411D8750100D9A067 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -77,7 +76,6 @@
 			children = (
 				E7591DB91CFB60450074F56B /* Source */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
-				E7E6A00E1D10A632008F27BF /* olde */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -115,14 +113,6 @@
 			);
 			name = Source;
 			path = "Orangered-Swift";
-			sourceTree = "<group>";
-		};
-		E7E6A00E1D10A632008F27BF /* olde */ = {
-			isa = PBXGroup;
-			children = (
-				256AC3D90F4B6AC300CF3369 /* OrangeredAppDelegate.m */,
-			);
-			name = olde;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
