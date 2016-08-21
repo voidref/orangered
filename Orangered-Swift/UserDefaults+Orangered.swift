@@ -54,9 +54,9 @@ extension UserDefaults {
     }
     
     // C APIs are *the worst*
-    static private var keychainItem:SecKeychainItem? = nil
+    static fileprivate var keychainItem:SecKeychainItem? = nil
     
-    private func getPassword() -> String? {
+    fileprivate func getPassword() -> String? {
         
         guard let uname = username else {
             print("no user name set")
@@ -64,7 +64,7 @@ extension UserDefaults {
         }
         
         var passwordLength:UInt32 = 0
-        var passwordData:UnsafeMutablePointer<Void>? = nil
+        var passwordData:UnsafeMutableRawPointer? = nil
         
         let err = SecKeychainFindGenericPassword(nil, 
                                                  UInt32(kServiceName.characters.count), 
@@ -85,7 +85,7 @@ extension UserDefaults {
         return nil
     }
     
-    private func setPassword(_ pass:String) {
+    fileprivate func setPassword(_ pass:String) {
         guard let uname = username else {
             print("No username")
             return
@@ -111,7 +111,7 @@ extension UserDefaults {
         }
     }
     
-    private func updatePassword(_ password:String) {
+    fileprivate func updatePassword(_ password:String) {
         guard let itemActual = UserDefaults.keychainItem else {
             print("Must grab a password to init the item before updatint it, bleah")
             return

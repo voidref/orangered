@@ -10,17 +10,17 @@ import Cocoa
 
 let kHelpURL = URL(string: "https://www.github.com/voidref/orangered")
 
-typealias LoginAction = (name:String, password:String) -> Void
+typealias LoginAction = (_:String, _ password:String) -> Void
 
 class LoginViewController: NSViewController {
 
-    private let nameLabel = NSTextField()
-    private let passwordLabel = NSTextField()
-    private let nameField = NSTextField()
-    private let passwordField = NSSecureTextField()
-    private let loginButton = NSButton()
-    private let helpButton = NSButton()
-    private let loginAction:LoginAction
+    fileprivate let nameLabel = NSTextField()
+    fileprivate let passwordLabel = NSTextField()
+    fileprivate let nameField = NSTextField()
+    fileprivate let passwordField = NSSecureTextField()
+    fileprivate let loginButton = NSButton()
+    fileprivate let helpButton = NSButton()
+    fileprivate let loginAction:LoginAction
     
     init(loginAction action: LoginAction) {
         loginAction = action
@@ -46,7 +46,7 @@ class LoginViewController: NSViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    private func setup() {
+    fileprivate func setup() {
         view.translatesAutoresizingMaskIntoConstraints = false
         for subview in [nameLabel, nameField, passwordLabel, passwordField, loginButton] { add(subview) }
         
@@ -113,16 +113,16 @@ class LoginViewController: NSViewController {
         ])
     }
     
-    private func add(_ sub:NSView) {
+    fileprivate func add(_ sub:NSView) {
         sub.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sub)
     }
     
     @objc private func loginClicked() {
-        loginAction(name: nameField.stringValue, password: passwordField.stringValue)
+        loginAction(nameField.stringValue, passwordField.stringValue)
     }
     
-    @objc private func helpClicked() {
+    @objc fileprivate func helpClicked() {
         if let urlActual = kHelpURL {
             NSWorkspace.shared().open(urlActual)
         }

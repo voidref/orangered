@@ -27,7 +27,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         case modmail
         case update
         
-        private static let urlMap = [
+        fileprivate static let urlMap = [
             loggedout: nil,
             invalidcredentials: nil,
             disconnected: nil,
@@ -75,7 +75,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         }
     }
     
-    private var state = State.disconnected {
+    fileprivate var state = State.disconnected {
         willSet {
             if newValue != state {
                 // In order to avoid having to set flags for handling values set that were already set, we check `willSet`. This, however, necessitates we reschedule handling until the value is actually set as there doesn't seem to be a way to let it set and then call a method synchronously
@@ -86,17 +86,17 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         }
     }
     
-    private let statusItem = NSStatusBar.system().statusItem(withLength: NSSquareStatusItemLength)
+    fileprivate let statusItem = NSStatusBar.system().statusItem(withLength: NSSquareStatusItemLength)
     
-    private var statusPoller:Timer?
-    private let prefs = UserDefaults.standard
-    private var statusConnection:URLSession?
-    private let session = URLSession.shared
-    private var loginWindowController:NSWindowController?
-    private var prefWindowController:NSWindowController?
-    private var mailboxItem:NSMenuItem?
-    private var loginItem:NSMenuItem?
-    private var mailCount = 0
+    fileprivate var statusPoller:Timer?
+    fileprivate let prefs = UserDefaults.standard
+    fileprivate var statusConnection:URLSession?
+    fileprivate let session = URLSession.shared
+    fileprivate var loginWindowController:NSWindowController?
+    fileprivate var prefWindowController:NSWindowController?
+    fileprivate var mailboxItem:NSMenuItem?
+    fileprivate var loginItem:NSMenuItem?
+    fileprivate var mailCount = 0
     
     override init() {
         super.init()
@@ -108,7 +108,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         }        
     }
 
-    private func setup() {
+    fileprivate func setup() {
         NSUserNotificationCenter.default.delegate = self
         setupMenu()
     }
@@ -171,13 +171,13 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         loginItem?.title = kAttemptingLoginTitle
         
         let task = session.dataTask(with: request) { (data, response, error) in
-            self.handleLogin(response: response as? HTTPURLResponse, data:data, error: error)
+            self.handleLogin(response: response, data:data, error: error)
         }
-        
+                
         task.resume()
     }
     
-    private func handleLogin(response:HTTPURLResponse?, data:Data?, error:NSError?) {
+    fileprivate func handleLogin(response:URLResponse?, data:Data?, error:Error?) {
         if let dataActual = data, let 
                dataString = String(data:dataActual, encoding:String.Encoding.utf8) {
             if dataString.contains("wrong password") {
@@ -197,13 +197,18 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
             }
         }
         
-        guard let headers = response?.allHeaderFields as? [String:String] else {
-            print("wrong headers ... or so: \(response?.allHeaderFields)")
+        guard let responseActual = response as? HTTPURLResponse else {
+            print("Response is not an HTTPURLResponse, somehow: \(response)")
             return
         }
         
-        guard let url = response?.url else {
-            print("missing url from response: \(response)")
+        guard let headers = responseActual.allHeaderFields as NSDictionary? as! [String:String]? else {
+            print("wrong headers ... or so: \(responseActual.allHeaderFields)")
+            return
+        }
+        
+        guard let url = responseActual.url else {
+            print("missing url from response: \(responseActual)")
             return
         }
         
@@ -242,7 +247,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         window.appearance = NSAppearance(named: NSAppearanceNameVibrantLight)
         loginWindowController = NSWindowController(window: window)
         
-        NSApp.activateIgnoringOtherApps(true)
+        NSApp.activate(ignoringOtherApps: true)
         loginWindowController?.showWindow(self)
     }
     
@@ -250,14 +255,19 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         let pref = NSWindowController(window: NSPanel(contentViewController: PrefViewController()))
         
         prefWindowController = pref
-        NSApp.activateIgnoringOtherApps(true)
+        NSApp.activate(ignoringOtherApps: true)
         pref.showWindow(self)
     }
     
-    private func interpretResponse(json: AnyObject) {
+    private func interpretResponse(json: Any) {
         // Crude, but remarkably immune to data restructuring as long as the key value pairs don't change.
 
-        guard let jsonActual = json["data"] as? [String:AnyObject] else {
+        // WTF Swift 3...
+        guard let jsonDict = json as AnyObject? else {
+            return
+        }
+        
+        guard let jsonActual = jsonDict["data"] as? [String:AnyObject] else {
             print("response json unexpected format: \(json)")
             return
         }

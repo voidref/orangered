@@ -26,7 +26,7 @@ class PrefViewController: NSViewController {
         
     }
     
-    private func setup() {
+    fileprivate func setup() {
         startAtLogin.target = self
         startAtLogin.translatesAutoresizingMaskIntoConstraints = false
         
@@ -42,8 +42,8 @@ class PrefViewController: NSViewController {
         ])
     }
     
-    @objc private func salClicked() {
-        print(SMLoginItemSetEnabled("com.rockwood.Orangered", true))
+    @objc fileprivate func salClicked() {
+        print(SMLoginItemSetEnabled("com.rockwood.Orangered" as CFString, true))
     }
 }
 

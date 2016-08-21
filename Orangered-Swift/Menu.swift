@@ -22,7 +22,7 @@ class Menu: NSMenu {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setup() {
+    fileprivate func setup() {
         autoenablesItems = false
     }
 }
