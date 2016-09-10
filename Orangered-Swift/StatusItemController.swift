@@ -336,7 +336,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         
         if mailCount > 1 {
             note.informativeText = String
-                .localizedStringWithFormat(NSLocalizedString("You have %@ unread messages on reddit", 
+                .localizedStringWithFormat(NSLocalizedString("You have %i unread messages on reddit", 
                                                             comment: "plural message notification text"), 
                                           mailCount) 
         }
