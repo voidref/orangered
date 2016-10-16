@@ -22,10 +22,10 @@ class LoginViewController: NSViewController {
     fileprivate let helpButton = NSButton()
     fileprivate let loginAction:LoginAction
     
-    init(loginAction action: LoginAction) {
+    init(_ action: @escaping LoginAction) {
         loginAction = action
 
-        // Effit, I want to override init (unfailable override), but I am required to call a failable initializer?
+        // Effit, force the return. I want to override init (unfailable override), but I am required to call a failable initializer because it's the designated init.
         super.init(nibName: nil, bundle: nil)!
         
         title = NSLocalizedString("Orangered! Login", comment: "The login window title")
