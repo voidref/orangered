@@ -12,6 +12,7 @@ import Cocoa
 private let kUserNameKey = "username"
 private let kLoggedInKey = "logged in"
 private let kUseAltImagesKey = "use alt images"
+private let kMailCountKey = "unread inbox count"
 private let kServiceName = "Orangered!"
 
 extension UserDefaults {
@@ -50,6 +51,15 @@ extension UserDefaults {
         }
         set {
             set(newValue, forKey: kUseAltImagesKey)
+        }
+    }
+    
+    var mailCount:Int {
+        get {
+            return integer(forKey: kMailCountKey)
+        }
+        set {
+            set(newValue, forKey: kMailCountKey)
         }
     }
     

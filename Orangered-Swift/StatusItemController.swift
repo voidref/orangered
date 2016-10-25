@@ -96,7 +96,14 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     fileprivate var prefWindowController:NSWindowController?
     fileprivate var mailboxItem:NSMenuItem?
     fileprivate var loginItem:NSMenuItem?
-    fileprivate var mailCount = 0
+    fileprivate var mailCount:Int {
+        get {
+            return prefs.mailCount
+        }
+        set {
+            prefs.mailCount = newValue
+        }
+    }
     
     override init() {
         super.init()
@@ -279,6 +286,10 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
                 if mailCount > 0 {
                     notifyMail()
                 }
+                else {
+                    // We had mail, and now we don't. Safe to assume it's all been read.
+                    NSUserNotificationCenter.default.removeAllDeliveredNotifications()
+                }
             }
         }
         
@@ -306,10 +317,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         mailboxItem?.isEnabled = true
         loginItem?.title = prefs.loggedIn ? kLogoutMenuTitle : kLoginMenuTitle
         
-        switch state {
-            case .orangered, .modmail:
-                notifyMail()
-                
+        switch state {                
             case .disconnected:
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 10, execute: { 
                     self.login()
@@ -319,7 +327,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
                 mailboxItem?.isEnabled = false
                 
             
-            case .mailfree, .update:
+            case .orangered, .modmail, .mailfree, .update:
                 break
         }
     }
@@ -341,6 +349,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
                                           mailCount) 
         }
         
+        print("notifying")
         NSUserNotificationCenter.default.deliver(note)
     }
     
@@ -349,11 +358,10 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
             NSWorkspace.shared().open(url)
         }
         
+        // There's no reasonable way to know when reddit has cleared the unread flag, so we just wait a bit and check again.
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + kOpenMailboxRecheckDelay) { 
             self.checkReddit()
         }
-        
-        NSUserNotificationCenter.default.removeAllDeliveredNotifications()
     }
     
     private func logout() {
