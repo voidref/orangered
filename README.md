@@ -5,7 +5,7 @@ This small application is designed to sit up in your Mac OS X menu bar and poll 
 
 For the reddit obsessed.
 
-# Ufo Colors
+# UFO Colors
 
  * Outline : Not logged in
  * Filled : Logged in, no messages
@@ -32,7 +32,7 @@ For the reddit obsessed.
 
 # Features
 
-This application is deliverately as featureless as possible, if you are looking for a commercially supported expierence, you may look at Peter Kamb's excellent Orangered notifier for Reddit: https://itunes.apple.com/us/app/orangered-notifier-for-reddit/id468366517?mt=12
+This application is deliberately as featureless as possible, if you are looking for a commercially supported expierence, you may look at Peter Kamb's excellent Orangered notifier for Reddit: https://itunes.apple.com/us/app/orangered-notifier-for-reddit/id468366517?mt=12
 
 
 
