@@ -143,9 +143,10 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0940;
-				ORGANIZATIONNAME = "";
+				ORGANIZATIONNAME = "Rockwood Software";
 				TargetAttributes = {
 					E7591DB71CFB60450074F56B = {
+						DevelopmentTeam = SR7K2S8GE4;
 						CreatedOnToolsVersion = 7.3.1;
 						LastSwiftMigration = 0940;
 					};
@@ -218,7 +219,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Mac Developer: Sam McLeod-Jones (S64522742G)";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
