@@ -58,12 +58,12 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
                 name = "alt-\(basename)"
             }
 
-            if appearanceName == NSAppearanceNameVibrantDark {
+            if appearanceName == NSAppearance.Name.vibrantDark.rawValue {
                 name = "\(name)-dark"
             }
             
             
-            guard let image = NSImage(named: name) else {
+            guard let image = NSImage(named: NSImage.Name(rawValue: name)) else {
                 fatalError("fix yo assets, missing image: \(name)")
             }
             
@@ -86,7 +86,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         }
     }
     
-    fileprivate let statusItem = NSStatusBar.system().statusItem(withLength: NSSquareStatusItemLength)
+    fileprivate let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
     
     fileprivate var statusPoller:Timer?
     fileprivate let prefs = UserDefaults.standard
@@ -156,7 +156,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
             altImageName = "alt-\(altImageName)"
         }
         
-        statusItem.alternateImage = NSImage(named: altImageName)
+        statusItem.alternateImage = NSImage(named: NSImage.Name(rawValue: altImageName))
         updateIcon()
     }
     
@@ -251,7 +251,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         }
         
         let window = NSPanel(contentViewController: login)
-        window.appearance = NSAppearance(named: NSAppearanceNameVibrantLight)
+        window.appearance = NSAppearance(named: NSAppearance.Name.vibrantLight)
         loginWindowController = NSWindowController(window: window)
         
         NSApp.activate(ignoringOtherApps: true)
@@ -333,7 +333,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     }
     
     private func updateIcon() {
-        statusItem.image = state.image(forAppearance: statusItem.button!.effectiveAppearance.name, useAlt: prefs.useAltImages)
+        statusItem.image = state.image(forAppearance: statusItem.button!.effectiveAppearance.name.rawValue, useAlt: prefs.useAltImages)
     }
     
     private func notifyMail() {
@@ -355,7 +355,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     
     private func openMailbox() {
         if let url = state.mailboxUrl() {
-            NSWorkspace.shared().open(url)
+            NSWorkspace.shared.open(url)
         }
         
         // There's no reasonable way to know when reddit has cleared the unread flag, so we just wait a bit and check again.
@@ -396,7 +396,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     }
     
     @objc private func quit() {
-        NSApplication.shared().stop(nil)
+        NSApplication.shared.stop(nil)
     }
     
     @objc func handleLoginItemSelected() {
