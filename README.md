@@ -29,6 +29,7 @@ For the reddit obsessed.
  * shinratdr
  * sporadicmonster
  * pkamb
+ * @sammcj
 
 # Features
 
