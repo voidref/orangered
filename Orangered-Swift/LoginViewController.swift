@@ -26,7 +26,7 @@ class LoginViewController: NSViewController {
         loginAction = action
 
         // Effit, force the return. I want to override init (unfailable override), but I am required to call a failable initializer because it's the designated init.
-        super.init(nibName: nil, bundle: nil)!
+        super.init(nibName: nil, bundle: nil)
         
         title = NSLocalizedString("Orangered! Login", comment: "The login window title")
     }
@@ -124,7 +124,7 @@ class LoginViewController: NSViewController {
     
     @objc fileprivate func helpClicked() {
         if let urlActual = kHelpURL {
-            NSWorkspace.shared().open(urlActual)
+            NSWorkspace.shared.open(urlActual)
         }
         else {
             print("Umm, fix your url?")

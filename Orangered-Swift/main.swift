@@ -9,7 +9,7 @@
 import AppKit
 
 autoreleasepool { () -> () in
-    let app = NSApplication.shared()
+    let app = NSApplication.shared
     let delegate = AppDelegate()
     app.delegate = delegate
     app.run()
