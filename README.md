@@ -32,7 +32,7 @@ For the reddit obsessed.
 
 # Features
 
-This application is deliverately as featureless as possible, if you are looking for a commercially supported expierence, you may look at Peter Kamb's excellent Orangered notifier for Reddit: https://itunes.apple.com/us/app/orangered-notifier-for-reddit/id468366517?mt=12
+This application is deliberately as featureless as possible, if you are looking for a commercially supported expierence, you may look at Peter Kamb's excellent Orangered notifier for Reddit: https://itunes.apple.com/us/app/orangered-notifier-for-reddit/id468366517?mt=12
 
 
 
