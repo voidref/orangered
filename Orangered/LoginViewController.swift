@@ -25,7 +25,6 @@ class LoginViewController: NSViewController {
     init(_ action: @escaping LoginAction) {
         loginAction = action
 
-        // Effit, force the return. I want to override init (unfailable override), but I am required to call a failable initializer because it's the designated init.
         super.init(nibName: nil, bundle: nil)
         
         title = NSLocalizedString("Orangered! Login", comment: "The login window title")
@@ -47,10 +46,14 @@ class LoginViewController: NSViewController {
     }
     
     fileprivate func setup() {
-        view.translatesAutoresizingMaskIntoConstraints = false
-        for subview in [nameLabel, nameField, passwordLabel, passwordField, loginButton] { add(subview) }
+        [nameLabel,
+         nameField,
+         passwordLabel,
+         passwordField,
+         loginButton,
+         helpButton].forEach { add($0) }
         
-        func setup(label:NSTextField, text:String) {
+        func confgure(label:NSTextField, text:String) {
             label.stringValue = text
             label.isEditable = false
             label.backgroundColor = #colorLiteral(red: 0.6470588235, green: 0.631372549, blue: 0.7725490196, alpha: 0)
@@ -59,8 +62,10 @@ class LoginViewController: NSViewController {
             label.isBezeled = false
         }
         
-        setup(label: nameLabel, text: NSLocalizedString("User Name:", comment: "reddit user name field label"))
-        setup(label: passwordLabel, text: NSLocalizedString("Password:", comment: "password field label"))
+        confgure(label: nameLabel,
+                 text: NSLocalizedString("User Name:", comment: "reddit user name field label"))
+        confgure(label: passwordLabel,
+                 text: NSLocalizedString("Password:", comment: "password field label"))
         
         let pref = UserDefaults.standard
         nameField.stringValue = pref.username ?? ""
@@ -72,17 +77,17 @@ class LoginViewController: NSViewController {
         loginButton.target = self
         loginButton.action = #selector(loginClicked)
         
+        helpButton.bezelStyle = .helpButton
+        helpButton.title = ""
+        helpButton.target = self
+        helpButton.action = #selector(helpClicked)
+
         let space:CGFloat = 16
         let fieldWidth:CGFloat = 160
         
         let fieldGuide = NSLayoutGuide()
         view.addLayoutGuide(fieldGuide)
         
-        helpButton.bezelStyle = .helpButton
-        helpButton.title = ""
-        helpButton.target = self
-        helpButton.action = #selector(helpClicked)
-        add(helpButton)
         
         NSLayoutConstraint.activate([
             fieldGuide.topAnchor.constraint(equalTo: nameLabel.topAnchor),

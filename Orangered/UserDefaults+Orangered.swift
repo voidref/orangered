@@ -77,9 +77,9 @@ extension UserDefaults {
         var passwordData:UnsafeMutableRawPointer? = nil
         
         let err = SecKeychainFindGenericPassword(nil, 
-                                                 UInt32(kServiceName.characters.count), 
+                                                 UInt32(kServiceName.count),
                                                  kServiceName, 
-                                                 UInt32(uname.characters.count), 
+                                                 UInt32(uname.count),
                                                  uname, 
                                                  &passwordLength, 
                                                  &passwordData, 
@@ -108,11 +108,11 @@ extension UserDefaults {
         }
         
         let result =  SecKeychainAddGenericPassword(nil, 
-                                                    UInt32(kServiceName.characters.count), 
+                                                    UInt32(kServiceName.count),
                                                     kServiceName, 
-                                                    UInt32(uname.characters.count), 
+                                                    UInt32(uname.count),
                                                     uname, 
-                                                    UInt32(pass.characters.count), 
+                                                    UInt32(pass.count), 
                                                     pass, 
                                                     nil)
         
@@ -129,7 +129,7 @@ extension UserDefaults {
         
         let result = SecKeychainItemModifyAttributesAndData(itemActual, 
                                                             nil, 
-                                                            UInt32(password.characters.count), 
+                                                            UInt32(password.count), 
                                                             password)
         
         if result != errSecSuccess {

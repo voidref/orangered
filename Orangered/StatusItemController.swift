@@ -8,6 +8,7 @@
 
 import Foundation
 import Cocoa
+import UserNotifications
 
 private let kUpdateURL = URL(string: "http://voidref.com/orangered/version")
 private let kRedditCookieURL = URL(string: "https://reddit.com")
@@ -16,7 +17,7 @@ private let kLogoutMenuTitle = NSLocalizedString("Log Out", comment: "Menu item 
 private let kAttemptingLoginTitle = NSLocalizedString("Attempting Login…", comment: "Title of the login menu item while it's attemping to log in")
 private let kOpenMailboxRecheckDelay = 5.0
 
-class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
+class StatusItemController: NSObject, UNUserNotificationCenterDelegate {
     
     enum State {
         case loggedout
@@ -63,7 +64,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
             }
             
             
-            guard let image = NSImage(named: NSImage.Name(rawValue: name)) else {
+            guard let image = NSImage(named: name) else {
                 fatalError("fix yo assets, missing image: \(name)")
             }
             
@@ -116,7 +117,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     }
 
     fileprivate func setup() {
-        NSUserNotificationCenter.default.delegate = self
+        UNUserNotificationCenter.current().delegate = self
         setupMenu()
     }
     
@@ -156,7 +157,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
             altImageName = "alt-\(altImageName)"
         }
         
-        statusItem.alternateImage = NSImage(named: NSImage.Name(rawValue: altImageName))
+        statusItem.button?.alternateImage = NSImage(named: altImageName)
         updateIcon()
     }
     
@@ -188,15 +189,16 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         if let dataActual = data, let 
                dataString = String(data:dataActual, encoding:String.Encoding.utf8) {
             if dataString.contains("wrong password") {
-                // TODO: wrong password error
-                state = .invalidcredentials
-                let alert = NSAlert()
-                alert.messageText = NSLocalizedString("Username and password do not match any recognized by Reddit", comment: "username/password mismatch error")
-                alert.addButton(withTitle: NSLocalizedString("Lemme fix that...", comment:"Wrong password dialog acknowledgement button"))
-                alert.runModal()
+                DispatchQueue.main.async {
+                    // There seems to be a problem with showing another window while this one has just been dismissed, rescheduling on the main thread solves this.
+                    
+                    // TODO: wrong password error
+                    self.state = .invalidcredentials
+                    let alert = NSAlert()
+                    alert.messageText = NSLocalizedString("Username and password do not match any recognized by Reddit", comment: "username/password mismatch error")
+                    alert.addButton(withTitle: NSLocalizedString("Lemme fix that...", comment:"Wrong password dialog acknowledgement button"))
+                    alert.runModal()
                 
-                // There seems to be a problem with showing another window while this one has just been dismissed, rescheduling on the main thread solves this.
-                DispatchQueue.main.async { 
                     self.showLoginWindow()
                 }
 
@@ -205,7 +207,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         }
         
         guard let responseActual = response as? HTTPURLResponse else {
-            print("Response is not an HTTPURLResponse, somehow: \(response)")
+            print("Response is not an HTTPURLResponse, somehow: \(String(describing: response))")
             return
         }
         
@@ -222,7 +224,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         let cookies = HTTPCookie.cookies(withResponseHeaderFields: headers, for: url)
         
         if cookies.count < 1 {
-            print("Login error: \(response)")
+            print("Login error: \(String(describing: response))")
             state = .disconnected
         }
         else {
@@ -238,7 +240,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         statusPoller?.invalidate()
         let interval:TimeInterval = 60
         statusPoller = Timer(timeInterval: interval, target: self, selector: #selector(checkReddit), userInfo: nil, repeats: true)
-        RunLoop.main.add(statusPoller!, forMode: RunLoopMode.defaultRunLoopMode)
+        RunLoop.main.add(statusPoller!, forMode: .default)
         statusPoller?.fire()
     }
     
@@ -251,7 +253,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
         }
         
         let window = NSPanel(contentViewController: login)
-        window.appearance = NSAppearance(named: NSAppearance.Name.vibrantLight)
+        window.appearance = NSAppearance(named: NSAppearance.Name.vibrantDark)
         loginWindowController = NSWindowController(window: window)
         
         NSApp.activate(ignoringOtherApps: true)
@@ -288,7 +290,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
                 }
                 else {
                     // We had mail, and now we don't. Safe to assume it's all been read.
-                    NSUserNotificationCenter.default.removeAllDeliveredNotifications()
+                    UNUserNotificationCenter.current().removeAllDeliveredNotifications()
                 }
             }
         }
@@ -333,24 +335,25 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     }
     
     private func updateIcon() {
-        statusItem.image = state.image(forAppearance: statusItem.button!.effectiveAppearance.name.rawValue, useAlt: prefs.useAltImages)
+        statusItem.button?.image = state.image(forAppearance: statusItem.button!.effectiveAppearance.name.rawValue, useAlt: prefs.useAltImages)
     }
     
     private func notifyMail() {
-        let note = NSUserNotification()
+        let note = UNMutableNotificationContent()
         note.title                  = "Orangered!"
-        note.informativeText        = NSLocalizedString("You have a new message on reddit!", comment: "new message notification text")
-        note.actionButtonTitle      = NSLocalizedString("Read", comment: "notification call to action button")
+        note.body        = NSLocalizedString("You have a new message on reddit!", comment: "new message notification text")
+//        note.actionButtonTitle      = NSLocalizedString("Read", comment: "notification call to action button")
         
         if mailCount > 1 {
-            note.informativeText = String
+            note.body = String
                 .localizedStringWithFormat(NSLocalizedString("You have %i unread messages on reddit", 
                                                             comment: "plural message notification text"), 
                                           mailCount) 
         }
         
-        print("notifying")
-        NSUserNotificationCenter.default.deliver(note)
+        UNUserNotificationCenter
+            .current()
+            .add(UNNotificationRequest(identifier: "Orangered!", content: note, trigger: nil))
     }
     
     private func openMailbox() {
@@ -388,7 +391,7 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
                 }
             }
             else {
-                print("Failure: \(response)")
+                print("Failure: \(String(describing: response))")
             }
         }
         
@@ -418,9 +421,12 @@ class StatusItemController: NSObject, NSUserNotificationCenterDelegate {
     
     
     // MARK: User Notification Center
-    
-    @objc func userNotificationCenter(_ center: NSUserNotificationCenter, didActivate notification: NSUserNotification) {
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
         openMailbox()
     }
+//    @objc func userNotificationCenter(did) {
+//        openMailbox()
+//    }
 }
 
