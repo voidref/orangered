@@ -3,9 +3,11 @@
 
 This small application is designed to sit up in your Mac OS X menu bar and poll every 60 seconds to see if you have any reddit.com messages awaiting your feverent attention. 
 
+This is for testing a PR, do not merge.
+
 For the reddit obsessed.
 
-# Ufo Colors
+# UFO Colors
 
  * Outline : Not logged in
  * Filled : Logged in, no messages
@@ -29,6 +31,7 @@ For the reddit obsessed.
  * shinratdr
  * sporadicmonster
  * pkamb
+ * sammcj
 
 # Features
 
